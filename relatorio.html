@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mapa de People — Relatório | CALI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bordo:#5A1E2D;
+  --bordo-escuro:#3E1520;
+  --marfim:#F7F3EE;
+  --marfim-2:#EFE8DF;
+  --grafite:#2B2B2B;
+  --taupe:#B7A99A;
+  --dourado:#B58C52;
+  --branco:#FFFFFF;
+  --serif:'Playfair Display',serif;
+  --sans:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--marfim-2);
+  color:var(--grafite);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══ TOPO FIXO — ferramenta interna de edição/envio, não aparece impresso ══ */
+.toolbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--grafite);color:var(--marfim);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 28px;font-size:12.5px;letter-spacing:.02em;
+}
+.toolbar .tag{
+  font-family:var(--sans);font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  font-size:10.5px;color:var(--dourado);
+}
+.toolbar .actions{display:flex;gap:10px}
+.toolbar button{
+  font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.02em;
+  background:transparent;border:1px solid rgba(247,243,238,.3);color:var(--marfim);
+  padding:7px 16px;border-radius:100px;cursor:pointer;transition:.2s;
+}
+.toolbar button:hover{background:rgba(247,243,238,.12)}
+.toolbar button.primary{background:var(--dourado);border-color:var(--dourado);color:var(--bordo-escuro)}
+.toolbar button.primary:hover{background:#c69a5f}
+
+/* ══ CONTAINER DE PÁGINAS ══ */
+.doc{max-width:900px;margin:0 auto;padding:0 0 60px}
+.page{
+  background:var(--marfim);
+  padding:64px 76px;
+  margin-top:28px;
+  position:relative;
+  overflow:hidden;
+}
+.page:first-child{margin-top:0}
+
+/* motivo de mapa: linhas de contorno topográficas, sutis, marca d'água */
+.contour{
+  position:absolute;inset:0;pointer-events:none;opacity:.05;z-index:0;
+}
+.contour svg{width:100%;height:100%}
+
+.page > *{position:relative;z-index:1}
+
+.eyebrow{
+  font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dourado);margin-bottom:14px;
+}
+.divider{width:56px;height:2px;background:var(--dourado);margin:20px 0 28px;border:none}
+.divider.center{margin-left:auto;margin-right:auto}
+
+/* ══ CAPA ══ */
+.capa{
+  background:linear-gradient(150deg,var(--bordo) 0%,var(--bordo) 60%,#7a3548 85%,var(--dourado) 145%);
+  color:var(--marfim);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  min-height:600px;
+}
+.capa .contour{opacity:.09}
+.capa .contour path{stroke:var(--dourado)}
+.logo-img{display:block}
+.logo-img.large{width:190px;margin-bottom:6px}
+.logo-img.small{width:120px}
+.capa .eyebrow{color:var(--dourado);margin-top:44px}
+.capa h1{
+  font-family:var(--serif);font-weight:600;font-size:52px;line-height:1.08;
+  max-width:600px;margin-bottom:8px;
+}
+.capa .empresa{
+  font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;color:var(--taupe);
+  margin-top:18px;
+}
+.capa .meta-row{
+  display:flex;gap:40px;margin-top:56px;padding-top:24px;
+  border-top:1px solid rgba(247,243,238,.18);width:100%;max-width:600px;
+}
+.capa .meta-item .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);margin-bottom:5px}
+.capa .meta-item .v{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--marfim)}
+
+/* ══ CARTA ══ */
+h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bordo);margin-bottom:6px;line-height:1.2}
+.subtitulo{font-family:var(--sans);font-size:14px;color:var(--taupe);font-weight:500}
+.carta p{
+  font-family:var(--sans);font-weight:300;font-size:15.5px;line-height:1.9;
+  color:var(--grafite);margin-bottom:18px;max-width:680px;
+}
+.carta p.cap-letra::first-letter{
+  font-family:var(--serif);font-size:56px;font-weight:600;color:var(--bordo);
+  float:left;line-height:.8;margin:6px 10px 0 0;
+}
+.assinatura-inline{margin-top:36px;display:flex;align-items:center;gap:16px}
+.foto-patricia{
+  width:58px;height:58px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--dourado);flex-shrink:0;background:var(--marfim-2);
+}
+.foto-patricia.placeholder{
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:10px;color:var(--taupe);text-align:center;line-height:1.3;
+}
+.assinatura-inline .nome{font-family:var(--serif);font-style:italic;font-weight:600;font-size:19px;color:var(--bordo)}
+.assinatura-inline .cargo{font-size:11.5px;letter-spacing:.06em;color:var(--taupe);text-transform:uppercase;margin-top:3px}
+
+/* ══ SCORE HEADER (usado nas páginas V1/V2) ══ */
+.score-resumo{
+  display:flex;align-items:baseline;gap:18px;background:var(--branco);
+  border:1px solid var(--marfim-2);border-left:4px solid var(--dourado);
+  border-radius:4px;padding:18px 24px;margin-bottom:38px;
+}
+.score-resumo .num{font-family:var(--serif);font-weight:700;font-size:34px;color:var(--bordo)}
+.score-resumo .num small{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--taupe);margin-left:2px}
+.matriz-legenda{
+  display:flex;align-items:center;gap:9px;margin-top:38px;font-size:12px;font-weight:600;color:var(--grafite);
+}
+.matriz-legenda .dot{width:12px;height:12px;border-radius:50%;background:var(--dourado);border:2px solid var(--bordo);flex-shrink:0}
+.matriz-legenda b{color:var(--bordo)}
+.score-resumo .txt{font-size:13px;color:var(--grafite);font-weight:400;max-width:480px}
+.score-resumo .txt b{font-weight:600;color:var(--bordo)}
+
+/* ══ MATRIZ DE QUADRANTES (V1) ══ */
+.matriz-wrap{display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:start;margin-top:8px}
+.matriz{
+  position:relative;border:1.5px solid var(--grafite);border-radius:2px;
+  aspect-ratio:1/0.82;background:var(--branco);
+  background-image:
+    linear-gradient(to right, rgba(183,169,154,.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(183,169,154,.35) 1px, transparent 1px);
+  background-size:12.5% 12.5%;
+}
+.matriz .eixo-y{
+  position:absolute;left:-32px;top:0;bottom:0;display:flex;align-items:center;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grafite);font-weight:600;
+}
+.matriz .eixo-x{
+  position:absolute;left:0;right:0;bottom:-24px;text-align:center;
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grafite);font-weight:600;
+}
+.quad{
+  position:absolute;width:50%;height:50%;padding:14px 16px;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  transition:box-shadow .2s;
+}
+.quad .qn{font-family:var(--sans);font-weight:700;font-size:12.5px;letter-spacing:.02em}
+.quad .qs{font-family:var(--serif);font-style:italic;font-size:10.5px;opacity:.75;margin-top:2px}
+/* topo = baixa maturidade · base = alta maturidade · esquerda = baixa complexidade · direita = alta complexidade */
+.quad.embrionario{top:0;left:0;background:var(--bordo);color:var(--marfim);border-right:1px solid var(--grafite);border-bottom:1px solid var(--grafite)}
+.quad.fragil{top:0;left:50%;background:var(--dourado);color:var(--bordo-escuro);border-bottom:1px solid var(--grafite)}
+.quad.estruturacao{top:50%;left:0;background:var(--taupe);color:var(--bordo-escuro);border-right:1px solid var(--grafite)}
+.quad.estrategico{top:50%;left:50%;background:var(--marfim-2);color:var(--grafite)}
+.quad.ativo{
+  box-shadow:inset 0 0 0 4px var(--grafite);
+  z-index:3;
+}
+.quad.ativo .qn::after{content:' ●';color:inherit;font-size:9px;vertical-align:middle}
+.voce-aqui{
+  position:absolute;width:16px;height:16px;border-radius:50%;
+  background:var(--dourado);border:3px solid var(--branco);
+  box-shadow:0 0 0 2px var(--grafite);z-index:5;
+}
+.barras{display:flex;flex-direction:column;gap:16px}
+.barra-item .lbl{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:6px}
+.barra-item .lbl span:last-child{color:var(--bordo);font-family:var(--serif);font-weight:700}
+.barra-trilha{height:7px;background:var(--marfim-2);border-radius:100px;overflow:hidden}
+.barra-fill{height:100%;background:linear-gradient(90deg,var(--bordo),var(--dourado));border-radius:100px}
+
+/* ══ RADAR (V2) ══ */
+.radar-wrap{display:flex;flex-direction:column;align-items:center;margin-top:8px}
+.radar-caption{text-align:center;max-width:420px;margin-top:10px;font-size:12px;color:var(--taupe)}
+
+/* ══ LEITURA POR DIMENSÃO ══ */
+.dim-card{
+  border-top:1px solid var(--marfim-2);padding:22px 0;
+}
+.dim-card:first-of-type{border-top:none}
+.dim-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.dim-head .nome{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--bordo)}
+.dim-head .nota{
+  font-family:var(--serif);font-weight:700;font-size:22px;color:var(--branco);
+  background:var(--bordo);padding:5px 14px;border-radius:100px;line-height:1.2;
+  display:inline-flex;align-items:baseline;gap:3px;flex-shrink:0;
+}
+.dim-head .nota small{font-family:var(--sans);font-weight:600;font-size:11px;color:var(--taupe)}
+.dim-texto{font-size:13.5px;font-weight:300;color:var(--grafite);line-height:1.8;max-width:640px}
+.obs-consultora{
+  margin-top:12px;background:var(--branco);border-left:3px solid var(--dourado);
+  padding:12px 16px;font-size:12.5px;font-style:italic;color:var(--grafite);
+  max-width:640px;border-radius:0 3px 3px 0;
+}
+.obs-consultora b{font-style:normal;font-weight:700;color:var(--bordo);font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+
+/* ══ RECOMENDAÇÃO ══ */
+.reco-box{
+  background:var(--bordo);color:var(--marfim);border-radius:4px;
+  padding:36px 40px;margin-top:10px;
+}
+.reco-box .eyebrow{color:var(--dourado)}
+.reco-box h3{font-family:var(--serif);font-weight:600;font-size:24px;margin-bottom:14px}
+.reco-box p{font-size:14px;font-weight:300;line-height:1.85;color:rgba(247,243,238,.92);max-width:600px;margin-bottom:16px}
+.reco-cta{
+  display:inline-block;margin-top:8px;background:var(--dourado);color:var(--bordo-escuro);
+  font-weight:700;font-size:13px;letter-spacing:.02em;padding:12px 26px;border-radius:100px;
+  text-decoration:none;
+}
+
+/* ══ FECHAMENTO / ASSINATURA ══ */
+.fechamento{background:var(--bordo);color:var(--marfim);text-align:center;min-height:520px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center}
+.fechamento .wordmark{margin-bottom:34px}
+.fechamento p.frase{font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;
+  max-width:520px;line-height:1.5;color:var(--marfim);margin-bottom:44px}
+.fechamento .assinatura{border-top:1px solid rgba(247,243,238,.25);padding-top:18px;margin-top:6px}
+.fechamento .assinatura .nome{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--dourado)}
+.fechamento .assinatura .cargo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-top:4px}
+.fechamento .contatos{margin-top:28px;font-size:12px;color:var(--taupe);letter-spacing:.02em}
+.fechamento .contatos a{color:var(--marfim);text-decoration:none}
+
+/* ══ RESPONSIVO ══ */
+@media(max-width:760px){
+  .page{padding:44px 26px}
+  .capa h1{font-size:36px}
+  .matriz-wrap{grid-template-columns:1fr}
+  .toolbar{padding:10px 16px;flex-wrap:wrap;gap:8px}
+}
+
+/* ══ IMPRESSÃO / PDF ══ */
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .toolbar{display:none}
+  .doc{max-width:100%;padding:0}
+  .page{
+    width:210mm;min-height:297mm;height:297mm;
+    margin:0;padding:18mm 16mm;
+    page-break-after:always;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .page:last-child{page-break-after:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="tag">CALI · Mapa de People</span>
+  <div class="actions">
+    <button onclick="window.print()">Imprimir / Salvar PDF</button>
+  </div>
+</div>
+
+<div id="carregando" style="padding:80px 24px;text-align:center;font-family:'Inter',sans-serif;color:#B7A99A">Carregando relatório...</div>
+
+<div class="doc" id="docRoot" style="display:none">
+
+  <!-- ══════════ CAPA ══════════ -->
+  <section class="page capa">
+    <div class="contour" id="contour1"></div>
+    <img class="logo-img large" src="logo.png" alt="CALI — HR for Business"/>
+    <div class="eyebrow" style="margin-top:44px">Mapa de People</div>
+    <h1>Onde sua gestão de<br/>pessoas está hoje.</h1>
+    <div class="empresa" id="capa-empresa">[ Nome da Empresa Cliente ]</div>
+    <div class="meta-row">
+      <div class="meta-item"><div class="k">Protocolo</div><div class="v" id="protocolo">—</div></div>
+      <div class="meta-item"><div class="k">Data da leitura</div><div class="v" id="capa-data">—</div></div>
+      <div class="meta-item"><div class="k">Elaborado por</div><div class="v">Patrícia Lima</div></div>
+    </div>
+  </section>
+
+  <!-- ══════════ CARTA DA PATRÍCIA ══════════ -->
+  <section class="page carta">
+    <div class="eyebrow">Antes de começar</div>
+    <h2 class="titulo">Uma leitura, não um formulário</h2>
+    <p class="subtitulo">Sobre este relatório e como eu cheguei até estas conclusões</p>
+    <hr class="divider"/>
+    <p class="cap-letra">Recebi suas respostas e li cada uma com atenção — este não é um relatório automático. É a minha leitura, como People Advisory Executive, sobre onde a gestão de pessoas da sua empresa está hoje e o que precisa vir primeiro.</p>
+    <p>Cruzei o que você me contou com quatro dimensões que uso para entender a maturidade de uma operação: a estrutura que sustenta o dia a dia, a liderança e a cultura que fazem o time se mover, a forma como vocês decidem — com dado ou com instinto — e a complexidade operacional que você já carrega. Nas próximas páginas, mostro esse resultado de duas formas: primeiro como uma posição num mapa de quadrantes, depois como um radar que revela o formato do problema.</p>
+    <p>Ao final, aponto o caminho que faz mais sentido para o seu momento — sem genérico, sem "toda empresa que cresce precisa disso". Se algo aqui não bater com o que você vive todos os dias, me diga: é exatamente para essa conversa que este mapa existe.</p>
+    <div class="assinatura-inline">
+      <div class="foto-patricia placeholder">FOTO<br/>PATI</div>
+      <div>
+        <div class="nome">Patrícia Lima</div>
+        <div class="cargo">People Advisory Executive · CALI</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ V1 · MATRIZ DE QUADRANTES ══════════ -->
+  <section class="page">
+    <div class="contour" id="contour2"></div>
+    <div class="eyebrow">V1 · Leitura por posição</div>
+    <h2 class="titulo">A matriz de quadrantes</h2>
+    <p class="subtitulo">Maturidade × Complexidade — onde sua empresa está agora</p>
+    <hr class="divider"/>
+    <div class="score-resumo">
+      <div class="num"><span id="score-final">4,9</span><small>/10</small></div>
+      <div class="txt">Score geral de maturidade em gestão de pessoas, numa escala de 0 a 10. É a média ponderada das quatro dimensões que li nas suas respostas — o quadrante <b id="quad-nome">Embrionário</b> é onde você está agora.</div>
+    </div>
+    <div class="matriz-wrap">
+      <div class="matriz" id="matriz">
+        <div class="eixo-y">Maturidade →</div>
+        <div class="eixo-x">Complexidade →</div>
+        <div class="quad estrategico">
+          <div class="qn">Estratégico</div>
+          <div class="qs">Dado, cultura e resultado casados</div>
+        </div>
+        <div class="quad fragil">
+          <div class="qn">Frágil</div>
+          <div class="qs">Grande, sem costura</div>
+        </div>
+        <div class="quad embrionario">
+          <div class="qn">Embrionário</div>
+          <div class="qs">Cresceu no improviso</div>
+        </div>
+        <div class="quad estruturacao">
+          <div class="qn">Em Estruturação</div>
+          <div class="qs">Processo e dado chegando</div>
+        </div>
+        <div class="voce-aqui" id="voce-aqui-dot"></div>
+      </div>
+      <div class="barras" id="barras-quadrante"></div>
+    </div>
+    <div class="matriz-legenda"><span class="dot"></span><span>Você está aqui — quadrante <b id="quad-nome-legenda">Embrionário</b></span></div>
+  </section>
+
+  <!-- ══════════ V2 · RADAR DE MATURIDADE ══════════ -->
+  <section class="page">
+    <div class="eyebrow">V2 · Leitura por equilíbrio</div>
+    <h2 class="titulo">O radar de maturidade</h2>
+    <p class="subtitulo">Quatro dimensões, uma forma — onde o desequilíbrio aparece</p>
+    <hr class="divider"/>
+    <div class="score-resumo">
+      <div class="num"><span id="score-fraca">3,4</span><small>/10</small></div>
+      <div class="txt"><b id="dim-fraca-nome">Dados & Decisão</b> é a ponta mais frágil do seu radar — é ali que eu recomendo começar, mesmo que outras dimensões pareçam mais urgentes no dia a dia.</div>
+    </div>
+    <div class="radar-wrap">
+      <svg id="radar-svg" width="560" height="480" viewBox="0 0 560 480"></svg>
+      <p class="radar-caption">Quanto mais próxima do centro, mais frágil a dimensão. Um radar equilibrado — mesmo que pequeno — é mais saudável do que um radar grande e torto.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ LEITURA POR DIMENSÃO ══════════ -->
+  <section class="page">
+    <div class="eyebrow">Detalhe</div>
+    <h2 class="titulo">O que está por trás de cada nota</h2>
+    <p class="subtitulo">Minha leitura, dimensão por dimensão</p>
+    <hr class="divider"/>
+
+    <div class="dim-card">
+      <div class="dim-head"><span class="nome">D1 · Maturidade Estrutural</span><span class="nota" id="nota-d1">–<small>/10</small></span></div>
+      <p class="dim-texto" id="texto-d1"></p>
+      <div class="obs-consultora" id="obscard-d1" style="display:none"><b>Observação da Patrícia</b><span id="obs-d1"></span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-head"><span class="nome">D2 · Liderança & Cultura</span><span class="nota" id="nota-d2">–<small>/10</small></span></div>
+      <p class="dim-texto" id="texto-d2"></p>
+      <div class="obs-consultora" id="obscard-d2" style="display:none"><b>Observação da Patrícia</b><span id="obs-d2"></span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-head"><span class="nome">D3 · Dados & Decisão</span><span class="nota" id="nota-d3">–<small>/10</small></span></div>
+      <p class="dim-texto" id="texto-d3"></p>
+      <div class="obs-consultora" id="obscard-d3" style="display:none"><b>Observação da Patrícia</b><span id="obs-d3"></span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-head"><span class="nome">D4 · Dimensões Operacionais</span><span class="nota" id="nota-d4">–<small>/10</small></span></div>
+      <p class="dim-texto" id="texto-d4"></p>
+      <div class="obs-consultora" id="obscard-d4" style="display:none"><b>Observação da Patrícia</b><span id="obs-d4"></span></div>
+    </div>
+
+    <div style="margin-top:8px;font-size:11px;color:var(--taupe);letter-spacing:.02em" id="lentes-resumo"></div>
+  </section>
+
+  <!-- ══════════ RECOMENDAÇÃO ══════════ -->
+  <section class="page">
+    <div class="eyebrow">Meu parecer</div>
+    <h2 class="titulo">O que eu faria primeiro</h2>
+    <hr class="divider"/>
+    <p style="font-size:14.5px;font-weight:300;max-width:640px;margin-bottom:28px" id="parecer-texto"></p>
+    <div class="reco-box">
+      <div class="eyebrow">Serviço indicado</div>
+      <h3 id="servico-nome">Diagnóstico Executivo de People</h3>
+      <p id="servico-texto">Uma leitura completa da casa: entrevistas com a liderança-chave, análise dos indicadores disponíveis e um mapa de riscos com prioridades para os próximos 90 dias. É o próximo passo natural depois deste Mapa — onde eu entro de perto, não à distância.</p>
+      <a href="https://wa.me/5541987791933" class="reco-cta">Falar com a Pati →</a>
+    </div>
+  </section>
+
+  <!-- ══════════ FECHAMENTO / ASSINATURA ══════════ -->
+  <section class="page fechamento">
+    <div class="contour" id="contour3"></div>
+    <img class="logo-img small" style="margin:0 auto 34px" src="logo.png" alt="CALI — HR for Business"/>
+    <p class="frase">"A raiz de quem vem forte não falha: sustenta, atravessa, constrói e permanece."</p>
+    <div class="assinatura">
+      <div class="nome">Patrícia Lima</div>
+      <div class="cargo">People Advisory Executive · CALI</div>
+    </div>
+    <div class="contatos">patricia@calirh.com · (41) 98779-1933 · calirh.com</div>
+  </section>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://kqtbfeeqbcllwvlkbrkq.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxdGJmZWVxYmNsbHd2bGticmtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTIyODMsImV4cCI6MjEwMjU2ODI4M30.G8xr2MR_YWKWjzSk88r9ryVzCyR9QqQEWHrHNeWE7Cg';
+
+const params = new URLSearchParams(window.location.search);
+const respostaId = params.get('id');
+
+function media(arr){
+  const vals = arr.filter(v => v !== null && v !== undefined);
+  if(vals.length === 0) return 0;
+  return vals.reduce((a,b)=>a+b,0) / vals.length;
+}
+const esc10 = v => v*2;
+
+function textoDimensao(dim, score){
+  const banda = score < 4 ? 'baixo' : score < 7 ? 'medio' : 'alto';
+  const textos = {
+    d1: {
+      baixo: 'A estrutura básica ainda depende de quem está por perto para funcionar — processos, cargos e salários não estão documentados o suficiente para sobreviver a uma saída de liderança.',
+      medio: 'Existe alguma estrutura, mas ainda incompleta — parte do básico está documentado, parte ainda depende de memória e boa vontade.',
+      alto: 'A base estrutural está sólida — processos, cargos e salários documentados e sustentando a operação, não apenas as pessoas.'
+    },
+    d2: {
+      baixo: 'Os valores ainda não aparecem no comportamento das lideranças de forma consistente, e a preparação para liderar pessoas é limitada.',
+      medio: 'Há sinais de cultura viva na liderança, mas de forma desigual — depende de quem está no comando em cada momento.',
+      alto: 'É uma dimensão forte — os valores aparecem no comportamento das lideranças, não só no papel. Isso é raro e vale ser protegido enquanto a empresa cresce.'
+    },
+    d3: {
+      baixo: 'As decisões de pessoas ainda são tomadas por instinto — o que funcionou até aqui, mas não escala. Não há custo real de contratação ou desligamento sendo acompanhado.',
+      medio: 'Alguns indicadores já são acompanhados, mas as decisões ainda misturam dado e intuição sem um critério muito claro.',
+      alto: 'A empresa já decide com base em dado, não apenas em instinto — isso é raro e é uma vantagem real na hora de crescer.'
+    },
+    d4: {
+      baixo: 'A operação ainda é relativamente simples — o que é uma vantagem agora, mas exige atenção conforme a complexidade cresce.',
+      medio: 'A complexidade operacional já é real — unidades, mix de vínculos e turnover pesando na conta.',
+      alto: 'A operação já é grande e complexa — múltiplas unidades, mix de vínculos variado, rotatividade relevante. É essa complexidade que exige maturidade equivalente para não virar risco.'
+    }
+  };
+  return textos[dim][banda];
+}
+
+async function carregar(){
+  if(!respostaId){
+    document.getElementById('carregando').textContent = 'Link inválido — falta o identificador da resposta (?id=...).';
+    return;
+  }
+  let r;
+  try{
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas?id=eq.${respostaId}&select=*`, {
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await resp.json();
+    r = rows[0];
+  }catch(err){
+    document.getElementById('carregando').textContent = 'Não consegui carregar esse relatório. Confere o link.';
+    return;
+  }
+  if(!r){
+    document.getElementById('carregando').textContent = 'Resposta não encontrada.';
+    return;
+  }
+
+  const obs = r.observacoes || {};
+  const scores = {
+    d1: esc10(media([r.d1_rh_hoje, r.d1_processos, r.d1_cargos_salarios])),
+    d2: esc10(media([r.d2_valores, r.d2_lideres_preparo, r.d2_comportamento_dono, r.d2_sucessao])),
+    d3: esc10(media([r.d3_indicadores, r.d3_decisao, r.d3_custo])),
+    d4: esc10(media([r.d4_colaboradores, r.d4_unidades, r.d4_turnover]))
+  };
+  const pesos = { d1: 0.25, d2: 0.30, d3: 0.20, d4: 0.25 };
+  const scoreFinal = (scores.d1*pesos.d1 + scores.d2*pesos.d2 + scores.d3*pesos.d3 + scores.d4*pesos.d4).toFixed(1).replace('.', ',');
+
+  document.getElementById('capa-empresa').textContent = r.c_empresa;
+  document.getElementById('protocolo').textContent = r.protocolo;
+  document.getElementById('capa-data').textContent = new Date(r.created_at).toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'});
+  document.getElementById('score-final').textContent = scoreFinal;
+
+  ['d1','d2','d3','d4'].forEach(d=>{
+    document.getElementById('nota-'+d).innerHTML = scores[d].toFixed(1).replace('.',',')+'<small>/10</small>';
+    document.getElementById('texto-'+d).textContent = textoDimensao(d, scores[d]);
+    const obsTxt = obs[d+'_obs'];
+    if(obsTxt && obsTxt.trim()){
+      document.getElementById('obs-'+d).textContent = obsTxt;
+      document.getElementById('obscard-'+d).style.display = 'block';
+    }
+  });
+
+  const nomeLentes = v => v==null ? '—' : (v<=2?'baixa':v===3?'média':'alta');
+  document.getElementById('lentes-resumo').innerHTML =
+    `Considerações transversais lidas nesta resposta — Tecnologia: <b>${nomeLentes(r.l1_tecnologia)}</b> · Capacidade de execução: <b>${nomeLentes(r.l2_execucao)}</b> · Maturidade do RH interno: <b>${nomeLentes(r.l3_rh_interno)}</b>`;
+
+  document.getElementById('parecer-texto').textContent = obs.parecer && obs.parecer.trim()
+    ? obs.parecer
+    : 'Cruzando o quadrante e a dimensão mais frágil, o próximo passo certo é organizar a leitura antes de agir.';
+  document.getElementById('servico-nome').textContent = obs.servico_recomendado || 'Diagnóstico Executivo de People';
+
+  window._dadosRelatorio = { scores, obs };
+  finalizarRenderizacao(scores);
+
+  document.getElementById('carregando').style.display = 'none';
+  document.getElementById('docRoot').style.display = 'block';
+}
+
+function finalizarRenderizacao(scores){
+const pesos  = { d1: 0.25, d2: 0.30, d3: 0.20, d4: 0.25 };
+
+/* barras ao lado da matriz */
+const barrasWrap = document.getElementById('barras-quadrante');
+const dims = [
+  {k:'Maturidade Estrutural', v:scores.d1},
+  {k:'Liderança & Cultura', v:scores.d2},
+  {k:'Dados & Decisão', v:scores.d3},
+  {k:'Dimensões Operacionais', v:scores.d4}
+];
+dims.forEach(d=>{
+  const pct = (d.v/10*100).toFixed(0);
+  barrasWrap.innerHTML += `
+    <div class="barra-item">
+      <div class="lbl"><span>${d.k}</span><span>${d.v.toFixed(1).replace('.',',')}/10</span></div>
+      <div class="barra-trilha"><div class="barra-fill" style="width:${pct}%"></div></div>
+    </div>`;
+});
+
+/* posição do "você está aqui" — topo=baixa maturidade / base=alta maturidade (convenção já aprovada) */
+const maturidade = (scores.d1+scores.d2+scores.d3)/3;
+const complexidade = scores.d4;
+const matPct = (maturidade/10*100);
+const compPct = (complexidade/10*100);
+const px = compPct;
+const py = matPct;
+const dot = document.getElementById('voce-aqui-dot');
+dot.style.left = `calc(${px}% - 8px)`;
+dot.style.top  = `calc(${py}% - 8px)`;
+
+function nomeQuadrante(matP, compP){
+  if(matP<50 && compP<50) return 'embrionario';
+  if(matP<50 && compP>=50) return 'fragil';
+  if(matP>=50 && compP<50) return 'estruturacao';
+  return 'estrategico';
+}
+const nomesLegiveis = {embrionario:'Embrionário', fragil:'Frágil', estruturacao:'Em Estruturação', estrategico:'Estratégico'};
+const quadClasse = nomeQuadrante(matPct, compPct);
+const nomeQ = nomesLegiveis[quadClasse];
+document.getElementById('quad-nome').textContent = nomeQ;
+document.getElementById('quad-nome-legenda').textContent = nomeQ;
+document.querySelector('.quad.'+quadClasse).classList.add('ativo');
+
+/* dimensão mais fraca — calculada de verdade, não fixa */
+const dimList = [
+  {chave:'d1', nome:'Maturidade Estrutural', valor:scores.d1},
+  {chave:'d2', nome:'Liderança & Cultura', valor:scores.d2},
+  {chave:'d3', nome:'Dados & Decisão', valor:scores.d3},
+  {chave:'d4', nome:'Dimensões Operacionais', valor:scores.d4}
+];
+const maisFraca = dimList.reduce((a,b) => b.valor < a.valor ? b : a);
+document.getElementById('score-fraca').textContent = maisFraca.valor.toFixed(1).replace('.',',');
+document.getElementById('dim-fraca-nome').textContent = maisFraca.nome;
+
+/* radar SVG — 4 eixos: topo, direita, baixo, esquerda */
+(function drawRadar(){
+  const svg = document.getElementById('radar-svg');
+  const cx=280, cy=240, maxR=150, maxVal=10;
+  const axes = [
+    {label:'Maturidade Estrutural', val:scores.d1, angle:-90},
+    {label:'Liderança & Cultura', val:scores.d2, angle:0},
+    {label:'Dados & Decisão', val:scores.d3, angle:90},
+    {label:'Dimensões Operacionais', val:scores.d4, angle:180}
+  ];
+  const toXY = (val, angleDeg) => {
+    const r = (val/maxVal)*maxR;
+    const rad = angleDeg*Math.PI/180;
+    return [cx + r*Math.cos(rad), cy + r*Math.sin(rad)];
+  };
+  let svgStr = '';
+  // grid rings + escala numérica (no eixo inferior, como referência de leitura)
+  [1,2,3,4].forEach(i=>{
+    const r = maxR*i/4;
+    const valorAnel = (maxVal*i/4);
+    svgStr += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#B7A99A" stroke-width="1" opacity="0.35"/>`;
+    svgStr += `<text x="${cx+6}" y="${cy+r+3}" font-family="Inter" font-size="9.5" font-weight="600" fill="#B7A99A">${valorAnel}</text>`;
+  });
+  // axis lines
+  axes.forEach(a=>{
+    const [x,y] = toXY(maxVal, a.angle);
+    svgStr += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#B7A99A" stroke-width="1" opacity="0.5"/>`;
+  });
+  // data polygon
+  const pts = axes.map(a=>toXY(a.val,a.angle).join(',')).join(' ');
+  svgStr += `<polygon points="${pts}" fill="#5A1E2D" fill-opacity="0.18" stroke="#5A1E2D" stroke-width="2.5"/>`;
+  // dots + labels — ponto mais fraco ganha destaque (anel duplo)
+  const valorMin = Math.min(...axes.map(a=>a.val));
+  axes.forEach(a=>{
+    const [x,y] = toXY(a.val,a.angle);
+    const ehFraco = a.val === valorMin;
+    if(ehFraco){
+      svgStr += `<circle cx="${x}" cy="${y}" r="10" fill="none" stroke="#2B2B2B" stroke-width="1.5" stroke-dasharray="2,2"/>`;
+    }
+    svgStr += `<circle cx="${x}" cy="${y}" r="${ehFraco?6.5:5}" fill="#B58C52" stroke="#5A1E2D" stroke-width="1.5"/>`;
+    const [lx,ly] = toXY(maxVal+2.4,a.angle);
+    let anchor = 'middle';
+    if(a.angle===0) anchor='start';
+    if(a.angle===180) anchor='end';
+    svgStr += `<text x="${lx}" y="${ly}" font-family="Inter" font-size="11" font-weight="600" fill="#2B2B2B" text-anchor="${anchor}" dominant-baseline="middle">${a.label}</text>`;
+    svgStr += `<text x="${lx}" y="${ly+15}" font-family="Playfair Display" font-weight="700" font-size="13" fill="#5A1E2D" text-anchor="${anchor}">${a.val.toFixed(1).replace('.',',')}</text>`;
+  });
+  svg.innerHTML = svgStr;
+})();
+
+/* motivo de contorno topográfico — assinatura visual do "mapa" */
+function contourPaths(seed){
+  let out = '';
+  for(let i=0;i<7;i++){
+    const y = 40 + i*70 + (seed%13);
+    out += `<path d="M -50 ${y} Q 200 ${y-60+i*8} 450 ${y} T 950 ${y}" fill="none" stroke="#B58C52" stroke-width="1"/>`;
+  }
+  return `<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">${out}</svg>`;
+}
+['contour1','contour2','contour3'].forEach((id,i)=>{
+  const el = document.getElementById(id);
+  if(el) el.innerHTML = contourPaths(i*7);
+});
+
+} // fecha finalizarRenderizacao
+
+carregar();
+</script>
+</body>
+</html>

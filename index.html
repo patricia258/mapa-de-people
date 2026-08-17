@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mapa de People | CALI — HR for Business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bordo:#5A1E2D;--bordo-escuro:#3E1520;--marfim:#F7F3EE;--marfim-2:#EFE8DF;
+  --grafite:#2B2B2B;--taupe:#B7A99A;--dourado:#B58C52;--branco:#FFFFFF;
+  --serif:'Playfair Display',serif;--sans:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:none}
+body::-webkit-scrollbar{width:0px;background:transparent}
+body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);line-height:1.6;min-height:100vh}
+
+/* ══ TRANSIÇÕES DE ETAPA — lentas e suaves ══ */
+.step-view{display:none;animation:entrar .55s ease both}
+.step-view.ativo{display:block}
+@keyframes entrar{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ══ WELCOME ══ */
+#step-welcome{background:linear-gradient(160deg,var(--bordo) 0%,var(--bordo) 55%,var(--bordo-escuro) 100%);
+  color:var(--marfim);min-height:100vh;align-items:center;justify-content:center;padding:40px 24px}
+#step-welcome.ativo{display:flex}
+.welcome-inner{max-width:600px;text-align:center}
+.welcome-inner img{width:260px;margin:0 auto 30px}
+.welcome-inner .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--dourado);font-weight:600;margin-bottom:16px}
+.welcome-inner h1{font-family:var(--serif);font-weight:600;font-size:46px;line-height:1.15;margin-bottom:20px}
+.welcome-inner p.lead{font-size:15.5px;font-weight:300;color:rgba(247,243,238,.9);max-width:500px;margin:0 auto 34px}
+.welcome-inner p.lead .assina{display:block;font-family:var(--serif);font-style:italic;color:var(--marfim);margin-bottom:6px;font-size:16.5px}
+.pilares-timeline{height:56px;display:flex;align-items:center;justify-content:center;margin:0 auto 30px;position:relative}
+.pilar-item{
+  position:absolute;display:flex;align-items:baseline;gap:10px;opacity:0;
+  transition:opacity .6s ease;white-space:nowrap;
+}
+.pilar-item.on{opacity:1}
+.pilar-item .n{font-family:var(--serif);font-weight:700;color:var(--dourado);font-size:15px}
+.pilar-item .t{font-family:var(--sans);font-weight:600;color:var(--marfim);font-size:15px;letter-spacing:.01em}
+.pilar-dots{display:flex;gap:7px;justify-content:center;margin:-14px auto 30px}
+.pilar-dots span{width:5px;height:5px;border-radius:50%;background:rgba(247,243,238,.25);transition:background .3s}
+.pilar-dots span.on{background:var(--dourado)}
+.welcome-meta{font-size:12px;color:var(--taupe);letter-spacing:.03em;margin-bottom:30px}
+.btn-comecar{
+  background:var(--dourado);color:var(--bordo-escuro);border:none;border-radius:100px;
+  padding:16px 44px;font-family:var(--sans);font-weight:700;font-size:14px;cursor:pointer;transition:.2s;
+}
+.btn-comecar:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(181,140,82,.35)}
+
+/* ══ PROGRESSO ══ */
+.progress-bar{position:sticky;top:0;z-index:20;background:var(--marfim);border-bottom:1px solid var(--marfim-2);display:none}
+.progress-bar.ativo{display:block}
+.progress-track{height:4px;background:var(--marfim-2)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--bordo),var(--dourado));width:14%;transition:width .5s ease}
+.progress-label{max-width:640px;margin:0 auto;padding:10px 24px;font-size:11px;letter-spacing:.05em;color:var(--taupe);font-weight:600;text-transform:uppercase;display:flex;justify-content:space-between}
+
+/* ══ FORM ══ */
+form{max-width:640px;margin:0 auto;padding:44px 24px 60px}
+.bloco-head{margin-bottom:24px}
+.bloco-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:8px}
+.bloco-titulo{font-family:var(--serif);font-weight:600;font-size:27px;color:var(--bordo);line-height:1.2}
+.bloco-sub{font-size:13.5px;color:var(--grafite);opacity:.75;margin-top:8px;line-height:1.5;max-width:480px}
+
+.q{background:var(--branco);border:1px solid var(--marfim-2);border-radius:6px;padding:22px 24px;margin-bottom:14px}
+.q-texto{font-size:14px;font-weight:500;color:var(--grafite);margin-bottom:16px;line-height:1.55}
+
+.escala{display:flex;gap:8px}
+.escala label{flex:1;text-align:center;cursor:pointer}
+.escala input{display:none}
+.escala .pill{display:flex;flex-direction:column;align-items:center;gap:4px;border:1.5px solid var(--marfim-2);border-radius:8px;padding:10px 4px;transition:.15s;font-weight:700;font-family:var(--serif);font-size:16px;color:var(--taupe)}
+.escala .pill .cap{font-family:var(--sans);font-size:8.5px;font-weight:600;letter-spacing:.02em;color:var(--taupe);text-transform:uppercase}
+.escala input:checked + .pill{background:var(--bordo);border-color:var(--bordo);color:var(--marfim)}
+.escala input:checked + .pill .cap{color:var(--dourado)}
+
+.chips{display:flex;flex-wrap:wrap;gap:12px 14px}
+.chips label{cursor:pointer}
+.chips input{display:none}
+.chips .chip{border:1.5px solid var(--marfim-2);border-radius:100px;padding:9px 18px;font-size:12.5px;font-weight:600;color:var(--grafite);transition:.15s}
+.chips input:checked + .chip{background:var(--bordo);border-color:var(--bordo);color:var(--marfim)}
+
+.q input[type=text], .q input[type=email], .q input[type=tel], .q textarea{
+  width:100%;border:1.5px solid var(--marfim-2);border-radius:6px;padding:11px 14px;
+  font-family:var(--sans);font-size:13.5px;color:var(--grafite);outline:none;background:var(--marfim);margin-top:10px;
+}
+.q input:focus, .q textarea:focus{border-color:var(--dourado)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.nota-sutil{
+  margin-top:12px;font-size:11.5px;font-style:italic;color:var(--taupe);
+  border-left:2px solid var(--dourado);padding-left:10px;
+}
+
+.contato-box{background:var(--bordo);color:var(--marfim);border-radius:6px;padding:26px 24px;margin-bottom:28px}
+.contato-box .bloco-titulo{color:var(--marfim)}
+.contato-box .bloco-sub{color:var(--taupe)}
+.contato-box .q{background:rgba(247,243,238,.06);border-color:rgba(247,243,238,.18)}
+.contato-box .q-texto{color:var(--marfim)}
+.contato-box input{background:rgba(247,243,238,.92)!important;color:var(--grafite)!important}
+
+/* ══ LGPD ══ */
+.lgpd-box{background:var(--marfim);border:1.5px solid var(--dourado);border-radius:6px;padding:20px 22px;margin-bottom:26px}
+.lgpd-box .titulo{font-weight:700;font-size:13px;color:var(--bordo);margin-bottom:8px}
+.lgpd-box p{font-size:12px;font-weight:300;color:var(--grafite);line-height:1.7;margin-bottom:14px}
+.lgpd-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.lgpd-check input{margin-top:3px;width:16px;height:16px;accent-color:var(--bordo);flex-shrink:0}
+.lgpd-check span{font-size:12.5px;font-weight:600;color:var(--grafite)}
+
+/* ══ NAVEGAÇÃO ENTRE ETAPAS ══ */
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.btn-nav{
+  font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.02em;
+  border-radius:100px;padding:13px 30px;cursor:pointer;transition:.2s;border:1.5px solid var(--bordo);
+}
+.btn-voltar{background:transparent;color:var(--bordo)}
+.btn-voltar:hover{background:var(--marfim-2)}
+.btn-proxima{background:var(--bordo);color:var(--marfim);border-color:var(--bordo);margin-left:auto}
+.btn-proxima:hover{background:var(--bordo-escuro)}
+.btn-enviar{background:var(--dourado);color:var(--bordo-escuro);border-color:var(--dourado);margin-left:auto}
+.btn-enviar:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(181,140,82,.35)}
+
+footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
+
+/* ══ OBRIGADO ══ */
+#step-obrigado{background:var(--bordo);color:var(--marfim);min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px}
+#step-obrigado.ativo{display:flex}
+#step-obrigado img.logo{width:230px;margin-bottom:36px}
+#step-obrigado h1{font-family:var(--serif);font-weight:600;font-size:34px;margin-bottom:16px}
+#step-obrigado p{font-size:14.5px;font-weight:300;color:rgba(247,243,238,.88);max-width:440px;margin:0 auto 34px;line-height:1.8}
+.socials{display:flex;gap:14px;margin-bottom:26px}
+.socials a{
+  width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(247,243,238,.3);
+  display:flex;align-items:center;justify-content:center;color:var(--marfim);text-decoration:none;transition:.2s;
+}
+.socials a svg{width:18px;height:18px;fill:var(--marfim)}
+.socials a:hover{background:rgba(247,243,238,.12)}
+.obrigado-contato{font-size:12.5px;color:var(--taupe);letter-spacing:.03em}
+
+@media(max-width:520px){
+  .escala{flex-wrap:wrap}
+  .escala label{flex:1 0 30%}
+  .grid2{grid-template-columns:1fr}
+  .welcome-inner h1{font-size:30px}
+  .welcome-inner img{width:190px}
+  .pilar-item .n, .pilar-item .t{font-size:13px}
+  .q{padding:18px 16px}
+  .step-nav{flex-wrap:wrap;gap:10px}
+  .btn-nav{padding:12px 22px;font-size:12.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ ETAPA 0 · BOAS-VINDAS ══════════ -->
+<section id="step-welcome" class="step-view ativo">
+  <div class="welcome-inner">
+    <img src="logo.png" alt="CALI — HR for Business"/>
+    <div class="eyebrow">Bem-vinda ao Mapa de People da CALI</div>
+    <h1>Vamos entender onde sua gestão de pessoas está hoje.</h1>
+    <p class="lead"><span class="assina">Oi, eu sou a Pati.</span>Sou a fundadora da CALI e posso ser sua People Partner. Criei este mapa pra te dar uma dimensão verdadeira sobre o status da sua operação de gestão de pessoas. Você responde, eu leio pessoalmente e te devolvo uma posição clara: onde você está e o que precisa vir primeiro.</p>
+    <div class="pilares-timeline" id="pilaresTimeline">
+      <div class="pilar-item on"><span class="n">01</span><span class="t">Maturidade Estrutural</span></div>
+      <div class="pilar-item"><span class="n">02</span><span class="t">Liderança & Cultura</span></div>
+      <div class="pilar-item"><span class="n">03</span><span class="t">Dados & Decisão</span></div>
+      <div class="pilar-item"><span class="n">04</span><span class="t">Dimensões Operacionais</span></div>
+    </div>
+    <div class="pilar-dots" id="pilarDots"><span class="on"></span><span></span><span></span><span></span></div>
+    <div class="welcome-meta">⏱ Leva cerca de 10–12 minutos · 4 pilares + 3 considerações complementares</div>
+    <button type="button" class="btn-comecar" onclick="irPara(1)">Vamos lá →</button>
+  </div>
+</section>
+
+<div class="progress-bar" id="barraWrap">
+  <div class="progress-track"><div class="progress-fill" id="barra"></div></div>
+  <div class="progress-label"><span id="rotuloEtapa">Etapa 1 de 7</span><span id="rotuloBloco">Maturidade Estrutural</span></div>
+</div>
+
+<form id="mapaForm">
+
+  <!-- D1 -->
+  <section class="step-view bloco" data-step="1">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="bloco-head">
+      <div class="bloco-eyebrow">01 · Estrutura</div>
+      <div class="bloco-titulo">Maturidade Estrutural</div>
+      <div class="bloco-sub">Como sua empresa organiza o básico: processos, políticas, cargos e salários.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Como você descreveria o RH da sua empresa hoje?</div>
+      <div class="escala">
+        <label><input type="radio" name="d1_rh_hoje" value="1"/><span class="pill">1<span class="cap">Não existe formalmente</span></span></label>
+        <label><input type="radio" name="d1_rh_hoje" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_rh_hoje" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_rh_hoje" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_rh_hoje" value="5"/><span class="pill">5<span class="cap">Estruturado, c/ indicadores</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Existem políticas e processos de RH formalizados (admissão, avaliação, cargos e salários)?</div>
+      <div class="escala">
+        <label><input type="radio" name="d1_processos" value="1"/><span class="pill">1<span class="cap">Maioria é improviso</span></span></label>
+        <label><input type="radio" name="d1_processos" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_processos" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_processos" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_processos" value="5"/><span class="pill">5<span class="cap">Quase tudo documentado</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Como são definidos salários e cargos?</div>
+      <div class="escala">
+        <label><input type="radio" name="d1_cargos_salarios" value="1"/><span class="pill">1<span class="cap">Na conversa, sem base</span></span></label>
+        <label><input type="radio" name="d1_cargos_salarios" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_cargos_salarios" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_cargos_salarios" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d1_cargos_salarios" value="5"/><span class="pill">5<span class="cap">Tabela alinhada ao mercado</span></span></label>
+      </div>
+    </div>
+    <div class="step-nav"><span></span><button type="button" class="btn-nav btn-proxima" onclick="irPara(2)">Próxima →</button></div>
+    </div>
+  </section>
+
+  <!-- D2 -->
+  <section class="step-view bloco" data-step="2">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="bloco-head">
+      <div class="bloco-eyebrow">02 · Liderança</div>
+      <div class="bloco-titulo">Liderança e Cultura</div>
+      <div class="bloco-sub">Se os valores saem do papel e viram comportamento — e se a liderança está pronta pra crescer com você.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Os valores da empresa são conhecidos e praticados pelas lideranças?</div>
+      <div class="escala">
+        <label><input type="radio" name="d2_valores" value="1"/><span class="pill">1<span class="cap">No papel</span></span></label>
+        <label><input type="radio" name="d2_valores" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_valores" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_valores" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_valores" value="5"/><span class="pill">5<span class="cap">Vivos no dia a dia</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Os líderes atuais foram preparados para liderar pessoas?</div>
+      <div class="escala">
+        <label><input type="radio" name="d2_lideres_preparo" value="1"/><span class="pill">1<span class="cap">Promovidos sem preparo</span></span></label>
+        <label><input type="radio" name="d2_lideres_preparo" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_lideres_preparo" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_lideres_preparo" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_lideres_preparo" value="5"/><span class="pill">5<span class="cap">Desenvolvidos continuamente</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Você reconhece líderes com comportamento de dono hoje?</div>
+      <div class="escala">
+        <label><input type="radio" name="d2_comportamento_dono" value="1"/><span class="pill">1<span class="cap">Nenhum</span></span></label>
+        <label><input type="radio" name="d2_comportamento_dono" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_comportamento_dono" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_comportamento_dono" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_comportamento_dono" value="5"/><span class="pill">5<span class="cap">Vários</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Existe plano de sucessão para posições-chave?</div>
+      <div class="escala">
+        <label><input type="radio" name="d2_sucessao" value="1"/><span class="pill">1<span class="cap">Não</span></span></label>
+        <label><input type="radio" name="d2_sucessao" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_sucessao" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_sucessao" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d2_sucessao" value="5"/><span class="pill">5<span class="cap">Estruturado</span></span></label>
+      </div>
+    </div>
+    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(1)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(3)">Próxima →</button></div>
+    </div>
+  </section>
+
+  <!-- D3 -->
+  <section class="step-view bloco" data-step="3">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="bloco-head">
+      <div class="bloco-eyebrow">03 · Dados</div>
+      <div class="bloco-titulo">Dados e Decisão</div>
+      <div class="bloco-sub">Se as decisões sobre pessoas nascem de dado ou de instinto — e o que isso custa.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">A empresa acompanha indicadores de gente (turnover, absenteísmo, clima, custo)?</div>
+      <div class="escala">
+        <label><input type="radio" name="d3_indicadores" value="1"/><span class="pill">1<span class="cap">Nunca</span></span></label>
+        <label><input type="radio" name="d3_indicadores" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_indicadores" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_indicadores" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_indicadores" value="5"/><span class="pill">5<span class="cap">Mensal</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">As decisões de contratação, promoção e saída usam dados ou intuição?</div>
+      <div class="escala">
+        <label><input type="radio" name="d3_decisao" value="1"/><span class="pill">1<span class="cap">Sempre intuição</span></span></label>
+        <label><input type="radio" name="d3_decisao" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_decisao" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_decisao" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_decisao" value="5"/><span class="pill">5<span class="cap">Sempre dado</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">A empresa conhece o custo real de uma contratação e de um desligamento?</div>
+      <div class="escala">
+        <label><input type="radio" name="d3_custo" value="1"/><span class="pill">1<span class="cap">Não</span></span></label>
+        <label><input type="radio" name="d3_custo" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_custo" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_custo" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="d3_custo" value="5"/><span class="pill">5<span class="cap">Medido e acompanhado</span></span></label>
+      </div>
+    </div>
+    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(2)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(4)">Próxima →</button></div>
+    </div>
+  </section>
+
+  <!-- D4 -->
+  <section class="step-view bloco" data-step="4">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="bloco-head">
+      <div class="bloco-eyebrow">04 · Operação</div>
+      <div class="bloco-titulo">Dimensões Operacionais</div>
+      <div class="bloco-sub">O tamanho real da operação: pessoas, unidades, vínculos e rotatividade.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Quantos colaboradores a empresa tem hoje?</div>
+      <div class="chips">
+        <label><input type="radio" name="d4_colaboradores" value="1"/><span class="chip">Até 20</span></label>
+        <label><input type="radio" name="d4_colaboradores" value="2"/><span class="chip">20–50</span></label>
+        <label><input type="radio" name="d4_colaboradores" value="3"/><span class="chip">50–100</span></label>
+        <label><input type="radio" name="d4_colaboradores" value="4"/><span class="chip">100–200</span></label>
+        <label><input type="radio" name="d4_colaboradores" value="5"/><span class="chip">+200</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">A empresa opera em quantas unidades ou filiais?</div>
+      <div class="chips">
+        <label><input type="radio" name="d4_unidades" value="1"/><span class="chip">Única</span></label>
+        <label><input type="radio" name="d4_unidades" value="3"/><span class="chip">2–3</span></label>
+        <label><input type="radio" name="d4_unidades" value="5"/><span class="chip">Mais de 3</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Qual o mix de vínculos hoje? <em style="font-weight:400;color:var(--taupe)">(estimativa é suficiente)</em></div>
+      <div class="grid2">
+        <input type="text" name="d4_mix_clt" placeholder="% CLT"/>
+        <input type="text" name="d4_mix_pj" placeholder="% PJ"/>
+        <input type="text" name="d4_mix_estagio" placeholder="% Estagiários"/>
+        <input type="text" name="d4_mix_freela" placeholder="% Freelancers"/>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Qual a rotatividade (turnover) no último ano?</div>
+      <div class="chips">
+        <label><input type="radio" name="d4_turnover" value="1"/><span class="chip">Baixa</span></label>
+        <label><input type="radio" name="d4_turnover" value="3"/><span class="chip">Média</span></label>
+        <label><input type="radio" name="d4_turnover" value="5"/><span class="chip">Alta</span></label>
+      </div>
+    </div>
+    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(3)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(5)">Próxima →</button></div>
+    </div>
+  </section>
+
+  <!-- LENTES -->
+  <section class="step-view bloco" data-step="5">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="bloco-head">
+      <div class="bloco-eyebrow">05 · Considerações</div>
+      <div class="bloco-titulo">Três considerações complementares</div>
+      <div class="bloco-sub">Três perguntas curtas que não mudam sua nota, mas enriquecem minha leitura.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Sua empresa usa ferramentas digitais ou IA para apoiar decisões de RH (ex.: análise de indicadores, recrutamento, onboarding, avaliações)?</div>
+      <div class="escala">
+        <label><input type="radio" name="l1_tecnologia" value="1"/><span class="pill">1<span class="cap">Não usa / tudo manual</span></span></label>
+        <label><input type="radio" name="l1_tecnologia" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="l1_tecnologia" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="l1_tecnologia" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="l1_tecnologia" value="5"/><span class="pill">5<span class="cap">Usa e integra ao processo</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Qual o tamanho da estrutura executiva para tocar projetos (não só RH)?</div>
+      <div class="escala">
+        <label><input type="radio" name="l2_execucao" value="1"/><span class="pill">1<span class="cap">Enxuta</span></span></label>
+        <label><input type="radio" name="l2_execucao" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="l2_execucao" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="l2_execucao" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="l2_execucao" value="5"/><span class="pill">5<span class="cap">Robusta</span></span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">O RH interno consegue carregar sozinho um programa de estruturação de pessoas, ou precisaria de apoio contínuo?</div>
+      <div class="escala">
+        <label><input type="radio" name="l3_rh_interno" value="1"/><span class="pill">1<span class="cap">Precisaria muito</span></span></label>
+        <label><input type="radio" name="l3_rh_interno" value="2"/><span class="pill">2<span class="cap"></span></span></label>
+        <label><input type="radio" name="l3_rh_interno" value="3"/><span class="pill">3<span class="cap"></span></span></label>
+        <label><input type="radio" name="l3_rh_interno" value="4"/><span class="pill">4<span class="cap"></span></span></label>
+        <label><input type="radio" name="l3_rh_interno" value="5"/><span class="pill">5<span class="cap">Carrega sozinho</span></span></label>
+      </div>
+    </div>
+    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(4)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(6)">Próxima →</button></div>
+    </div>
+  </section>
+
+  <!-- QUALIFICAÇÃO -->
+  <section class="step-view bloco" data-step="6">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="bloco-head">
+      <div class="bloco-eyebrow">06 · Para fechar</div>
+      <div class="bloco-titulo">Só mais algumas coisas</div>
+      <div class="bloco-sub">As últimas perguntas — pra eu te devolver uma leitura realmente útil.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Em quanto tempo gostaria de iniciar um desdobramento desse diagnóstico?</div>
+      <div class="chips">
+        <label><input type="radio" name="q_prazo" value="ate1"/><span class="chip">Até 1 mês</span></label>
+        <label><input type="radio" name="q_prazo" value="1a3"/><span class="chip">1–3 meses</span></label>
+        <label><input type="radio" name="q_prazo" value="3a6"/><span class="chip">3–6 meses</span></label>
+        <label><input type="radio" name="q_prazo" value="avaliando"/><span class="chip">Só avaliando</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Quem são as pessoas com poder de decisão para aprovar o desdobramento? <em style="font-weight:400;color:var(--taupe)">(pode marcar mais de uma)</em></div>
+      <div class="chips">
+        <label><input type="checkbox" name="q_decisor" value="ceo"/><span class="chip">CEO / Sócio(a)</span></label>
+        <label><input type="checkbox" name="q_decisor" value="diretoria"/><span class="chip">Diretoria</span></label>
+        <label><input type="checkbox" name="q_decisor" value="rh"/><span class="chip">RH</span></label>
+        <label><input type="checkbox" name="q_decisor" value="eu_mesma" id="chk-eu-mesma"/><span class="chip">Sou eu</span></label>
+        <label><input type="checkbox" name="q_decisor" value="outro" id="chk-decisor-outro"/><span class="chip">Outro</span></label>
+      </div>
+      <input type="text" id="decisor-outro-campo" name="q_decisor_outro" placeholder="Quem?" style="display:none"/>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Prefere apoio presencial, híbrido ou remoto?</div>
+      <div class="chips">
+        <label><input type="radio" name="q_formato" value="presencial" id="rd-presencial"/><span class="chip">Presencial</span></label>
+        <label><input type="radio" name="q_formato" value="hibrido"/><span class="chip">Híbrido</span></label>
+        <label><input type="radio" name="q_formato" value="remoto"/><span class="chip">Remoto</span></label>
+      </div>
+      <div class="nota-sutil" id="nota-presencial" style="display:none">Atendimento presencial disponível em Curitiba e Região Metropolitana (até 10 km de deslocamento). Fora desse raio, pode haver custo adicional de deslocamento.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Faixa de investimento que considera razoável para transformar a gestão de pessoas <em style="font-weight:400;color:var(--taupe)">(varia com porte e profundidade — isto só me ajuda a calibrar a proposta)</em></div>
+      <div class="chips">
+        <label><input type="radio" name="q_investimento" value="3a8"/><span class="chip">A partir de R$ 3 mil</span></label>
+        <label><input type="radio" name="q_investimento" value="8a15"/><span class="chip">R$ 8 a 15 mil</span></label>
+        <label><input type="radio" name="q_investimento" value="15a30"/><span class="chip">R$ 15 a 30 mil</span></label>
+        <label><input type="radio" name="q_investimento" value="30mais"/><span class="chip">Acima de R$ 30 mil</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Como conheceu a CALI?</div>
+      <div class="chips">
+        <label><input type="radio" name="q_origem" value="indicacao"/><span class="chip">Indicação</span></label>
+        <label><input type="radio" name="q_origem" value="linkedin"/><span class="chip">LinkedIn</span></label>
+        <label><input type="radio" name="q_origem" value="instagram"/><span class="chip">Instagram</span></label>
+        <label><input type="radio" name="q_origem" value="grupo"/><span class="chip">Grupo WhatsApp</span></label>
+        <label><input type="radio" name="q_origem" value="site"/><span class="chip">Site</span></label>
+        <label><input type="radio" name="q_origem" value="midia_paga"/><span class="chip">Mídia paga</span></label>
+        <label><input type="radio" name="q_origem" value="outro"/><span class="chip">Outro</span></label>
+      </div>
+    </div>
+    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(5)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(7)">Próxima →</button></div>
+    </div>
+  </section>
+
+  <!-- CONTATO + LGPD + SUBMIT -->
+  <section class="step-view bloco" data-step="7">
+    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
+    <div class="contato-box">
+      <div class="bloco-titulo">Pra onde eu te devolvo a leitura?</div>
+      <div class="bloco-sub">Eu leio suas respostas com calma e te devolvo o Mapa por e-mail e/ou WhatsApp — não é gerado na hora.</div>
+      <div class="q" style="margin-top:18px">
+        <div class="grid2">
+          <div><div class="q-texto">Nome</div><input type="text" name="c_nome" required/></div>
+          <div><div class="q-texto">Empresa</div><input type="text" name="c_empresa" required/></div>
+          <div><div class="q-texto">E-mail</div><input type="email" name="c_email" placeholder="voce@empresa.com" pattern="[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}" title="Digite um e-mail válido, ex: nome@empresa.com" required/></div>
+          <div><div class="q-texto">WhatsApp</div><input type="tel" name="c_whatsapp" placeholder="DDD + número, só números" inputmode="numeric" pattern="[0-9]{10,11}" title="Só números, com DDD. Ex: 41987791933" required/></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lgpd-box">
+      <div class="titulo">Consentimento — LGPD (Lei nº 13.709/2018)</div>
+      <p>Ao enviar este formulário, você concorda que a CALI RH coletará e utilizará suas informações exclusivamente para elaborar o diagnóstico do Mapa de People e entrar em contato sobre os resultados e possíveis desdobramentos. Seus dados não serão compartilhados com terceiros sem sua autorização. Você pode solicitar a exclusão dos seus dados a qualquer momento pelo e-mail patricia@calirh.com.</p>
+      <label class="lgpd-check">
+        <input type="checkbox" id="lgpd_aceite" name="lgpd_aceite" required/>
+        <span>Li e concordo com o uso dos meus dados conforme descrito acima.</span>
+      </label>
+    </div>
+
+    <div class="step-nav">
+      <button type="button" class="btn-nav btn-voltar" onclick="irPara(6)">← Voltar</button>
+      <button type="submit" class="btn-nav btn-enviar">Enviar minhas respostas →</button>
+    </div>
+    </div>
+  </section>
+
+</form>
+
+<!-- ══════════ OBRIGADO ══════════ -->
+<section id="step-obrigado" class="step-view">
+  <img class="logo" src="logo.png" alt="CALI — HR for Business"/>
+  <h1>Obrigada pelas suas respostas.</h1>
+  <p>Entraremos em contato em alguns dias, por e-mail e/ou WhatsApp, com a leitura completa do seu Mapa de People.</p>
+  <div class="socials">
+    <a href="https://instagram.com/calirh_" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .24 2.6.5.7.27 1.2.6 1.7 1.1.5.5.9 1 1.1 1.7.3.6.4 1.4.5 2.6.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 2-.5 2.6-.2.7-.6 1.2-1.1 1.7-.5.5-1 .9-1.7 1.1-.6.3-1.4.4-2.6.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.2-2.6-.5-.7-.2-1.2-.6-1.7-1.1-.5-.5-.9-1-1.1-1.7-.3-.6-.4-1.4-.5-2.6C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-2 .5-2.6.2-.7.6-1.2 1.1-1.7.5-.5 1-.9 1.7-1.1.6-.3 1.4-.4 2.6-.5C9.6 2.2 10 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-1 .05-1.6.2-1.9.34-.5.2-.8.4-1.2.8-.4.4-.6.7-.8 1.2-.14.4-.29 1-.34 1.9C3 9.5 3 9.9 3 13s0 3.5.07 4.7c.05 1 .2 1.6.34 1.9.2.5.4.8.8 1.2.4.4.7.6 1.2.8.4.14 1 .29 1.9.34 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c1-.05 1.6-.2 1.9-.34.5-.2.8-.4 1.2-.8.4-.4.6-.7.8-1.2.14-.4.29-1 .34-1.9.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.05-1-.2-1.6-.34-1.9-.2-.5-.4-.8-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.14-1-.29-1.9-.34C15.5 4 15.1 4 12 4zm0 3.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.8a3.7 3.7 0 100 7.4 3.7 3.7 0 000-7.4zm5.7-2a1.3 1.3 0 11-2.6 0 1.3 1.3 0 012.6 0z"/></svg></a>
+    <a href="https://linkedin.com/in/patriciaazumi" target="_blank" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.4 3H3.6A.6.6 0 003 3.6v16.8a.6.6 0 00.6.6h16.8a.6.6 0 00.6-.6V3.6a.6.6 0 00-.6-.6zM8.3 18.1H5.7V9.9h2.6v8.2zM7 8.8a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm11.1 9.3h-2.6v-4c0-1-.4-1.6-1.2-1.6-.7 0-1.1.5-1.3 1-.1.2-.1.5-.1.7v3.9H10s0-7.4 0-8.2h2.6v1.2c.3-.5 1-1.3 2.3-1.3 1.7 0 3 1.1 3 3.5v4.8z"/></svg></a>
+    <a href="https://wa.me/5541987791933" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.1-1.3A10 10 0 1012 2zm0 1.8a8.2 8.2 0 014.9 14.8l-.3.2.3 2.4-2.5-.7-.3.2A8.2 8.2 0 1112 3.8zm-3.4 4.1c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1.1 2.6c.1.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.1.7.6-.1 1.8-.7 2.1-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-1 1.2-.1.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.7-1.4-1.7-1.6-1.9-.1-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.5.1-.1 0-.3 0-.4-.1-.1-.6-1.6-.9-2.1-.2-.5-.4-.5-.6-.5h-.5z"/></svg></a>
+  </div>
+  <div class="obrigado-contato">patricia@calirh.com · (41) 98779-1933 · calirh.com</div>
+</section>
+
+<footer id="rodape">CALI — HR for Business · calirh.com · patricia@calirh.com</footer>
+
+<script>
+const totalEtapas = 7;
+let etapaAtual = 0; // 0 = welcome
+
+function irPara(n){
+  document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
+  if(n === 0){
+    document.getElementById('step-welcome').classList.add('ativo');
+    document.getElementById('barraWrap').classList.remove('ativo');
+  } else {
+    const alvo = document.querySelector(`.bloco[data-step="${n}"]`);
+    alvo.classList.add('ativo');
+    document.getElementById('barraWrap').classList.add('ativo');
+    document.getElementById('barra').style.width = (n/totalEtapas*100) + '%';
+    document.getElementById('rotuloEtapa').textContent = `Etapa ${n} de ${totalEtapas}`;
+    document.getElementById('rotuloBloco').textContent = alvo.querySelector('.bloco-titulo').textContent;
+  }
+  etapaAtual = n;
+}
+
+/* WhatsApp só aceita números */
+document.querySelector('input[name="c_whatsapp"]').addEventListener('input', function(){
+  this.value = this.value.replace(/\D/g,'');
+});
+
+/* carrossel dos 4 pilares na tela de boas-vindas */
+(function pilaresCarrossel(){
+  const itens = document.querySelectorAll('#pilaresTimeline .pilar-item');
+  const dots = document.querySelectorAll('#pilarDots span');
+  let i = 0;
+  setInterval(()=>{
+    itens[i].classList.remove('on');
+    dots[i].classList.remove('on');
+    i = (i+1) % itens.length;
+    itens[i].classList.add('on');
+    dots[i].classList.add('on');
+  }, 2200);
+})();
+
+/* "Outro" decisor abre campo de texto */
+document.getElementById('chk-decisor-outro').addEventListener('change', function(){
+  document.getElementById('decisor-outro-campo').style.display = this.checked ? 'block' : 'none';
+});
+
+/* nota de deslocamento quando escolhe presencial */
+document.getElementById('rd-presencial').addEventListener('change', function(){
+  document.getElementById('nota-presencial').style.display = this.checked ? 'block' : 'none';
+});
+document.querySelectorAll('input[name="q_formato"]').forEach(r=>{
+  r.addEventListener('change', function(){
+    if(this.value !== 'presencial') document.getElementById('nota-presencial').style.display = 'none';
+  });
+});
+
+/* ══ SUPABASE ══ */
+const SUPABASE_URL = 'https://kqtbfeeqbcllwvlkbrkq.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxdGJmZWVxYmNsbHd2bGticmtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTIyODMsImV4cCI6MjEwMjU2ODI4M30.G8xr2MR_YWKWjzSk88r9ryVzCyR9QqQEWHrHNeWE7Cg';
+
+function gerarProtocolo(){
+  return 'MP-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-6);
+}
+
+/* envio — grava a resposta no Supabase e notifica a Patrícia (via trigger + Resend, configurado à parte) */
+document.getElementById('mapaForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  if(!document.getElementById('lgpd_aceite').checked){
+    alert('Para enviar, é preciso aceitar o uso dos dados conforme a LGPD.');
+    return;
+  }
+
+  const btnEnviar = document.querySelector('.btn-enviar');
+  const textoOriginal = btnEnviar.textContent;
+  btnEnviar.textContent = 'Enviando...';
+  btnEnviar.disabled = true;
+
+  const data = new FormData(this);
+  const num = (v) => v === null || v === '' ? null : parseInt(v, 10);
+
+  const payload = {
+    protocolo: gerarProtocolo(),
+    d1_rh_hoje: num(data.get('d1_rh_hoje')),
+    d1_processos: num(data.get('d1_processos')),
+    d1_cargos_salarios: num(data.get('d1_cargos_salarios')),
+    d2_valores: num(data.get('d2_valores')),
+    d2_lideres_preparo: num(data.get('d2_lideres_preparo')),
+    d2_comportamento_dono: num(data.get('d2_comportamento_dono')),
+    d2_sucessao: num(data.get('d2_sucessao')),
+    d3_indicadores: num(data.get('d3_indicadores')),
+    d3_decisao: num(data.get('d3_decisao')),
+    d3_custo: num(data.get('d3_custo')),
+    d4_colaboradores: num(data.get('d4_colaboradores')),
+    d4_unidades: num(data.get('d4_unidades')),
+    d4_mix_clt: data.get('d4_mix_clt') || null,
+    d4_mix_pj: data.get('d4_mix_pj') || null,
+    d4_mix_estagio: data.get('d4_mix_estagio') || null,
+    d4_mix_freela: data.get('d4_mix_freela') || null,
+    d4_turnover: num(data.get('d4_turnover')),
+    l1_tecnologia: num(data.get('l1_tecnologia')),
+    l2_execucao: num(data.get('l2_execucao')),
+    l3_rh_interno: num(data.get('l3_rh_interno')),
+    q_prazo: data.get('q_prazo') || null,
+    q_decisor: data.getAll('q_decisor'),
+    q_decisor_outro: data.get('q_decisor_outro') || null,
+    q_formato: data.get('q_formato') || null,
+    q_investimento: data.get('q_investimento') || null,
+    q_origem: data.get('q_origem') || null,
+    c_nome: data.get('c_nome'),
+    c_empresa: data.get('c_empresa'),
+    c_email: data.get('c_email'),
+    c_whatsapp: data.get('c_whatsapp'),
+    lgpd_aceite: true
+  };
+
+  try{
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+    if(!resp.ok){
+      const errText = await resp.text();
+      throw new Error(errText);
+    }
+
+    document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
+    document.getElementById('barraWrap').classList.remove('ativo');
+    document.getElementById('rodape').style.display = 'none';
+    document.getElementById('step-obrigado').classList.add('ativo');
+    window.scrollTo({top:0, behavior:'smooth'});
+  } catch(err){
+    console.error('Erro ao enviar respostas:', err);
+    alert('Não consegui enviar suas respostas agora. Tenta de novo em instantes ou chama a Pati direto pelo WhatsApp.');
+    btnEnviar.textContent = textoOriginal;
+    btnEnviar.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>
