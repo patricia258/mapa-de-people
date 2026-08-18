@@ -126,11 +126,11 @@ function emailHtml(record: MapaResposta) {
             </td></tr>
           </table>
           <p style="font-size:15px;line-height:1.7;margin:22px 0 15px;">Eu adoraria conversar um pouco mais sobre o resultado, ouvir a sua leitura e mostrar o que eu priorizaria primeiro.</p>
-          <p style="font-size:15px;line-height:1.7;margin:0 0 24px;">Você pode responder diretamente a este e-mail — a mensagem chega para mim — ou falar comigo pelo WhatsApp.</p>
-          <div style="text-align:center;margin:4px 0 28px;"><a href="${WHATSAPP_URL}" style="display:inline-block;background:${DOURADO};color:${BORDO};text-decoration:none;font-size:14px;font-weight:700;padding:14px 25px;border-radius:100px;">Conversar com a Patrícia →</a></div>
+          <p style="font-size:15px;line-height:1.7;margin:0 0 24px;">Você pode responder diretamente a este e-mail, que a mensagem chega para mim, ou falar comigo pelo WhatsApp.</p>
+          <div style="text-align:center;margin:4px 0 28px;"><a href="${WHATSAPP_URL}" style="display:inline-block;background:${BORDO};color:#FFFFFF;text-decoration:none;font-size:14px;font-weight:700;padding:14px 25px;border-radius:100px;">Vamos conversar?</a></div>
           <div style="height:1px;background:#EAE1D8;margin:0 0 23px;"></div>
           <p style="font-size:14px;line-height:1.6;margin:0 0 3px;">Um abraço,</p>
-          <p style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:21px;color:${BORDO};margin:0 0 3px;">Patrícia Lima</p>
+          <p style="font-family:Georgia,'Times New Roman',serif;font-style:normal;font-size:18px;font-weight:400;color:${BORDO};margin:0 0 3px;">Patrícia Lima</p>
           <p style="font-size:10px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;color:${TAUPE};margin:0 0 5px;">People Advisory Executive · CALI RH</p>
           <p style="font-size:12px;line-height:1.55;color:${TAUPE};margin:0;">patricia@calirh.com · (41) 98779-1933 · calirh.com</p>
         </td></tr>
