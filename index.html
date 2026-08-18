@@ -4,6 +4,25 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Mapa de People | CALI — HR for Business</title>
+<meta name="theme-color" content="#5A1E2D"/>
+<meta name="description" content="Descubra o nível de maturidade da gestão de pessoas da sua empresa com o Mapa de People da CALI."/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="pt_BR"/>
+<meta property="og:url" content="https://mapa.calirh.com/"/>
+<meta property="og:site_name" content="CALI — HR for Business"/>
+<meta property="og:title" content="Mapa de People | CALI"/>
+<meta property="og:description" content="Uma leitura estratégica para entender onde sua gestão de pessoas está hoje e o que precisa vir primeiro."/>
+<meta property="og:image" content="https://mapa.calirh.com/preview-whatsapp.jpg"/>
+<meta property="og:image:type" content="image/jpeg"/>
+<meta property="og:image:width" content="1092"/>
+<meta property="og:image:height" content="1092"/>
+<meta property="og:image:alt" content="Identidade visual da CALI — Consultoria Estratégica em Pessoas"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Mapa de People | CALI"/>
+<meta name="twitter:description" content="Descubra o nível de maturidade da gestão de pessoas da sua empresa."/>
+<meta name="twitter:image" content="https://mapa.calirh.com/preview-whatsapp.jpg"/>
+<link rel="icon" type="image/png" href="/logo.png"/>
+<link rel="apple-touch-icon" href="/logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -13,22 +32,22 @@
   --serif:'Playfair Display',serif;--sans:'Inter',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scrollbar-width:none}
+html{scrollbar-width:none;background:var(--bordo);overscroll-behavior-y:none}
 body::-webkit-scrollbar{width:0px;background:transparent}
-body{font-family:var(--sans);background:var(--bordo);color:var(--grafite);line-height:1.6;min-height:100vh;transition:background .35s ease}
+body{font-family:var(--sans);background:var(--bordo);color:var(--grafite);line-height:1.6;min-height:100vh;min-height:100dvh;overflow-x:hidden}
 body.formulario-ativo{background:var(--marfim-2)}
 
 /* ══ TRANSIÇÕES DE ETAPA — lentas e suaves ══ */
 .step-view{display:none;animation:entrar .55s ease both}
 .step-view.ativo{display:block}
 @keyframes entrar{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:translateY(0)}
+  from{opacity:0}
+  to{opacity:1}
 }
 
 /* ══ WELCOME ══ */
 #step-welcome{background:linear-gradient(160deg,var(--bordo) 0%,var(--bordo) 55%,var(--bordo-escuro) 100%);
-  color:var(--marfim);min-height:100vh;align-items:center;justify-content:center;padding:40px 24px}
+  color:var(--marfim);min-height:100vh;min-height:100dvh;align-items:center;justify-content:center;padding:40px 24px 92px}
 #step-welcome.ativo{display:flex}
 .welcome-inner{max-width:600px;text-align:center}
 .welcome-inner img{width:260px;margin:0 auto 30px}
@@ -52,7 +71,7 @@ body.formulario-ativo{background:var(--marfim-2)}
   background:var(--dourado);color:var(--bordo-escuro);border:none;border-radius:100px;
   padding:16px 44px;font-family:var(--sans);font-weight:700;font-size:14px;cursor:pointer;transition:.2s;
 }
-.btn-comecar:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(181,140,82,.35)}
+.btn-comecar:hover{box-shadow:0 8px 22px rgba(181,140,82,.35)}
 
 /* ══ PROGRESSO ══ */
 .progress-bar{position:sticky;top:0;z-index:20;background:var(--marfim);border-bottom:1px solid var(--marfim-2);display:none}
@@ -72,15 +91,16 @@ form.ativo{display:block}
 .bloco-titulo{font-family:var(--serif);font-weight:600;font-size:27px;color:var(--bordo);line-height:1.2}
 .bloco-sub{font-size:13.5px;color:var(--grafite);opacity:.75;margin-top:8px;line-height:1.5;max-width:480px}
 
-.q{background:rgba(255,255,255,.76);border:1px solid rgba(183,169,154,.32);border-radius:12px;padding:23px 24px;margin-bottom:16px;box-shadow:0 10px 30px rgba(62,21,32,.045);transition:transform .2s,border-color .2s,box-shadow .2s}
-.q:focus-within{border-color:rgba(181,140,82,.72);box-shadow:0 14px 34px rgba(62,21,32,.08);transform:translateY(-1px)}
+.q{background:rgba(255,255,255,.76);border:1px solid rgba(183,169,154,.32);border-radius:12px;padding:23px 24px;margin-bottom:16px;box-shadow:0 10px 30px rgba(62,21,32,.045);transition:border-color .2s,box-shadow .2s}
+.q:focus-within{border-color:rgba(181,140,82,.72);box-shadow:0 14px 34px rgba(62,21,32,.08)}
+.q.incompleta,.lgpd-box.incompleta{border-color:#A8463D;box-shadow:0 0 0 3px rgba(168,70,61,.10)}
 .q-texto{font-size:14px;font-weight:500;color:var(--grafite);margin-bottom:16px;line-height:1.55}
 
 .escala{display:flex;gap:8px}
 .escala label{flex:1;text-align:center;cursor:pointer}
 .escala input{display:none}
 .escala .pill{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px solid var(--marfim-2);border-radius:10px;padding:10px 4px;min-height:64px;transition:.18s;font-weight:700;font-family:var(--serif);font-size:16px;color:var(--taupe)}
-.escala label:hover .pill{border-color:var(--dourado);transform:translateY(-1px)}
+.escala label:hover .pill{border-color:var(--dourado)}
 .escala .pill .cap{font-family:var(--sans);font-size:8.5px;font-weight:600;letter-spacing:.02em;color:var(--taupe);text-transform:uppercase}
 .escala input:checked + .pill{background:var(--bordo);border-color:var(--bordo);color:var(--marfim)}
 .escala input:checked + .pill .cap{color:var(--dourado)}
@@ -91,7 +111,7 @@ form.ativo{display:block}
 .chips .chip{border:1.5px solid var(--marfim-2);border-radius:100px;padding:9px 18px;font-size:12.5px;font-weight:600;color:var(--grafite);transition:.15s}
 .chips input:checked + .chip{background:var(--bordo);border-color:var(--bordo);color:var(--marfim)}
 
-.q input[type=text], .q input[type=email], .q input[type=tel], .q textarea{
+.q input[type=text], .q input[type=email], .q input[type=tel], .q input[type=number], .q textarea{
   width:100%;border:1.5px solid var(--marfim-2);border-radius:6px;padding:11px 14px;
   font-family:var(--sans);font-size:13.5px;color:var(--grafite);outline:none;background:var(--marfim);margin-top:10px;
 }
@@ -129,9 +149,11 @@ form.ativo{display:block}
 .btn-proxima{background:var(--bordo);color:var(--marfim);border-color:var(--bordo);margin-left:auto}
 .btn-proxima:hover{background:var(--bordo-escuro)}
 .btn-enviar{background:var(--dourado);color:var(--bordo-escuro);border-color:var(--dourado);margin-left:auto}
-.btn-enviar:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(181,140,82,.35)}
+.btn-enviar:hover{box-shadow:0 8px 22px rgba(181,140,82,.35)}
 
-footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
+.aviso-validacao{background:#FFF8EE;border:1px solid rgba(168,70,61,.35);border-left:4px solid #A8463D;color:#79332E;border-radius:9px;padding:13px 15px;margin:18px 0 12px;font-size:12.5px;font-weight:600;line-height:1.5}
+footer{position:fixed;left:0;right:0;bottom:0;z-index:25;text-align:center;padding:17px 24px;font-size:10.5px;letter-spacing:.06em;color:rgba(247,243,238,.72);background:rgba(62,21,32,.94);border-top:1px solid rgba(181,140,82,.35);backdrop-filter:blur(12px)}
+body.formulario-ativo footer{position:static;background:var(--bordo-escuro);color:rgba(247,243,238,.72)}
 
 /* ══ OBRIGADO ══ */
 #step-obrigado{background:var(--bordo);color:var(--marfim);min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px}
@@ -148,15 +170,18 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
 .socials a:hover{background:rgba(247,243,238,.12)}
 .obrigado-contato{font-size:12.5px;color:var(--taupe);letter-spacing:.03em}
 
-@media(max-width:520px){
-  .escala{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+@media(max-width:760px){
+  .escala{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;position:relative;padding-bottom:42px}
   .escala label{min-width:0}
-  .escala .pill{min-height:72px;padding:8px 2px;font-size:15px}
-  .escala .pill .cap{font-size:7px;line-height:1.25;overflow-wrap:anywhere}
+  .escala .pill{min-height:52px;height:52px;padding:6px 2px;font-size:16px}
+  .escala .pill .cap{display:none}
+  .escala label:first-child .cap,.escala label:last-child .cap{display:block;position:absolute;top:60px;width:47%;font-size:7.5px;line-height:1.25;white-space:normal}
+  .escala label:first-child .cap{left:0;text-align:left}
+  .escala label:last-child .cap{right:0;text-align:right}
   .grid2{grid-template-columns:1fr}
   .welcome-inner h1{font-size:30px}
   .welcome-inner img{width:190px}
-  #step-welcome{padding:32px 20px}
+  #step-welcome{padding:32px 20px 88px}
   .welcome-inner p.lead{font-size:14px;line-height:1.65}
   .welcome-meta{font-size:10.5px;line-height:1.55}
   .pilar-item .n, .pilar-item .t{font-size:13px}
@@ -170,6 +195,7 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
   .contato-box{padding:22px 16px}
   #step-obrigado{padding:34px 22px}
   #step-obrigado h1{font-size:29px}
+  footer{padding:14px 16px;font-size:9px;line-height:1.5}
 }
 </style>
 </head>
@@ -199,7 +225,7 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
   <div class="progress-label"><span id="rotuloEtapa">Etapa 1 de 7</span><span id="rotuloBloco">Maturidade Estrutural</span></div>
 </div>
 
-<form id="mapaForm">
+<form id="mapaForm" novalidate>
 
   <!-- D1 -->
   <section class="step-view bloco" data-step="1">
@@ -379,10 +405,10 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
     <div class="q">
       <div class="q-texto">Qual o mix de vínculos hoje? <em style="font-weight:400;color:var(--taupe)">(estimativa é suficiente)</em></div>
       <div class="grid2">
-        <input type="text" name="d4_mix_clt" placeholder="% CLT"/>
-        <input type="text" name="d4_mix_pj" placeholder="% PJ"/>
-        <input type="text" name="d4_mix_estagio" placeholder="% Estagiários"/>
-        <input type="text" name="d4_mix_freela" placeholder="% Freelancers"/>
+        <input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric"/>
+        <input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric"/>
+        <input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric"/>
+        <input type="number" name="d4_mix_freela" placeholder="% Freelancers" min="0" max="100" inputmode="numeric"/>
       </div>
     </div>
 
@@ -564,7 +590,7 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
 const totalEtapas = 7;
 let etapaAtual = 0; // 0 = welcome
 
-function irPara(n){
+function mostrarEtapa(n){
   document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
   document.getElementById('mapaForm').classList.toggle('ativo', n > 0);
   document.body.classList.toggle('formulario-ativo', n > 0);
@@ -580,6 +606,66 @@ function irPara(n){
     document.getElementById('rotuloBloco').textContent = alvo.querySelector('.bloco-titulo').textContent;
   }
   etapaAtual = n;
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+function questaoPreenchida(q){
+  const radios = [...q.querySelectorAll('input[type="radio"]')];
+  if(radios.length) return radios.some(input => input.checked);
+
+  const checkboxes = [...q.querySelectorAll('input[type="checkbox"]')];
+  if(checkboxes.length){
+    const marcados = checkboxes.filter(input => input.checked);
+    if(!marcados.length) return false;
+    if(marcados.some(input => input.id === 'chk-decisor-outro')){
+      return document.getElementById('decisor-outro-campo').value.trim().length > 0;
+    }
+    return true;
+  }
+
+  const campos = [...q.querySelectorAll('input, textarea')].filter(input => input.type !== 'hidden');
+  if(!campos.length) return true;
+  const preenchidos = campos.every(input => input.value.trim() !== '' && input.checkValidity());
+  if(!preenchidos) return false;
+
+  if(campos.every(input => input.name.startsWith('d4_mix_'))){
+    const total = campos.reduce((soma, input) => soma + Number(input.value), 0);
+    return total === 100;
+  }
+  return true;
+}
+
+function validarEtapa(n, exibirAviso = true){
+  const bloco = document.querySelector(`.bloco[data-step="${n}"]`);
+  if(!bloco) return true;
+
+  bloco.querySelectorAll('.q.incompleta').forEach(q => q.classList.remove('incompleta'));
+  bloco.querySelector('.aviso-validacao')?.remove();
+
+  const incompletas = [...bloco.querySelectorAll('.q')].filter(q => !questaoPreenchida(q));
+  const lgpd = n === 7 ? document.getElementById('lgpd_aceite') : null;
+  if(lgpd && !lgpd.checked) incompletas.push(lgpd.closest('.lgpd-box'));
+
+  if(!incompletas.length) return true;
+  incompletas.forEach(q => q.classList.add('incompleta'));
+
+  if(exibirAviso){
+    const aviso = document.createElement('div');
+    aviso.className = 'aviso-validacao';
+    aviso.setAttribute('role', 'alert');
+    const misturaInvalida = incompletas.some(q => q.querySelector?.('input[name^="d4_mix_"]'));
+    aviso.textContent = misturaInvalida
+      ? 'Preencha todas as respostas desta etapa. No mix de vínculos, informe inclusive os valores zero e confira se a soma é 100%.'
+      : 'Antes de continuar, responda todas as perguntas desta etapa. Elas são necessárias para o relatório final.';
+    bloco.querySelector('.step-nav').before(aviso);
+    incompletas[0].scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  return false;
+}
+
+function irPara(n){
+  if(n > etapaAtual && etapaAtual > 0 && !validarEtapa(etapaAtual)) return;
+  mostrarEtapa(n);
 }
 
 /* WhatsApp só aceita números */
@@ -603,7 +689,17 @@ document.querySelector('input[name="c_whatsapp"]').addEventListener('input', fun
 
 /* "Outro" decisor abre campo de texto */
 document.getElementById('chk-decisor-outro').addEventListener('change', function(){
-  document.getElementById('decisor-outro-campo').style.display = this.checked ? 'block' : 'none';
+  const campo = document.getElementById('decisor-outro-campo');
+  campo.style.display = this.checked ? 'block' : 'none';
+  campo.required = this.checked;
+  if(!this.checked) campo.value = '';
+});
+
+document.getElementById('mapaForm').addEventListener('input', function(e){
+  e.target.closest('.q, .lgpd-box')?.classList.remove('incompleta');
+});
+document.getElementById('mapaForm').addEventListener('change', function(e){
+  e.target.closest('.q, .lgpd-box')?.classList.remove('incompleta');
 });
 
 /* nota de deslocamento quando escolhe presencial */
@@ -627,9 +723,12 @@ function gerarProtocolo(){
 /* envio — grava a resposta no Supabase e notifica a Patrícia (via trigger + Resend, configurado à parte) */
 document.getElementById('mapaForm').addEventListener('submit', async function(e){
   e.preventDefault();
-  if(!document.getElementById('lgpd_aceite').checked){
-    alert('Para enviar, é preciso aceitar o uso dos dados conforme a LGPD.');
-    return;
+  for(let etapa = 1; etapa <= totalEtapas; etapa++){
+    if(!validarEtapa(etapa, false)){
+      mostrarEtapa(etapa);
+      validarEtapa(etapa, true);
+      return;
+    }
   }
 
   const btnEnviar = document.querySelector('.btn-enviar');
@@ -654,10 +753,10 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     d3_custo: num(data.get('d3_custo')),
     d4_colaboradores: num(data.get('d4_colaboradores')),
     d4_unidades: num(data.get('d4_unidades')),
-    d4_mix_clt: data.get('d4_mix_clt') || null,
-    d4_mix_pj: data.get('d4_mix_pj') || null,
-    d4_mix_estagio: data.get('d4_mix_estagio') || null,
-    d4_mix_freela: data.get('d4_mix_freela') || null,
+    d4_mix_clt: num(data.get('d4_mix_clt')),
+    d4_mix_pj: num(data.get('d4_mix_pj')),
+    d4_mix_estagio: num(data.get('d4_mix_estagio')),
+    d4_mix_freela: num(data.get('d4_mix_freela')),
     d4_turnover: num(data.get('d4_turnover')),
     l1_tecnologia: num(data.get('l1_tecnologia')),
     l2_execucao: num(data.get('l2_execucao')),

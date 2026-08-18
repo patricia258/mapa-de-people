@@ -34,15 +34,15 @@ function scale(value: unknown) {
 
 function answerRow(label: string, value: unknown) {
   return `<tr>
-    <td style="padding:8px 10px;border-bottom:1px solid #EFE8DF;color:${TAUPE};font-size:12px;width:48%;vertical-align:top;">${escapeHtml(label)}</td>
-    <td style="padding:8px 10px;border-bottom:1px solid #EFE8DF;color:${GRAFITE};font-size:12px;font-weight:600;vertical-align:top;">${escapeHtml(value)}</td>
+    <td class="answer-label" bgcolor="#FFFFFF" style="padding:8px 10px;border-bottom:1px solid #EFE8DF;background-color:#FFFFFF;background-image:linear-gradient(#FFFFFF,#FFFFFF);color:${TAUPE};-webkit-text-fill-color:${TAUPE};font-size:12px;width:48%;vertical-align:top;">${escapeHtml(label)}</td>
+    <td class="answer-value" bgcolor="#FFFFFF" style="padding:8px 10px;border-bottom:1px solid #EFE8DF;background-color:#FFFFFF;background-image:linear-gradient(#FFFFFF,#FFFFFF);color:${GRAFITE};-webkit-text-fill-color:${GRAFITE};font-size:12px;font-weight:600;vertical-align:top;">${escapeHtml(value)}</td>
   </tr>`;
 }
 
 function section(title: string, rows: string) {
   return `<div style="margin:24px 0 0;">
     <div style="font-family:Georgia,serif;color:${BORDO};font-size:16px;font-weight:bold;margin-bottom:8px;">${escapeHtml(title)}</div>
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #EFE8DF;border-radius:8px;overflow:hidden;border-collapse:separate;border-spacing:0;">${rows}</table>
+    <table class="answer-table" bgcolor="#FFFFFF" role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#FFFFFF;background-image:linear-gradient(#FFFFFF,#FFFFFF);border:1px solid #EFE8DF;border-radius:8px;overflow:hidden;border-collapse:separate;border-spacing:0;">${rows}</table>
   </div>`;
 }
 
@@ -63,13 +63,31 @@ async function sendEmail(to: string, subject: string, html: string) {
 }
 
 function emailBaseWrap(innerHtml: string, preheader: string) {
-  return `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:${MARFIM};">
+  return `<!doctype html><html><head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <style>
+    :root{color-scheme:light only!important;supported-color-schemes:light only!important}
+    body,.email-bg{background-color:${MARFIM}!important;background-image:linear-gradient(${MARFIM},${MARFIM})!important}
+    .email-card,.email-content,.answer-table,.answer-label,.answer-value{background-color:#FFFFFF!important;background-image:linear-gradient(#FFFFFF,#FFFFFF)!important}
+    .email-header{background-color:${BORDO}!important;background-image:linear-gradient(${BORDO},${BORDO})!important}
+    .email-footer{background-color:${MARFIM}!important;background-image:linear-gradient(${MARFIM},${MARFIM})!important}
+    @media (prefers-color-scheme:dark){
+      body,.email-bg{background-color:${MARFIM}!important;background-image:linear-gradient(${MARFIM},${MARFIM})!important}
+      .email-card,.email-content,.answer-table,.answer-label,.answer-value{background-color:#FFFFFF!important;background-image:linear-gradient(#FFFFFF,#FFFFFF)!important}
+      .email-header{background-color:${BORDO}!important;background-image:linear-gradient(${BORDO},${BORDO})!important}
+      .email-content{color:${GRAFITE}!important}
+      .email-footer{background-color:${MARFIM}!important;background-image:linear-gradient(${MARFIM},${MARFIM})!important;color:${TAUPE}!important;-webkit-text-fill-color:${TAUPE}!important}
+    }
+  </style>
+  </head><body class="email-body" bgcolor="${MARFIM}" style="margin:0;background-color:${MARFIM};background-image:linear-gradient(${MARFIM},${MARFIM});color-scheme:light only;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(preheader)}</div>
-  <div style="background:${MARFIM};padding:34px 16px;font-family:Arial,Helvetica,sans-serif;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #EFE8DF;box-shadow:0 12px 34px rgba(62,21,32,.08);">
-      <tr><td style="background:${BORDO};padding:34px 30px;text-align:center;"><img src="${LOGO_URL}" alt="CALI" width="170" style="display:block;margin:0 auto;max-width:100%;height:auto;"/></td></tr>
-      <tr><td style="padding:36px 32px;color:${GRAFITE};font-size:14px;line-height:1.7;">${innerHtml}</td></tr>
-      <tr><td style="background:${MARFIM};padding:20px 30px;text-align:center;font-size:11px;color:${TAUPE};letter-spacing:.03em;">CALI — HR for Business · calirh.com · patricia@calirh.com</td></tr>
+  <div class="email-bg" style="background-color:${MARFIM};background-image:linear-gradient(${MARFIM},${MARFIM});padding:34px 16px;font-family:Arial,Helvetica,sans-serif;">
+    <table class="email-card" bgcolor="#FFFFFF" role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;margin:0 auto;background-color:#FFFFFF;background-image:linear-gradient(#FFFFFF,#FFFFFF);border-radius:14px;overflow:hidden;border:1px solid #EFE8DF;box-shadow:0 12px 34px rgba(62,21,32,.08);">
+      <tr><td class="email-header" bgcolor="${BORDO}" style="background-color:${BORDO};background-image:linear-gradient(${BORDO},${BORDO});padding:34px 30px;text-align:center;"><img src="${LOGO_URL}" alt="CALI" width="170" style="display:block;margin:0 auto;max-width:100%;height:auto;"/></td></tr>
+      <tr><td class="email-content" bgcolor="#FFFFFF" style="padding:36px 32px;background-color:#FFFFFF;background-image:linear-gradient(#FFFFFF,#FFFFFF);color:${GRAFITE};font-size:14px;line-height:1.7;">${innerHtml}</td></tr>
+      <tr><td class="email-footer" bgcolor="${MARFIM}" style="background-color:${MARFIM};background-image:linear-gradient(${MARFIM},${MARFIM});padding:20px 30px;text-align:center;font-size:11px;color:${TAUPE};-webkit-text-fill-color:${TAUPE};letter-spacing:.03em;">CALI — HR for Business · calirh.com · patricia@calirh.com</td></tr>
     </table>
   </div></body></html>`;
 }
