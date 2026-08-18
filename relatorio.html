@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="/logo.png"/>
 <link rel="apple-touch-icon" href="/logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bordo:#5A1E2D;
@@ -129,7 +129,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 }
 .assinatura-inline{margin-top:36px;display:flex;align-items:center;gap:16px}
 .foto-patricia{
-  width:58px;height:58px;border-radius:50%;object-fit:cover;
+  width:104px;height:112px;border-radius:18px;object-fit:cover;object-position:center 28%;
   border:2px solid var(--dourado);flex-shrink:0;background:var(--marfim-2);
 }
 .foto-patricia.placeholder{
@@ -251,15 +251,20 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 .reco-box .eyebrow{color:var(--dourado)}
 .reco-box h3{font-family:var(--serif);font-weight:600;font-size:24px;margin-bottom:14px}
 .reco-box p{font-size:14px;font-weight:300;line-height:1.85;color:rgba(247,243,238,.92);max-width:600px;margin-bottom:16px}
+.servico-head{display:flex;align-items:center;gap:18px;margin-bottom:15px}
+.servico-head .eyebrow{margin-bottom:4px}
+.servico-head h3{margin-bottom:0}
+.servico-icone{width:64px;height:64px;border:1px solid rgba(181,140,82,.65);border-radius:17px;display:grid;place-items:center;color:var(--dourado);flex-shrink:0;background:rgba(247,243,238,.035)}
+.servico-icone svg{width:38px;height:38px;display:block;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
 .reco-cta{
   display:inline-block;margin-top:8px;background:var(--dourado);color:var(--bordo-escuro);
   font-weight:700;font-size:13px;letter-spacing:.02em;padding:12px 26px;border-radius:100px;
-  text-decoration:none;
+  text-decoration:none;align-self:flex-start;
 }
 .reco-etapas{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:26px;background:rgba(247,243,238,.18);border:1px solid rgba(247,243,238,.18)}
-.reco-etapa{background:rgba(62,21,32,.55);padding:15px 14px}
-.reco-etapa b{display:block;color:var(--dourado);font-family:var(--serif);font-size:16px;margin-bottom:3px}
-.reco-etapa span{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(247,243,238,.75)}
+.reco-etapa{background:rgba(62,21,32,.55);padding:20px 18px;min-height:88px;display:flex;flex-direction:column;justify-content:center}
+.reco-etapa b{display:block;color:var(--dourado);font-family:var(--serif);font-size:22px;line-height:1;margin-bottom:8px}
+.reco-etapa span{font-size:11.5px;line-height:1.4;letter-spacing:.045em;text-transform:uppercase;color:rgba(247,243,238,.88);font-weight:600}
 
 /* ══ FECHAMENTO / ASSINATURA ══ */
 .fechamento{background:var(--bordo);color:var(--marfim);text-align:center;min-height:520px;
@@ -268,6 +273,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 .fechamento p.frase{font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;
   max-width:520px;line-height:1.5;color:var(--marfim);margin-bottom:44px}
 .fechamento .assinatura{border-top:1px solid rgba(247,243,238,.25);padding-top:18px;margin-top:6px}
+.assinatura-manuscrita{font-family:'Allura',cursive;font-size:48px;line-height:.9;color:var(--marfim);transform:rotate(-4deg);margin:-10px 0 13px;text-shadow:0 .5px 0 rgba(247,243,238,.35)}
 .fechamento .assinatura .nome{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--dourado)}
 .fechamento .assinatura .cargo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-top:4px}
 .fechamento .contatos{margin-top:28px;font-size:12px;color:var(--taupe);letter-spacing:.02em}
@@ -287,6 +293,8 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .meta-row{gap:16px;flex-wrap:wrap}
   .score-resumo{align-items:flex-start;gap:10px;padding:16px;flex-direction:column}
   .reco-box{padding:28px 22px}
+  .servico-head{align-items:flex-start}
+  .servico-icone{width:56px;height:56px;border-radius:15px}
   .radar-wrap svg{width:100%;height:auto}
   .dim-head{gap:12px}
   .reco-etapas{grid-template-columns:1fr}
@@ -382,7 +390,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <p>Cruzei o que você me contou com quatro dimensões que uso para entender a maturidade de uma operação: a estrutura que sustenta o dia a dia, a liderança e a cultura que fazem o time se mover, a forma como vocês decidem — com dado ou com instinto — e a complexidade operacional que você já carrega. Nas próximas páginas, mostro esse resultado de duas formas: primeiro como uma posição num mapa de quadrantes, depois como um radar que revela o formato do problema.</p>
     <p>Ao final, aponto o caminho que faz mais sentido para o seu momento — sem genérico, sem "toda empresa que cresce precisa disso". Se algo aqui não bater com o que você vive todos os dias, me diga: é exatamente para essa conversa que este mapa existe.</p>
     <div class="assinatura-inline">
-      <div class="foto-patricia placeholder">PL</div>
+      <img class="foto-patricia" src="patricia-lima.webp" alt="Patrícia Lima"/>
       <div>
         <div class="nome">Patrícia Lima</div>
         <div class="cargo">People Advisory Executive · CALI</div>
@@ -503,8 +511,10 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <hr class="divider"/>
     <p style="font-size:14.5px;font-weight:300;max-width:640px;margin-bottom:28px" id="parecer-texto"></p>
     <div class="reco-box">
-      <div class="eyebrow">Serviço indicado</div>
-      <h3 id="servico-nome">Diagnóstico Executivo de People</h3>
+      <div class="servico-head">
+        <div class="servico-icone" id="servico-icone" aria-hidden="true"></div>
+        <div><div class="eyebrow">Serviço indicado</div><h3 id="servico-nome">Diagnóstico Executivo de People</h3></div>
+      </div>
       <p id="servico-texto">Uma leitura completa da casa: entrevistas com a liderança-chave, análise dos indicadores disponíveis e um mapa de riscos com prioridades para os próximos 90 dias. É o próximo passo natural depois deste Mapa — onde eu entro de perto, não à distância.</p>
       <div class="reco-etapas" aria-label="Etapas sugeridas">
         <div class="reco-etapa"><b>01</b><span>Priorizar riscos</span></div>
@@ -521,6 +531,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <img class="logo-img small" style="margin:0 auto 34px" src="logo.svg" alt="CALI — HR for Business"/>
     <p class="frase">"A raiz de quem vem forte não falha: sustenta, atravessa, constrói e permanece."</p>
     <div class="assinatura">
+      <div class="assinatura-manuscrita" aria-label="Assinatura de Patricia Lima">Patricia Lima</div>
       <div class="nome">Patrícia Lima</div>
       <div class="cargo">People Advisory Executive · CALI</div>
     </div>
@@ -629,7 +640,7 @@ async function carregar(){
   document.getElementById('parecer-texto').textContent = obs.parecer && obs.parecer.trim()
     ? obs.parecer
     : 'Cruzando o quadrante e a dimensão mais frágil, o próximo passo certo é organizar a leitura antes de agir.';
-  document.getElementById('servico-nome').textContent = obs.servico_recomendado || 'Diagnóstico Executivo de People';
+  renderServico(obs.servico_recomendado || 'Diagnóstico Executivo de People');
 
   window._dadosRelatorio = { scores, obs };
   finalizarRenderizacao(scores);
@@ -772,6 +783,39 @@ function contourPaths(seed){
 });
 
 } // fecha finalizarRenderizacao
+
+const iconesServicos = {
+  diagnostico: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><circle cx="21" cy="21" r="12"/><path d="m30 30 10 10M15 21h12M21 15v12"/></svg>',
+  partner: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><path d="M8 34c6-8 11-12 16-12s10 4 16 12"/><circle cx="24" cy="15" r="7"/><path d="M13 38h22M12 12l5 3M36 12l-5 3"/></svg>',
+  full: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><path d="M8 40h32M12 40V16l12-8 12 8v24M18 40V28h12v12M18 20h.1M24 20h.1M30 20h.1"/></svg>',
+  cultura: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="7"/><path d="M24 8v9M24 31v9M8 24h9M31 24h9"/></svg>',
+  shadowing: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><path d="M5 24s7-12 19-12 19 12 19 12-7 12-19 12S5 24 5 24Z"/><circle cx="24" cy="24" r="6"/><path d="M24 18v12"/></svg>',
+  mentoria: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><path d="M9 11h30v22H23l-9 7v-7H9V11Z"/><path d="M17 20h14M17 25h9"/></svg>',
+  marca: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><path d="M24 7 29 18l12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1 5-11Z"/></svg>',
+  treinamento: '<svg style="fill:none;stroke:#B58C52" viewBox="0 0 48 48"><path d="M7 9h34v25H7V9ZM17 41h14M24 34v7"/><path d="m16 26 6-6 5 4 6-8"/></svg>'
+};
+
+const servicosCali = {
+  'Diagnóstico Executivo de People': {icone:'diagnostico', descricao:'Uma leitura completa da casa: entrevistas com a liderança-chave, análise dos indicadores disponíveis e um mapa de riscos com prioridades para os próximos 90 dias. É o próximo passo natural depois deste Mapa — onde eu entro de perto, não à distância.', etapas:['Priorizar riscos','Definir o plano','Executar em 90 dias']},
+  'Assessoria Estratégica Mensal — CALI Partner': {icone:'partner', descricao:'Acompanhamento executivo para transformar prioridades de People em decisões, rituais e entregas mensais conectadas ao negócio.', etapas:['Alinhar prioridades','Acompanhar decisões','Sustentar a evolução']},
+  'Assessoria Estratégica Mensal — CALI Full': {icone:'full', descricao:'Atuação próxima e contínua para estruturar a agenda completa de People, apoiar a liderança e conduzir a execução das prioridades.', etapas:['Assumir a agenda','Estruturar a operação','Acelerar resultados']},
+  'Projeto de Cultura e Direção': {icone:'cultura', descricao:'Um projeto para traduzir estratégia em cultura praticável, alinhando valores, comportamentos de liderança e direção para o time.', etapas:['Ler a cultura atual','Definir direcionadores','Ativar comportamentos']},
+  'Shadowing de Liderança': {icone:'shadowing', descricao:'Observação estruturada da liderança em ação, com devolutivas objetivas sobre comportamento, comunicação, decisão e impacto no time.', etapas:['Observar a atuação','Devolver evidências','Ajustar comportamentos']},
+  'Mentoria para Profissionais de RH': {icone:'mentoria', descricao:'Acompanhamento individual para fortalecer repertório executivo, posicionamento e capacidade de conduzir decisões de RH com o negócio.', etapas:['Definir o desafio','Ampliar repertório','Aplicar na rotina']},
+  'Marca Empregadora': {icone:'marca', descricao:'Construção de uma proposta empregadora coerente com a experiência real, capaz de atrair, engajar e reter as pessoas certas.', etapas:['Mapear a experiência','Definir a proposta','Ativar a marca']},
+  'Treinamentos & Palestras': {icone:'treinamento', descricao:'Conteúdos desenhados para o contexto da empresa, com linguagem executiva, aplicação prática e conexão com os desafios do time.', etapas:['Entender o contexto','Customizar o conteúdo','Gerar aplicação']}
+};
+
+function renderServico(nome){
+  const padrao = servicosCali['Diagnóstico Executivo de People'];
+  const servico = servicosCali[nome] || padrao;
+  document.getElementById('servico-nome').textContent = nome;
+  document.getElementById('servico-icone').innerHTML = iconesServicos[servico.icone];
+  document.getElementById('servico-texto').textContent = servico.descricao;
+  document.querySelectorAll('.reco-etapa').forEach((etapa, i)=>{
+    etapa.querySelector('span').textContent = servico.etapas[i];
+  });
+}
 
 async function imprimirRelatorio(){
   if(document.fonts?.ready) await document.fonts.ready;
