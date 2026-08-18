@@ -262,6 +262,15 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 .reco-box .eyebrow{color:var(--dourado)}
 .reco-box h3{font-family:var(--serif);font-weight:600;font-size:24px;margin-bottom:14px}
 .reco-box p{font-size:14px;font-weight:300;line-height:1.85;color:rgba(247,243,238,.92);max-width:600px;margin-bottom:16px}
+.grafico-esforco{
+  background:rgba(255,255,255,.72);border:1px solid rgba(183,169,154,.42);border-radius:8px;
+  padding:18px 20px 14px;margin:0 0 20px;box-shadow:0 10px 28px rgba(62,21,32,.06);
+}
+.grafico-esforco h3{font-family:var(--serif);font-size:21px;line-height:1.2;color:var(--bordo);font-weight:600;margin-bottom:4px}
+.grafico-esforco .grafico-sub{font-size:11.5px;line-height:1.5;color:var(--taupe);margin-bottom:8px}
+.grafico-chart-wrap{width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+.grafico-esforco svg{display:block;width:100%;height:auto;min-height:250px}
+.grafico-esforco .grafico-nota{font-size:9.5px;line-height:1.45;color:var(--taupe);margin-top:4px}
 .servico-head{display:flex;align-items:center;gap:18px;margin-bottom:15px}
 .servico-head .eyebrow{margin-bottom:4px}
 .servico-head h3{margin-bottom:0}
@@ -303,6 +312,8 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .meta-row{gap:16px;flex-wrap:wrap}
   .score-resumo{align-items:flex-start;gap:10px;padding:16px;flex-direction:column}
   .reco-box{padding:28px 22px}
+  .grafico-esforco{padding:16px 14px 12px}
+  .grafico-chart-wrap svg{min-width:610px}
   .servico-head{align-items:flex-start}
   .servico-icone{width:56px;height:56px;border-radius:15px}
   .radar-wrap svg{width:100%;height:auto}
@@ -351,7 +362,24 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .page-subcamadas .subscore-grid{grid-template-rows:repeat(3,1fr);flex:1;gap:3.5mm}
   .page-subcamadas .subscore-card{padding:4.5mm;min-height:0;display:flex;flex-direction:column;justify-content:center}
   .page-subcamadas .subscore-card p{font-size:9.5pt;line-height:1.42}
-  .page-recomendacao .reco-box{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:12mm}
+  .page-recomendacao .divider{margin:10px 0 14px}
+  .page-recomendacao #parecer-texto{font-size:10.2pt!important;line-height:1.5;margin-bottom:4mm!important}
+  .page-recomendacao .grafico-esforco{padding:4mm 5mm 3mm;margin-bottom:4mm;box-shadow:none}
+  .page-recomendacao .grafico-esforco h3{font-size:16pt}
+  .page-recomendacao .grafico-esforco .grafico-sub{font-size:8.5pt;margin-bottom:1mm}
+  .page-recomendacao .grafico-esforco svg{height:68mm;min-height:0}
+  .page-recomendacao .grafico-esforco .grafico-nota{font-size:7.5pt;margin-top:0}
+  .page-recomendacao .reco-box{flex:0 0 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:7mm 8mm;margin-top:0}
+  .page-recomendacao .servico-head{margin-bottom:2mm}
+  .page-recomendacao .servico-icone{width:13mm;height:13mm;border-radius:4mm}
+  .page-recomendacao .servico-icone svg{width:8mm;height:8mm}
+  .page-recomendacao .reco-box h3{font-size:16pt}
+  .page-recomendacao .reco-box p{font-size:8.6pt;line-height:1.5;margin-bottom:2mm}
+  .page-recomendacao .reco-etapas{margin-top:2mm}
+  .page-recomendacao .reco-etapa{min-height:14mm;padding:2.5mm 3mm}
+  .page-recomendacao .reco-etapa b{font-size:14pt;margin-bottom:1mm}
+  .page-recomendacao .reco-etapa span{font-size:7pt}
+  .page-recomendacao .reco-cta{font-size:8.5pt;padding:2.5mm 5mm;margin-top:2mm}
   .page.compacta{padding:11mm 13mm 15mm}
   .page.compacta h2.titulo{font-size:26px}
   .page.compacta .divider{margin:9px 0 12px}
@@ -556,6 +584,14 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <h2 class="titulo">O que eu faria primeiro</h2>
     <hr class="divider"/>
     <p style="font-size:14.5px;font-weight:300;max-width:640px;margin-bottom:28px" id="parecer-texto"></p>
+    <figure class="grafico-esforco" aria-labelledby="grafico-esforco-titulo">
+      <h3 id="grafico-esforco-titulo">Onde concentrar o esforço</h3>
+      <p class="grafico-sub">Peso estratégico em relação ao desempenho de cada dimensão.</p>
+      <div class="grafico-chart-wrap">
+        <svg id="esforco-svg" width="640" height="292" viewBox="0 0 640 292" role="img" aria-label="Gráfico de dispersão do peso estratégico em relação ao desempenho atual das quatro dimensões"></svg>
+      </div>
+      <figcaption class="grafico-nota">Quanto mais à direita e mais abaixo, maior a necessidade de atenção. O tamanho da bolha acompanha o peso estratégico.</figcaption>
+    </figure>
     <div class="reco-box">
       <div class="servico-head">
         <div class="servico-icone" id="servico-icone" aria-hidden="true"></div>
@@ -795,8 +831,78 @@ async function carregar(){
   document.getElementById('docRoot').style.display = 'block';
 }
 
+function renderGraficoEsforco(scores){
+  const svg = document.getElementById('esforco-svg');
+  if(!svg) return;
+
+  const dims = [
+    {chave:'d1', codigo:'D1', nome:'Maturidade Estrutural', peso:0.15, lado:'esquerda', ajuste:-48},
+    {chave:'d2', codigo:'D2', nome:'Liderança & Cultura', peso:0.20, lado:'direita', ajuste:-48, jitter:-6},
+    {chave:'d3', codigo:'D3', nome:'Dados & Decisão', peso:0.20, lado:'esquerda', ajuste:34, jitter:6},
+    {chave:'d4', codigo:'D4', nome:'Dimensões Operacionais', peso:0.28, lado:'direita', ajuste:34}
+  ].map(d=>({...d, desempenho:Number(scores[d.chave]) || 0}));
+
+  const plot = {x:70,y:18,w:540,h:202};
+  const xMin = 0.10, xMax = 0.30;
+  const x = valor => plot.x + ((valor-xMin)/(xMax-xMin))*plot.w;
+  const y = valor => plot.y + ((10-valor)/10)*plot.h;
+  const fmt = valor => valor.toFixed(2).replace('.',',');
+  const nota = valor => valor.toFixed(1).replace('.',',');
+  const menor = dims.reduce((a,b)=>b.desempenho<a.desempenho?b:a).chave;
+  const xTicks = [0.10,0.15,0.20,0.25,0.30];
+  const yTicks = [0,2.5,5,7.5,10];
+
+  dims.forEach(d=>{
+    d.cx = x(d.peso) + (d.jitter || 0);
+    d.cy = y(d.desempenho);
+    d.raio = 15 + d.peso*65;
+    d.lx = d.lado === 'esquerda' ? 78 : 382;
+    d.ly = Math.max(6,Math.min(176,d.cy+d.ajuste));
+  });
+
+  ['esquerda','direita'].forEach(lado=>{
+    const grupo = dims.filter(d=>d.lado===lado).sort((a,b)=>a.ly-b.ly);
+    if(grupo[1] && grupo[1].ly-grupo[0].ly<43) grupo[1].ly=grupo[0].ly+43;
+    if(grupo[1] && grupo[1].ly>176){
+      const excesso=grupo[1].ly-176;
+      grupo.forEach(d=>d.ly-=excesso);
+    }
+  });
+
+  const gradesY = yTicks.map(t=>`<g><line x1="${plot.x}" y1="${y(t)}" x2="${plot.x+plot.w}" y2="${y(t)}" stroke="#B7A99A" stroke-opacity=".28"/><text x="${plot.x-10}" y="${y(t)+3}" text-anchor="end" font-size="9" fill="#2B2B2B">${String(t).replace('.',',')}</text></g>`).join('');
+  const gradesX = xTicks.map(t=>`<g><line x1="${x(t)}" y1="${plot.y}" x2="${x(t)}" y2="${plot.y+plot.h}" stroke="#B7A99A" stroke-opacity=".22"/><text x="${x(t)}" y="${plot.y+plot.h+15}" text-anchor="middle" font-size="9" fill="#2B2B2B">${fmt(t)}</text></g>`).join('');
+
+  const bolhas = dims.map(d=>{
+    const cor = d.chave===menor ? '#5A1E2D' : '#B58C52';
+    const cardX = d.lx, cardY = d.ly, cardW=180, cardH=36;
+    const ancoraX = d.lado==='esquerda' ? cardX+cardW : cardX;
+    const ancoraY = cardY+cardH/2;
+    return `<g aria-label="${d.codigo} ${d.nome}, peso ${fmt(d.peso)}, desempenho ${nota(d.desempenho)}">
+      <line x1="${d.cx}" y1="${d.cy}" x2="${ancoraX}" y2="${ancoraY}" stroke="${cor}" stroke-width="1" stroke-opacity=".58"/>
+      <circle cx="${d.cx}" cy="${d.cy}" r="${d.raio}" fill="${cor}" fill-opacity=".82" stroke="#F7F3EE" stroke-width="2"><title>${d.codigo} · ${d.nome} — peso ${fmt(d.peso)} · desempenho ${nota(d.desempenho)}</title></circle>
+      <text x="${d.cx}" y="${d.cy+3}" text-anchor="middle" font-size="10" font-weight="700" fill="#F7F3EE">${d.codigo}</text>
+      <rect x="${cardX}" y="${cardY}" width="${cardW}" height="${cardH}" rx="5" fill="#F7F3EE" fill-opacity=".96" stroke="${cor}" stroke-opacity=".34"/>
+      <text x="${cardX+9}" y="${cardY+14}" font-family="Inter, sans-serif" font-size="9.5" font-weight="700" fill="#2B2B2B">${d.codigo} · ${d.nome}</text>
+      <text x="${cardX+9}" y="${cardY+27}" font-family="Inter, sans-serif" font-size="8.5" fill="#2B2B2B">Peso ${fmt(d.peso)} · Desempenho ${nota(d.desempenho)}</text>
+    </g>`;
+  }).join('');
+
+  const alertaX=x(0.20), alertaY=y(5);
+  svg.innerHTML = `
+    <rect x="${alertaX}" y="${alertaY}" width="${plot.x+plot.w-alertaX}" height="${plot.y+plot.h-alertaY}" fill="#5A1E2D" fill-opacity=".055"/>
+    <text x="${plot.x+plot.w-8}" y="${plot.y+plot.h-9}" text-anchor="end" font-size="8" font-weight="700" letter-spacing=".08em" fill="#5A1E2D">ALERTA ESTRATÉGICO</text>
+    ${gradesY}${gradesX}
+    <line x1="${plot.x}" y1="${plot.y+plot.h}" x2="${plot.x+plot.w}" y2="${plot.y+plot.h}" stroke="#2B2B2B" stroke-width="1"/>
+    <line x1="${plot.x}" y1="${plot.y}" x2="${plot.x}" y2="${plot.y+plot.h}" stroke="#2B2B2B" stroke-width="1"/>
+    <text x="${plot.x+plot.w/2}" y="${plot.y+plot.h+34}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#2B2B2B">Peso/Importância</text>
+    <text x="17" y="${plot.y+plot.h/2}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#2B2B2B" transform="rotate(-90 17 ${plot.y+plot.h/2})">Desempenho atual</text>
+    ${bolhas}`;
+}
+
 function finalizarRenderizacao(scores){
 const pesos  = { d1: 0.25, d2: 0.30, d3: 0.20, d4: 0.25 };
+
+renderGraficoEsforco(scores);
 
 /* barras ao lado da matriz */
 const barrasWrap = document.getElementById('barras-quadrante');
