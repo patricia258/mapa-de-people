@@ -638,7 +638,7 @@ function questaoPreenchida(q){
   });
   if(!preenchidos) return false;
 
-  if(campos.every(input => input.name.startsWith('d4_mix_'))){
+  if(campos.length && campos.every(input => input.name.startsWith('d4_mix_'))){
     const total = campos.reduce((soma, input) => soma + Number(input.value), 0);
     return total === 100;
   }
