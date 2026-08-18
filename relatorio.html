@@ -630,6 +630,23 @@ document.body.classList.remove('auth-pendente');
 
 const params = new URLSearchParams(window.location.search);
 const respostaId = params.get('id');
+let nomeArquivoRelatorio = 'Mapa de People — Relatório — CALI RH';
+
+function parteSeguraNomeArquivo(valor, fallback){
+  const texto = String(valor || '')
+    .replace(/[\\/:*?"<>|\u0000-\u001F]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/[. ]+$/g, '')
+    .trim();
+  return (texto || fallback).slice(0, 80);
+}
+
+function definirNomeArquivoRelatorio(r){
+  const empresaOuDecisor = parteSeguraNomeArquivo(r.c_empresa || r.c_nome, 'Empresa');
+  const protocolo = parteSeguraNomeArquivo(r.protocolo || respostaId, 'Sem protocolo');
+  nomeArquivoRelatorio = `Mapa de People — Relatório — ${empresaOuDecisor} — CALI RH — ${protocolo}`;
+  document.title = nomeArquivoRelatorio;
+}
 
 function media(arr){
   const vals = arr.filter(v => v !== null && v !== undefined);
@@ -793,6 +810,8 @@ async function carregar(){
     document.getElementById('carregando').textContent = 'Resposta não encontrada.';
     return;
   }
+
+  definirNomeArquivoRelatorio(r);
 
   const obs = r.observacoes || {};
   const leitura = calcularLeitura(r);
@@ -1080,6 +1099,7 @@ function renderServico(nome){
 
 async function imprimirRelatorio(){
   if(document.fonts?.ready) await document.fonts.ready;
+  document.title = nomeArquivoRelatorio;
   ajustarPaginasA4();
   window.print();
 }
