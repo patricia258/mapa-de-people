@@ -120,6 +120,7 @@ form.ativo{display:block}
 }
 .q input:focus, .q textarea:focus{border-color:var(--dourado)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-full{grid-column:1/-1}
 
 .nota-sutil{
   margin-top:12px;font-size:11.5px;font-style:italic;color:var(--taupe);
@@ -132,6 +133,10 @@ form.ativo{display:block}
 .contato-box .q{background:rgba(247,243,238,.06);border-color:rgba(247,243,238,.18)}
 .contato-box .q-texto{color:var(--marfim)}
 .contato-box input{background:rgba(247,243,238,.92)!important;color:var(--grafite)!important}
+.contato-box .chips .chip{border-color:rgba(247,243,238,.3);color:var(--marfim)}
+.contato-box .chips input:checked + .chip{background:var(--dourado);border-color:var(--dourado);color:var(--bordo-escuro)}
+.confirmacao-email{display:flex;align-items:flex-start;gap:10px;margin-top:12px;color:var(--marfim);font-size:12px;line-height:1.55;cursor:pointer}
+.confirmacao-email input{width:17px!important;height:17px;margin:2px 0 0!important;accent-color:var(--dourado);flex-shrink:0}
 
 /* ══ LGPD ══ */
 .lgpd-box{background:var(--marfim);border:1.5px solid var(--dourado);border-radius:6px;padding:20px 22px;margin-bottom:26px}
@@ -410,10 +415,10 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
     <div class="q">
       <div class="q-texto">Qual o mix de vínculos hoje? <em style="font-weight:400;color:var(--taupe)">(estimativa é suficiente)</em></div>
       <div class="grid2">
-        <input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric"/>
-        <input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric"/>
-        <input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric"/>
-        <input type="number" name="d4_mix_freela" placeholder="% Freelancers" min="0" max="100" inputmode="numeric"/>
+        <input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric" required/>
+        <input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric" required/>
+        <input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric" required/>
+        <input type="number" name="d4_mix_freela" placeholder="% Freelancers" min="0" max="100" inputmode="numeric" required/>
       </div>
     </div>
 
@@ -549,10 +554,22 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
       <div class="bloco-sub">Eu leio suas respostas com calma e te devolvo o Mapa por e-mail e/ou WhatsApp — não é gerado na hora.</div>
       <div class="q" style="margin-top:18px">
         <div class="grid2">
-          <div><div class="q-texto">Nome</div><input type="text" name="c_nome" required/></div>
-          <div><div class="q-texto">Empresa</div><input type="text" name="c_empresa" required/></div>
-          <div><div class="q-texto">E-mail</div><input type="email" name="c_email" placeholder="voce@empresa.com" pattern="[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}" title="Digite um e-mail válido, ex: nome@empresa.com" required/></div>
-          <div><div class="q-texto">WhatsApp</div><input type="tel" name="c_whatsapp" placeholder="DDD + número, só números" inputmode="numeric" pattern="[0-9]{10,11}" title="Só números, com DDD. Ex: 41987791933" required/></div>
+          <div><div class="q-texto">Nome</div><input type="text" name="c_nome" autocomplete="name" required/></div>
+          <div><div class="q-texto">Empresa</div><input type="text" name="c_empresa" autocomplete="organization" required/></div>
+          <div><div class="q-texto">Cargo ou função</div><input type="text" name="c_cargo" autocomplete="organization-title" placeholder="Ex.: Diretora, CEO, RH" required/></div>
+          <div><div class="q-texto">WhatsApp</div><input type="tel" name="c_whatsapp" autocomplete="tel" placeholder="DDD + número, só números" inputmode="numeric" pattern="[0-9]{10,11}" title="Só números, com DDD. Ex: 41987791933" required/></div>
+          <div class="grid-full"><div class="q-texto">E-mail corporativo ou profissional</div><input type="email" name="c_email" autocomplete="email" placeholder="voce@empresa.com ou voce@gmail.com" pattern="[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}" title="Digite um e-mail válido, ex: nome@empresa.com" required/>
+            <label class="confirmacao-email"><input type="checkbox" name="c_email_corporativo_confirmado" required/><span>Confirmo que este é o e-mail que uso profissionalmente — mesmo que seja @gmail.com ou outro provedor sem domínio próprio.</span></label>
+          </div>
+          <div class="grid-full"><div class="q-texto">LinkedIn pessoal ou site da empresa <span style="font-weight:400;color:var(--taupe)">(opcional)</span></div><input type="text" name="c_linkedin_site" inputmode="url" placeholder="linkedin.com/in/... ou empresa.com.br"/></div>
+        </div>
+      </div>
+      <div class="q">
+        <div class="q-texto">Por onde você prefere receber meu contato?</div>
+        <div class="chips">
+          <label><input type="radio" name="c_preferencia_contato" value="email" required/><span class="chip">E-mail</span></label>
+          <label><input type="radio" name="c_preferencia_contato" value="whatsapp"/><span class="chip">WhatsApp</span></label>
+          <label><input type="radio" name="c_preferencia_contato" value="ambos"/><span class="chip">Tanto faz</span></label>
         </div>
       </div>
     </div>
@@ -616,7 +633,7 @@ function mostrarEtapa(n){
 
 function questaoPreenchida(q){
   const radios = [...q.querySelectorAll('input[type="radio"]')];
-  if(radios.length) return radios.some(input => input.checked);
+  if(radios.length && !radios.some(input => input.checked)) return false;
 
   const checkboxes = [...q.querySelectorAll('input[type="checkbox"]')];
   if(checkboxes.length){
@@ -625,12 +642,14 @@ function questaoPreenchida(q){
     if(marcados.some(input => input.id === 'chk-decisor-outro')){
       return document.getElementById('decisor-outro-campo').value.trim().length > 0;
     }
-    return true;
   }
 
-  const campos = [...q.querySelectorAll('input, textarea')].filter(input => input.type !== 'hidden');
-  if(!campos.length) return true;
-  const preenchidos = campos.every(input => input.value.trim() !== '' && input.checkValidity());
+  const campos = [...q.querySelectorAll('input, textarea')].filter(input => !['hidden','radio','checkbox'].includes(input.type));
+  const preenchidos = campos.every(input => {
+    const vazio = input.value.trim() === '';
+    if(vazio) return !input.required;
+    return input.checkValidity();
+  });
   if(!preenchidos) return false;
 
   if(campos.every(input => input.name.startsWith('d4_mix_'))){
@@ -832,8 +851,12 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     q_origem: data.get('q_origem') || null,
     c_nome: data.get('c_nome'),
     c_empresa: data.get('c_empresa'),
+    c_cargo: data.get('c_cargo'),
     c_email: data.get('c_email'),
+    c_email_corporativo_confirmado: data.get('c_email_corporativo_confirmado') === 'on',
     c_whatsapp: data.get('c_whatsapp'),
+    c_preferencia_contato: data.get('c_preferencia_contato'),
+    c_linkedin_site: data.get('c_linkedin_site') || null,
     lgpd_aceite: true
   };
 

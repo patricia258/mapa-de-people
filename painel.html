@@ -52,6 +52,7 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .tabela{width:100%;border-collapse:collapse;background:var(--branco);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .tabela th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--taupe);padding:14px 16px;border-bottom:1px solid var(--marfim-2)}
 .tabela td{padding:14px 16px;border-bottom:1px solid var(--marfim-2);font-size:13.5px}
+.tabela .subcell{display:block;color:var(--taupe);font-size:10.5px;margin-top:2px;white-space:normal}
 .tabela tr:last-child td{border-bottom:none}
 .tabela tr.linha:hover{background:var(--marfim)}
 .badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10.5px;font-weight:700;letter-spacing:.02em}
@@ -169,7 +170,7 @@ select, input.parecer-input{
       </div>
       <div class="tabela-wrap">
         <table class="tabela">
-          <thead><tr><th>Data</th><th>Protocolo</th><th>Empresa</th><th>Contato</th><th>Score</th><th>Status</th><th></th></tr></thead>
+          <thead><tr><th>Data</th><th>Protocolo</th><th>Empresa</th><th>Pessoa / cargo</th><th>Score</th><th>Status</th><th></th></tr></thead>
           <tbody id="corpoTabela"></tbody>
         </table>
       </div>
@@ -277,8 +278,11 @@ select, input.parecer-input{
           <h3>Contato</h3>
           <div class="contato-linha"><b>Nome:</b> <span id="c-nome"></span></div>
           <div class="contato-linha"><b>Empresa:</b> <span id="c-empresa"></span></div>
-          <div class="contato-linha"><b>E-mail:</b> <span id="c-email"></span></div>
+          <div class="contato-linha"><b>Cargo:</b> <span id="c-cargo"></span></div>
+          <div class="contato-linha"><b>E-mail profissional:</b> <span id="c-email"></span> <span id="c-email-confirmado"></span></div>
           <div class="contato-linha"><b>WhatsApp:</b> <span id="c-whatsapp"></span></div>
+          <div class="contato-linha"><b>Preferência:</b> <span id="c-preferencia"></span></div>
+          <div class="contato-linha"><b>LinkedIn/site:</b> <span id="c-linkedin-site"></span></div>
           <div class="contato-linha"><b>Qualificação:</b> <span id="c-qualif"></span></div>
 
           <span class="obs-label">Status</span>
@@ -343,7 +347,7 @@ function renderRespostas(){
   const status = document.getElementById('filtro-status').value;
   const periodo = document.getElementById('filtro-periodo').value;
   const filtradas = respostas.filter(r=>{
-    const alvo = [r.c_empresa,r.c_nome,r.c_email,r.protocolo].join(' ').toLocaleLowerCase('pt-BR');
+    const alvo = [r.c_empresa,r.c_nome,r.c_cargo,r.c_email,r.protocolo].join(' ').toLocaleLowerCase('pt-BR');
     return (!busca || alvo.includes(busca)) && (status === 'todos' || r.status === status) && dentroDoPeriodo(r.created_at, periodo);
   });
   if(filtradas.length === 0){
@@ -361,7 +365,7 @@ function renderRespostas(){
         <td>${dt}</td>
         <td>${escapeHtml(r.protocolo)}</td>
         <td><b>${escapeHtml(r.c_empresa)}</b></td>
-        <td>${escapeHtml(r.c_nome)}</td>
+        <td><b>${escapeHtml(r.c_nome)}</b><span class="subcell">${escapeHtml(r.c_cargo||'Cargo não informado')}</span></td>
         <td>${score}</td>
         <td><span class="badge ${escapeHtml(r.status)}">${escapeHtml(statusLabel)}</span></td>
         <td><div class="acoes-tabela"><button class="btn-abrir" onclick="abrirDetalhe('${r.id}')">Revisar</button><button class="btn-relatorio-lista" onclick="abrirRelatorioId('${r.id}')">Relatório</button></div></td>
@@ -492,8 +496,12 @@ function abrirDetalhe(id){
 
   document.getElementById('c-nome').textContent = atual.c_nome;
   document.getElementById('c-empresa').textContent = atual.c_empresa;
+  document.getElementById('c-cargo').textContent = atual.c_cargo || 'Não informado';
   document.getElementById('c-email').textContent = atual.c_email;
+  document.getElementById('c-email-confirmado').textContent = atual.c_email_corporativo_confirmado ? '✓ confirmado' : '· anterior à confirmação';
   document.getElementById('c-whatsapp').textContent = atual.c_whatsapp;
+  document.getElementById('c-preferencia').textContent = {email:'E-mail',whatsapp:'WhatsApp',ambos:'E-mail ou WhatsApp'}[atual.c_preferencia_contato] || 'Não informada';
+  document.getElementById('c-linkedin-site').textContent = atual.c_linkedin_site || 'Não informado';
   const decisores = (atual.q_decisor||[]).join(', ') + (atual.q_decisor_outro ? ` (${atual.q_decisor_outro})` : '');
   document.getElementById('c-qualif').innerHTML = `Prazo: ${escapeHtml(atual.q_prazo||'–')}<br/>Pessoas decisoras: ${escapeHtml(decisores||'–')}<br/>Formato: ${escapeHtml(atual.q_formato||'–')}<br/>Investimento: ${escapeHtml(atual.q_investimento||'–')}<br/>Origem: ${escapeHtml(atual.q_origem||'–')}`;
 

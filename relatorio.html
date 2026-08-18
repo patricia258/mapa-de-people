@@ -73,7 +73,13 @@ body{
 }
 .contour svg{width:100%;height:100%}
 
-.page > *{position:relative;z-index:1}
+.page > :not(.contour){position:relative;z-index:1}
+.page > .contour{position:absolute;inset:0;z-index:0}
+.page:not(.capa):not(.fechamento)::after{
+  content:'CALI · MAPA DE PEOPLE';position:absolute;left:76px;right:76px;bottom:24px;
+  border-top:1px solid rgba(183,169,154,.28);padding-top:8px;color:var(--taupe);
+  font-size:8px;font-weight:600;letter-spacing:.14em;text-align:right;z-index:2;
+}
 
 .eyebrow{
   font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.22em;
@@ -104,7 +110,7 @@ body{
   margin-top:18px;
 }
 .capa .meta-row{
-  display:flex;gap:40px;margin-top:56px;padding-top:24px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 40px;margin-top:48px;padding-top:24px;
   border-top:1px solid rgba(247,243,238,.18);width:100%;max-width:600px;
 }
 .capa .meta-item .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);margin-bottom:5px}
@@ -132,6 +138,12 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 }
 .assinatura-inline .nome{font-family:var(--serif);font-style:italic;font-weight:600;font-size:19px;color:var(--bordo)}
 .assinatura-inline .cargo{font-size:11.5px;letter-spacing:.06em;color:var(--taupe);text-transform:uppercase;margin-top:3px}
+.metodo-leitura{margin-top:30px;padding-top:24px;border-top:1px solid var(--marfim-2)}
+.metodo-leitura h3{font-family:var(--serif);font-size:17px;color:var(--bordo);margin-bottom:13px}
+.metodo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metodo-card{background:var(--branco);border:1px solid var(--marfim-2);border-radius:7px;padding:15px 14px;min-height:94px}
+.metodo-card b{display:block;font-family:var(--serif);font-size:20px;color:var(--dourado);margin-bottom:5px}
+.metodo-card span{display:block;font-size:10.5px;line-height:1.48;color:var(--grafite)}
 
 /* ══ SCORE HEADER (usado nas páginas V1/V2) ══ */
 .score-resumo{
@@ -201,6 +213,10 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 .radar-wrap{display:flex;flex-direction:column;align-items:center;margin-top:8px;background:rgba(255,255,255,.58);border:1px solid var(--marfim-2);border-radius:10px;padding:10px 14px 18px}
 .radar-wrap svg{display:block;max-width:100%;height:auto}
 .radar-caption{text-align:center;max-width:420px;margin-top:10px;font-size:12px;color:var(--taupe)}
+.radar-insights{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.radar-insight{background:var(--branco);border:1px solid var(--marfim-2);border-radius:7px;padding:13px 15px}
+.radar-insight .k{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:3px}
+.radar-insight .v{font-family:var(--serif);font-size:15px;color:var(--bordo);font-weight:600}
 
 /* ══ LEITURA POR DIMENSÃO ══ */
 .dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
@@ -270,6 +286,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .radar-wrap svg{width:100%;height:auto}
   .dim-head{gap:12px}
   .reco-etapas{grid-template-columns:1fr}
+  .metodo-grid,.radar-insights{grid-template-columns:1fr}
 }
 
 /* ══ IMPRESSÃO / PDF ══ */
@@ -280,24 +297,40 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .doc{max-width:100%;padding:0}
   .page{
     width:210mm;min-height:297mm;height:297mm;
-    margin:0;padding:15mm 15mm;
+    margin:0;padding:14mm 15mm 17mm;
     page-break-after:always;overflow:hidden;
     display:flex;flex-direction:column;justify-content:flex-start;
   }
-  .page.capa,.page.carta,.page.fechamento{justify-content:center}
+  .page.capa,.page.fechamento{justify-content:center}
   .page.capa{padding:20mm 18mm}
+  .page:not(.capa):not(.fechamento)::after{left:15mm;right:15mm;bottom:7mm}
+  .page.carta{justify-content:flex-start;padding-top:18mm}
+  .page.carta p{font-size:11.2pt;line-height:1.68;margin-bottom:12px}
+  .page.carta .assinatura-inline{margin-top:18px}
+  .page.carta .metodo-leitura{margin-top:18px;padding-top:16px;flex:1;display:flex;flex-direction:column}
+  .page.carta .metodo-grid{flex:1}
+  .page.carta .metodo-card{min-height:0;padding:4mm}
   .page-analise .divider{margin:14px 0 18px}
   .page-analise .score-resumo{margin-bottom:20px;padding:14px 18px}
-  .page-matriz .matriz-wrap{grid-template-columns:minmax(0,1.18fr) minmax(48mm,.82fr);gap:8mm;align-items:center}
-  .page-matriz .matriz{height:98mm;aspect-ratio:auto}
-  .page-matriz .matriz-legenda{margin-top:11mm}
-  .page-radar .radar-wrap{padding:4mm 5mm 5mm}
-  .page-radar #radar-svg{width:158mm;height:auto;max-height:138mm}
-  .page-dimensoes .dim-grid{gap:4mm}
-  .page-dimensoes .dim-card{padding:4mm}
+  .page-matriz .matriz-wrap{grid-template-columns:minmax(0,1.15fr) minmax(49mm,.85fr);gap:7mm;align-items:center}
+  .page-matriz .matriz{height:102mm;aspect-ratio:auto}
+  .page-matriz .matriz-legenda{margin-top:9mm}
+  .page-radar .radar-wrap{padding:3mm 5mm 4mm;flex:1;justify-content:center}
+  .page-radar #radar-svg{width:152mm;height:auto;max-height:112mm}
+  .page-radar .radar-caption{margin-top:2mm}
+  .page-radar .radar-insights{margin-top:3mm}
+  .page-dimensoes .dim-grid{gap:4mm;flex:1;grid-template-rows:1fr 1fr}
+  .page-dimensoes .dim-card{padding:5mm;display:flex;flex-direction:column;justify-content:flex-start}
   .page-dimensoes .dim-texto{font-size:10.5pt;line-height:1.52}
   .page-dimensoes .obs-consultora{font-size:9.5pt;line-height:1.45}
-  .page-recomendacao .reco-box{min-height:118mm;display:flex;flex-direction:column;justify-content:center;padding:12mm}
+  .page-recomendacao .reco-box{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:12mm}
+  .page.compacta{padding:11mm 13mm 15mm}
+  .page.compacta h2.titulo{font-size:26px}
+  .page.compacta .divider{margin:9px 0 12px}
+  .page.compacta .score-resumo{margin-bottom:12px;padding:10px 14px}
+  .page.compacta .dim-card{padding:3.5mm}
+  .page.densa{font-size:92%}
+  .page.densa .dim-texto,.page.densa .obs-consultora{font-size:9pt;line-height:1.38}
   .page:last-child{page-break-after:auto}
 }
 </style>
@@ -310,7 +343,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   <span class="tag">CALI · Mapa de People</span>
   <div class="actions">
     <button onclick="voltarPainel()">← Painel</button>
-    <button class="primary" onclick="window.print()">Imprimir / Salvar PDF</button>
+    <button class="primary" onclick="imprimirRelatorio()">Imprimir / Salvar PDF</button>
     <button onclick="sair()">Sair</button>
   </div>
 </div>
@@ -329,6 +362,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <div class="meta-row">
       <div class="meta-item"><div class="k">Protocolo</div><div class="v" id="protocolo">—</div></div>
       <div class="meta-item"><div class="k">Data da leitura</div><div class="v" id="capa-data">—</div></div>
+      <div class="meta-item"><div class="k">Respondido por</div><div class="v" id="capa-contato">—</div></div>
       <div class="meta-item"><div class="k">Elaborado por</div><div class="v">Patrícia Lima</div></div>
     </div>
   </section>
@@ -343,10 +377,18 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <p>Cruzei o que você me contou com quatro dimensões que uso para entender a maturidade de uma operação: a estrutura que sustenta o dia a dia, a liderança e a cultura que fazem o time se mover, a forma como vocês decidem — com dado ou com instinto — e a complexidade operacional que você já carrega. Nas próximas páginas, mostro esse resultado de duas formas: primeiro como uma posição num mapa de quadrantes, depois como um radar que revela o formato do problema.</p>
     <p>Ao final, aponto o caminho que faz mais sentido para o seu momento — sem genérico, sem "toda empresa que cresce precisa disso". Se algo aqui não bater com o que você vive todos os dias, me diga: é exatamente para essa conversa que este mapa existe.</p>
     <div class="assinatura-inline">
-      <div class="foto-patricia placeholder">FOTO<br/>PATI</div>
+      <div class="foto-patricia placeholder">PL</div>
       <div>
         <div class="nome">Patrícia Lima</div>
         <div class="cargo">People Advisory Executive · CALI</div>
+      </div>
+    </div>
+    <div class="metodo-leitura">
+      <h3>Como ler este mapa</h3>
+      <div class="metodo-grid">
+        <div class="metodo-card"><b>01</b><span><strong>Posição.</strong> A matriz cruza maturidade e complexidade para situar o momento atual.</span></div>
+        <div class="metodo-card"><b>02</b><span><strong>Equilíbrio.</strong> O radar evidencia forças e desequilíbrios entre as quatro dimensões.</span></div>
+        <div class="metodo-card"><b>03</b><span><strong>Prioridade.</strong> O parecer transforma a leitura no primeiro movimento recomendado.</span></div>
       </div>
     </div>
   </section>
@@ -402,6 +444,10 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <div class="radar-wrap">
       <svg id="radar-svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-label="Radar das quatro dimensões de maturidade"></svg>
       <p class="radar-caption">Quanto mais próxima do centro, mais frágil a dimensão. Um radar equilibrado — mesmo que pequeno — é mais saudável do que um radar grande e torto.</p>
+      <div class="radar-insights">
+        <div class="radar-insight"><div class="k">Maior força</div><div class="v" id="dim-forte-nome">—</div></div>
+        <div class="radar-insight"><div class="k">Ponto de atenção</div><div class="v" id="dim-atencao-nome">—</div></div>
+      </div>
     </div>
   </section>
 
@@ -554,6 +600,7 @@ async function carregar(){
   document.getElementById('capa-empresa').textContent = r.c_empresa;
   document.getElementById('protocolo').textContent = r.protocolo;
   document.getElementById('capa-data').textContent = new Date(r.created_at).toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'});
+  document.getElementById('capa-contato').textContent = `${r.c_nome}${r.c_cargo ? ` · ${r.c_cargo}` : ''}`;
   document.getElementById('score-final').textContent = scoreFinal;
 
   ['d1','d2','d3','d4'].forEach(d=>{
@@ -634,8 +681,11 @@ const dimList = [
   {chave:'d4', nome:'Dimensões Operacionais', valor:scores.d4}
 ];
 const maisFraca = dimList.reduce((a,b) => b.valor < a.valor ? b : a);
+const maisForte = dimList.reduce((a,b) => b.valor > a.valor ? b : a);
 document.getElementById('score-fraca').textContent = maisFraca.valor.toFixed(1).replace('.',',');
 document.getElementById('dim-fraca-nome').textContent = maisFraca.nome;
+document.getElementById('dim-forte-nome').textContent = `${maisForte.nome} · ${maisForte.valor.toFixed(1).replace('.',',')}/10`;
+document.getElementById('dim-atencao-nome').textContent = `${maisFraca.nome} · ${maisFraca.valor.toFixed(1).replace('.',',')}/10`;
 
 /* radar SVG — 4 eixos: topo, direita, baixo, esquerda */
 (function drawRadar(){
@@ -706,7 +756,27 @@ function contourPaths(seed){
 
 } // fecha finalizarRenderizacao
 
-Object.assign(window, {sair: signOut, voltarPainel: () => window.location.assign('painel.html')});
+async function imprimirRelatorio(){
+  if(document.fonts?.ready) await document.fonts.ready;
+  ajustarPaginasA4();
+  window.print();
+}
+
+function ajustarPaginasA4(){
+  document.querySelectorAll('.page').forEach(page=>{
+    page.classList.remove('compacta','densa');
+    void page.offsetHeight;
+    if(page.scrollHeight > page.clientHeight + 2){
+      page.classList.add('compacta');
+      void page.offsetHeight;
+    }
+    if(page.scrollHeight > page.clientHeight + 2) page.classList.add('densa');
+  });
+}
+
+window.addEventListener('beforeprint', ajustarPaginasA4);
+window.addEventListener('afterprint', ()=>document.querySelectorAll('.page').forEach(page=>page.classList.remove('compacta','densa')));
+Object.assign(window, {sair: signOut, voltarPainel: () => window.location.assign('painel.html'), imprimirRelatorio});
 await carregar();
 </script>
 </body>

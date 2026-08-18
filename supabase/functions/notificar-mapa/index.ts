@@ -110,13 +110,16 @@ function emailCliente(r: Record<string, unknown>) {
 
 function emailPatricia(r: Record<string, any>) {
   const decisores = [...(Array.isArray(r.q_decisor) ? r.q_decisor : []), r.q_decisor_outro].filter(Boolean).join(", ") || "—";
+  const preferencias: Record<string, string> = { email: "E-mail", whatsapp: "WhatsApp", ambos: "E-mail ou WhatsApp" };
   const mix = `CLT ${r.d4_mix_clt || "–"}% · PJ ${r.d4_mix_pj || "–"}% · Estágio ${r.d4_mix_estagio || "–"}% · Freela ${r.d4_mix_freela || "–"}%`;
   const units: Record<string, string> = { "1": "Unidade única", "3": "2–3 unidades", "5": "Mais de 3 unidades" };
   const employees: Record<string, string> = { "1": "Até 20", "2": "20–50", "3": "50–100", "4": "100–200", "5": "Mais de 200" };
 
   const contact = section("Contato e qualificação",
-    answerRow("Nome", r.c_nome) + answerRow("Empresa", r.c_empresa) + answerRow("E-mail", r.c_email) +
-    answerRow("WhatsApp", r.c_whatsapp) + answerRow("Prazo", r.q_prazo) + answerRow("Pessoas decisoras", decisores) +
+    answerRow("Nome", r.c_nome) + answerRow("Cargo ou função", r.c_cargo) + answerRow("Empresa", r.c_empresa) +
+    answerRow("E-mail profissional", r.c_email) + answerRow("E-mail confirmado", r.c_email_corporativo_confirmado ? "Sim" : "Não") +
+    answerRow("WhatsApp", r.c_whatsapp) + answerRow("Preferência de contato", preferencias[String(r.c_preferencia_contato)] || "—") +
+    answerRow("LinkedIn ou site", r.c_linkedin_site) + answerRow("Prazo", r.q_prazo) + answerRow("Pessoas decisoras", decisores) +
     answerRow("Formato", r.q_formato) + answerRow("Investimento", r.q_investimento) + answerRow("Origem", r.q_origem));
   const d1 = section("01 · Maturidade Estrutural",
     answerRow("Como descreve o RH hoje", scale(r.d1_rh_hoje)) + answerRow("Processos formalizados", scale(r.d1_processos)) + answerRow("Cargos e salários", scale(r.d1_cargos_salarios)));
