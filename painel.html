@@ -339,6 +339,7 @@ document.body.classList.remove('auth-pendente');
 let respostas = [];
 let sessoes = [];
 let atual = null;
+let salvamentoEmAndamento = null;
 
 const STATUS_CONFIG = [
   {valor:'novo',rotulo:'Novo'},
@@ -655,9 +656,21 @@ function voltarLista(){
 }
 
 async function salvar(){
+  if(salvamentoEmAndamento) return salvamentoEmAndamento;
+  salvamentoEmAndamento = salvarRevisaoAtual();
+  try{
+    return await salvamentoEmAndamento;
+  }finally{
+    salvamentoEmAndamento = null;
+  }
+}
+
+async function salvarRevisaoAtual(){
   const btn = document.getElementById('btn-salvar');
+  const btnRelatorio = document.getElementById('btn-relatorio');
   const status = document.getElementById('salvando');
   btn.disabled = true;
+  btnRelatorio.disabled = true;
   status.textContent = 'Salvando...';
 
   const observacoes = {
@@ -671,25 +684,41 @@ async function salvar(){
   const novoStatus = document.getElementById('status-select').value;
 
   try{
-    const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas?id=eq.${atual.id}`, {
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas?id=eq.${atual.id}&select=observacoes,status`, {
       method: 'PATCH',
-      headers: {...headers, 'Prefer':'return=minimal'},
+      headers: {...headers, 'Prefer':'return=representation'},
       body: JSON.stringify({ observacoes, status: novoStatus })
     });
     if(!resp.ok) throw new Error(await resp.text());
-    atual.observacoes = observacoes;
-    atual.status = novoStatus;
-    status.textContent = 'Salvo ✓';
+    const [registroSalvo] = await resp.json();
+    if(!registroSalvo || registroSalvo.observacoes?.servico_recomendado !== observacoes.servico_recomendado){
+      throw new Error('O serviço recomendado não foi confirmado pelo banco.');
+    }
+    atual.observacoes = registroSalvo.observacoes;
+    atual.status = registroSalvo.status;
+    status.textContent = `Salvo ✓ ${observacoes.servico_recomendado}`;
     setTimeout(()=> status.textContent = '', 2000);
+    return true;
   }catch(err){
     console.error(err);
-    status.textContent = 'Erro ao salvar — tenta de novo.';
+    status.textContent = 'Erro ao salvar. O relatório não foi aberto para evitar usar dados antigos.';
+    return false;
+  }finally{
+    btn.disabled = false;
+    btnRelatorio.disabled = false;
   }
-  btn.disabled = false;
 }
 
-function abrirRelatorio(){
-  window.open(`relatorio.html?id=${atual.id}`, '_blank');
+async function abrirRelatorio(){
+  const janela = window.open('', '_blank');
+  const salvo = await salvar();
+  if(!salvo){
+    if(janela) janela.close();
+    return;
+  }
+  const url = `relatorio.html?id=${atual.id}&atualizado=${Date.now()}`;
+  if(janela) janela.location.href = url;
+  else window.open(url, '_blank');
 }
 
 function abrirRelatorioId(id){
