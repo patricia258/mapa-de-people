@@ -45,6 +45,7 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .kpi .numero{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1;color:var(--bordo)}
 .kpi .rotulo{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--taupe);font-weight:700;margin-top:7px}
 .filtros{display:grid;grid-template-columns:minmax(220px,1.7fr) minmax(150px,.7fr) minmax(150px,.7fr);gap:10px;background:rgba(255,255,255,.55);border:1px solid rgba(183,169,154,.25);border-radius:10px;padding:12px;margin-bottom:14px}
+.filtros-respostas{grid-template-columns:minmax(230px,1.6fr) repeat(4,minmax(138px,.7fr))}
 .filtro-campo{position:relative}
 .filtros input,.filtros select{width:100%;height:42px;margin:0;border:1px solid var(--marfim-2);border-radius:7px;background:var(--branco);font-family:var(--sans);font-size:12.5px;color:var(--grafite);padding:0 12px;outline:none}
 .filtros input:focus,.filtros select:focus{border-color:var(--dourado)}
@@ -59,6 +60,17 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .badge.novo{background:#FDECEC;color:#B0433E}
 .badge.em_revisao{background:#FCF3DC;color:#9A7418}
 .badge.enviado{background:#E4F0E7;color:var(--verde)}
+.status-inline{min-width:132px;width:auto;margin:0;padding:7px 28px 7px 11px;border:1px solid transparent;border-radius:100px;font-size:10.5px;font-weight:700;line-height:1.2;cursor:pointer;outline:none}
+.status-inline:focus{border-color:var(--dourado)}
+.status-inline:disabled{cursor:wait;opacity:.62}
+.status-novo{background:#FDECEC;color:#B0433E}
+.status-em_andamento,.status-em_revisao{background:#FCF3DC;color:#8A691E}
+.status-pre_enviado{background:#EEE7F6;color:#6E4E8E}
+.status-enviado{background:#E4F0E7;color:var(--verde)}
+.status-cancelado{background:#ECECEC;color:#666}
+.status-excluido{background:#E9E3DF;color:#695D55}
+.status-feedback{display:block;min-height:13px;margin-top:3px;color:var(--taupe);font-size:9px}
+.grupo-status td{background:var(--marfim);color:var(--bordo);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px;border-top:1px solid rgba(183,169,154,.35);border-bottom:1px solid rgba(183,169,154,.3)}
 .badge.abandono{background:#FDECEC;color:#B0433E}
 .badge.andamento{background:#FCF3DC;color:#8A691E}
 .badge.concluido{background:#E4F0E7;color:var(--verde)}
@@ -159,16 +171,22 @@ select, input.parecer-input{
       <div class="kpis">
         <div class="kpi"><div class="numero" id="kpi-total">0</div><div class="rotulo">Respostas</div></div>
         <div class="kpi"><div class="numero" id="kpi-novos">0</div><div class="rotulo">Novas</div></div>
-        <div class="kpi"><div class="numero" id="kpi-revisao">0</div><div class="rotulo">Em revisão</div></div>
+        <div class="kpi"><div class="numero" id="kpi-revisao">0</div><div class="rotulo">Em andamento</div></div>
         <div class="kpi"><div class="numero" id="kpi-enviados">0</div><div class="rotulo">Relatórios enviados</div></div>
       </div>
-      <div class="filtros">
+      <div class="filtros filtros-respostas">
         <input id="filtro-busca" type="search" placeholder="Buscar empresa, contato, e-mail ou protocolo" oninput="renderRespostas()"/>
         <select id="filtro-status" onchange="renderRespostas()">
-          <option value="todos">Todos os status</option><option value="novo">Novo</option><option value="em_revisao">Em revisão</option><option value="enviado">Enviado</option>
+          <option value="todos">Todos os status</option><option value="novo">Novo</option><option value="em_andamento">Em andamento</option><option value="pre_enviado">Pré-enviado</option><option value="enviado">Enviado</option><option value="cancelado">Cancelado</option><option value="excluido">Excluído</option>
         </select>
         <select id="filtro-periodo" onchange="renderRespostas()">
           <option value="todos">Todo o período</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option>
+        </select>
+        <select id="filtro-ordem" onchange="renderRespostas()">
+          <option value="recentes">Mais recentes primeiro</option><option value="antigos">Mais antigos primeiro</option><option value="nome_az">Nome: A–Z</option><option value="nome_za">Nome: Z–A</option>
+        </select>
+        <select id="filtro-agrupar" onchange="renderRespostas()">
+          <option value="status">Agrupar por status</option><option value="nenhum">Não agrupar</option>
         </select>
       </div>
       <div class="tabela-wrap">
@@ -291,8 +309,11 @@ select, input.parecer-input{
           <span class="obs-label">Status</span>
           <select id="status-select">
             <option value="novo">Novo</option>
-            <option value="em_revisao">Em revisão</option>
+            <option value="em_andamento">Em andamento</option>
+            <option value="pre_enviado">Pré-enviado</option>
             <option value="enviado">Enviado ao cliente</option>
+            <option value="cancelado">Cancelado</option>
+            <option value="excluido">Excluído</option>
           </select>
 
           <div class="acoes">
@@ -319,6 +340,25 @@ let respostas = [];
 let sessoes = [];
 let atual = null;
 
+const STATUS_CONFIG = [
+  {valor:'novo',rotulo:'Novo'},
+  {valor:'em_andamento',rotulo:'Em andamento'},
+  {valor:'pre_enviado',rotulo:'Pré-enviado'},
+  {valor:'enviado',rotulo:'Enviado'},
+  {valor:'cancelado',rotulo:'Cancelado'},
+  {valor:'excluido',rotulo:'Excluído'}
+];
+const STATUS_LABEL = Object.fromEntries(STATUS_CONFIG.map(item=>[item.valor,item.rotulo]));
+
+function statusNormalizado(status){
+  return status === 'em_revisao' ? 'em_andamento' : (status || 'novo');
+}
+
+function opcoesStatusHtml(statusAtual){
+  const normalizado = statusNormalizado(statusAtual);
+  return STATUS_CONFIG.map(item=>`<option value="${item.valor}"${item.valor===normalizado?' selected':''}>${item.rotulo}</option>`).join('');
+}
+
 function escapeHtml(valor){
   return String(valor ?? '').replace(/[&<>'"]/g, caractere => ({
     '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
@@ -336,11 +376,15 @@ async function carregarLista(){
   if(resp.status === 401 || resp.status === 403){ await signOut(); return; }
   if(!resp.ok){ document.getElementById('vazio').style.display='block'; document.getElementById('vazio').textContent='Não foi possível carregar as respostas agora.'; return; }
   respostas = await resp.json();
-  document.getElementById('kpi-total').textContent = respostas.length;
-  document.getElementById('kpi-novos').textContent = respostas.filter(r=>r.status === 'novo').length;
-  document.getElementById('kpi-revisao').textContent = respostas.filter(r=>r.status === 'em_revisao').length;
-  document.getElementById('kpi-enviados').textContent = respostas.filter(r=>r.status === 'enviado').length;
+  atualizarKpis();
   renderRespostas();
+}
+
+function atualizarKpis(){
+  document.getElementById('kpi-total').textContent = respostas.length;
+  document.getElementById('kpi-novos').textContent = respostas.filter(r=>statusNormalizado(r.status) === 'novo').length;
+  document.getElementById('kpi-revisao').textContent = respostas.filter(r=>statusNormalizado(r.status) === 'em_andamento').length;
+  document.getElementById('kpi-enviados').textContent = respostas.filter(r=>statusNormalizado(r.status) === 'enviado').length;
 }
 
 function renderRespostas(){
@@ -349,31 +393,82 @@ function renderRespostas(){
   const busca = document.getElementById('filtro-busca').value.trim().toLocaleLowerCase('pt-BR');
   const status = document.getElementById('filtro-status').value;
   const periodo = document.getElementById('filtro-periodo').value;
+  const ordem = document.getElementById('filtro-ordem').value;
+  const agrupamento = document.getElementById('filtro-agrupar').value;
   const filtradas = respostas.filter(r=>{
     const alvo = [r.c_empresa,r.c_nome,r.c_cargo,r.c_email,r.protocolo].join(' ').toLocaleLowerCase('pt-BR');
-    return (!busca || alvo.includes(busca)) && (status === 'todos' || r.status === status) && dentroDoPeriodo(r.created_at, periodo);
+    return (!busca || alvo.includes(busca)) && (status === 'todos' || statusNormalizado(r.status) === status) && dentroDoPeriodo(r.created_at, periodo);
   });
   if(filtradas.length === 0){
     document.getElementById('vazio').style.display = 'block';
     return;
   }
   document.getElementById('vazio').style.display = 'none';
-  filtradas.forEach(r=>{
+  const comparar = (a,b)=>{
+    if(ordem === 'antigos') return new Date(a.created_at) - new Date(b.created_at);
+    if(ordem === 'nome_az') return String(a.c_empresa||a.c_nome||'').localeCompare(String(b.c_empresa||b.c_nome||''),'pt-BR',{sensitivity:'base'});
+    if(ordem === 'nome_za') return String(b.c_empresa||b.c_nome||'').localeCompare(String(a.c_empresa||a.c_nome||''),'pt-BR',{sensitivity:'base'});
+    return new Date(b.created_at) - new Date(a.created_at);
+  };
+  filtradas.sort(comparar);
+
+  const linhaResposta = r=>{
     const dt = new Date(r.created_at).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'});
     const scores = calcularScores(r);
     const score = (scores.d1*.25 + scores.d2*.30 + scores.d3*.20 + scores.d4*.25).toFixed(1).replace('.',',');
-    const statusLabel = {novo:'Novo',em_revisao:'Em revisão',enviado:'Enviado'}[r.status] || r.status;
-    corpo.innerHTML += `
+    const statusAtual = statusNormalizado(r.status);
+    return `
       <tr class="linha">
         <td>${dt}</td>
         <td>${escapeHtml(r.protocolo)}</td>
         <td><b>${escapeHtml(r.c_empresa)}</b></td>
         <td><b>${escapeHtml(r.c_nome)}</b><span class="subcell">${escapeHtml(r.c_cargo||'Cargo não informado')}</span></td>
         <td>${score}</td>
-        <td><span class="badge ${escapeHtml(r.status)}">${escapeHtml(statusLabel)}</span></td>
+        <td><select class="status-inline status-${statusAtual}" aria-label="Status de ${escapeHtml(r.c_empresa||r.c_nome)}" data-anterior="${statusAtual}" onchange="atualizarStatusRapido('${r.id}',this.value,this)">${opcoesStatusHtml(statusAtual)}</select><span class="status-feedback" aria-live="polite"></span></td>
         <td><div class="acoes-tabela"><button class="btn-abrir" onclick="abrirDetalhe('${r.id}')">Revisar</button><button class="btn-relatorio-lista" onclick="abrirRelatorioId('${r.id}')">Relatório</button></div></td>
       </tr>`;
-  });
+  };
+
+  if(agrupamento === 'status'){
+    STATUS_CONFIG.forEach(item=>{
+      const grupo = filtradas.filter(r=>statusNormalizado(r.status)===item.valor);
+      if(!grupo.length) return;
+      corpo.innerHTML += `<tr class="grupo-status"><td colspan="7">${item.rotulo} · ${grupo.length}</td></tr>${grupo.map(linhaResposta).join('')}`;
+    });
+    const outros = filtradas.filter(r=>!STATUS_LABEL[statusNormalizado(r.status)]);
+    if(outros.length) corpo.innerHTML += `<tr class="grupo-status"><td colspan="7">Outros · ${outros.length}</td></tr>${outros.map(linhaResposta).join('')}`;
+  }else{
+    corpo.innerHTML = filtradas.map(linhaResposta).join('');
+  }
+}
+
+async function atualizarStatusRapido(id, novoStatus, select){
+  const registro = respostas.find(r=>r.id===id);
+  if(!registro || !STATUS_LABEL[novoStatus]) return;
+  const anterior = statusNormalizado(registro.status);
+  const feedback = select.parentElement.querySelector('.status-feedback');
+  select.disabled = true;
+  feedback.textContent = 'Salvando...';
+  try{
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas?id=eq.${id}`, {
+      method:'PATCH',
+      headers:{...headers,'Prefer':'return=minimal'},
+      body:JSON.stringify({status:novoStatus})
+    });
+    if(!resp.ok) throw new Error(await resp.text());
+    registro.status = novoStatus;
+    select.dataset.anterior = novoStatus;
+    select.className = `status-inline status-${novoStatus}`;
+    feedback.textContent = 'Salvo ✓';
+    atualizarKpis();
+    setTimeout(()=>renderRespostas(),550);
+  }catch(err){
+    console.error(err);
+    select.value = anterior;
+    select.className = `status-inline status-${anterior}`;
+    feedback.textContent = 'Não salvou. Tente novamente.';
+    select.disabled = false;
+  }
 }
 
 function situacaoSessao(sessao){
@@ -550,7 +645,7 @@ function abrirDetalhe(id){
   document.getElementById('obs-d4').value = obs.d4_obs || '';
   document.getElementById('parecer').value = obs.parecer || '';
   document.getElementById('servico-select').value = obs.servico_recomendado || 'Diagnóstico Executivo de People';
-  document.getElementById('status-select').value = atual.status || 'novo';
+  document.getElementById('status-select').value = statusNormalizado(atual.status);
 }
 
 function voltarLista(){
@@ -601,7 +696,7 @@ function abrirRelatorioId(id){
   window.open(`relatorio.html?id=${id}`, '_blank');
 }
 
-Object.assign(window, {abrirDetalhe, voltarLista, salvar, abrirRelatorio, abrirRelatorioId, trocarAba, renderRespostas, renderAcessos, atualizarTudo, sair: signOut});
+Object.assign(window, {abrirDetalhe, voltarLista, salvar, atualizarStatusRapido, abrirRelatorio, abrirRelatorioId, trocarAba, renderRespostas, renderAcessos, atualizarTudo, sair: signOut});
 await Promise.all([carregarLista(), carregarAcessos()]);
 </script>
 
