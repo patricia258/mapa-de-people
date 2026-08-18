@@ -448,13 +448,13 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
           <div><div class="q-texto">Cargo ou função</div><input type="text" name="c_cargo" autocomplete="organization-title" placeholder="Ex.: Diretora, CEO, RH" required/></div>
           <div><div class="q-texto">WhatsApp</div><input type="tel" name="c_whatsapp" autocomplete="tel" placeholder="DDD + número, com ou sem 55" inputmode="numeric" pattern="(?:55)?[0-9]{10,11}" title="Informe DDD + número, com ou sem o código 55. Ex.: 41987791933 ou 5541987791933" required/></div>
           <div class="grid-full"><div class="q-texto">E-mail corporativo ou profissional</div><input type="email" name="c_email" autocomplete="email" placeholder="voce@empresa.com ou voce@gmail.com" pattern="[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}" title="Digite um e-mail válido, ex: nome@empresa.com" required/>
-            <label class="confirmacao-email"><input type="checkbox" name="c_email_corporativo_confirmado" required/><span>Confirmo que este é o e-mail que uso profissionalmente — mesmo que seja @gmail.com ou outro provedor sem domínio próprio.</span></label>
+            <label class="confirmacao-email"><input type="checkbox" name="c_email_corporativo_confirmado" required/><span>Confirmo que este é o e-mail que uso profissionalmente — mesmo que seja @gmail.com ou outro provedor sem domínio próprio. <strong>(obrigatório)</strong></span></label>
           </div>
           <div class="grid-full"><div class="q-texto">LinkedIn pessoal ou site da empresa <span style="font-weight:400;color:var(--taupe)">(opcional)</span></div><input type="text" name="c_linkedin_site" inputmode="url" placeholder="linkedin.com/in/... ou empresa.com.br"/></div>
         </div>
       </div>
       <div class="q">
-        <div class="q-texto">Por onde você prefere receber meu contato?</div>
+      <div class="q-texto">Por onde você prefere receber meu contato? <strong>(obrigatório)</strong></div>
         <div class="chips">
           <label><input type="radio" name="c_preferencia_contato" value="email" required/><span class="chip">E-mail</span></label>
           <label><input type="radio" name="c_preferencia_contato" value="whatsapp"/><span class="chip">WhatsApp</span></label>
@@ -569,7 +569,7 @@ function perguntaHtml(pergunta){
     return `<div class="q"><div class="q-texto">${pergunta.texto}</div><div class="chips">${pergunta.opcoes.map(([valor,rotulo]) => `<label><input type="radio" name="${pergunta.nome}" value="${valor}"/><span class="chip">${rotulo}</span></label>`).join('')}</div></div>`;
   }
   if(pergunta.tipo === 'mix'){
-    return `<div class="q"><div class="q-texto">${pergunta.texto} <em style="font-weight:400;color:var(--taupe)">(a soma deve ser 100%)</em></div><div class="grid2"><input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric" required/><input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric" required/><input type="number" name="d4_mix_freela" placeholder="% Terceiros" min="0" max="100" inputmode="numeric" required/><input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric" required/></div></div>`;
+    return `<div class="q"><div class="q-texto">${pergunta.texto} <em style="font-weight:400;color:var(--taupe)">(opcional)</em></div><div class="grid2"><input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric"/><input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric"/><input type="number" name="d4_mix_freela" placeholder="% Terceiros" min="0" max="100" inputmode="numeric"/><input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric"/></div><div class="valores-ajuda">Se quiser responder, informe valores que somem 100%. Se preferir, deixe os quatro campos vazios e continue.</div></div>`;
   }
   if(pergunta.tipo === 'valores'){
     return `<div class="q" data-values-card><div class="q-texto">${pergunta.texto}</div><input type="text" name="d2_lista_valores" placeholder="Digite os valores separados por vírgulas" autocomplete="off" required/><div class="valores-ajuda">Depois de digitar, marque quais estão mais vivos e escolha o que mais precisa ser desenvolvido.</div><div class="valores-opcoes" id="valores-opcoes"></div></div>`;
@@ -639,6 +639,7 @@ function questaoPreenchida(q){
   if(!preenchidos) return false;
 
   if(campos.length && campos.every(input => input.name.startsWith('d4_mix_'))){
+    if(campos.every(input => input.value.trim() === '')) return true;
     const total = campos.reduce((soma, input) => soma + Number(input.value), 0);
     return total === 100;
   }
@@ -679,15 +680,23 @@ function validarEtapa(n, exibirAviso = true){
       aviso.textContent = 'Confira o campo WhatsApp. Informe DDD + número, com ou sem o código 55.';
     } else if(campoInvalido?.name === 'c_email'){
       aviso.textContent = 'Confira o campo E-mail e informe um endereço válido, como nome@empresa.com.';
+    } else if(campoInvalido?.name === 'c_email_corporativo_confirmado'){
+      aviso.textContent = 'Marque a confirmação logo abaixo do e-mail para continuar.';
+    } else if(campoInvalido?.name === 'c_preferencia_contato'){
+      aviso.textContent = 'Escolha se prefere receber o contato por e-mail, WhatsApp ou tanto faz.';
+    } else if(campoInvalido?.name === 'lgpd_aceite'){
+      aviso.textContent = 'Marque o consentimento LGPD para enviar o Mapa.';
     } else if(n === 7 && campoInvalido){
       aviso.textContent = `Confira o campo ${nomesCampos[campoInvalido.name] || 'destacado'} antes de enviar.`;
     } else {
       aviso.textContent = misturaInvalida
-        ? 'Preencha todas as respostas desta etapa. No mix de vínculos, informe inclusive os valores zero e confira se a soma é 100%.'
+        ? 'No mix de vínculos, deixe os quatro campos vazios ou informe valores que somem 100%.'
         : 'Antes de continuar, responda todas as perguntas desta etapa. Elas são necessárias para o relatório final.';
     }
     bloco.querySelector('.step-nav').before(aviso);
     registrarEvento('validation_error', n, { campo: campoInvalido?.name || campoInvalido?.id || 'etapa' });
+    campoInvalido?.setAttribute('aria-invalid', 'true');
+    campoInvalido?.focus({preventScroll:true});
     incompletas[0].scrollIntoView({behavior:'smooth', block:'center'});
   }
   return false;
@@ -735,9 +744,11 @@ document.getElementById('chk-decisor-outro').addEventListener('change', function
 
 document.getElementById('mapaForm').addEventListener('input', function(e){
   e.target.closest('.q, .lgpd-box')?.classList.remove('incompleta');
+  e.target.removeAttribute?.('aria-invalid');
 });
 document.getElementById('mapaForm').addEventListener('change', function(e){
   e.target.closest('.q, .lgpd-box')?.classList.remove('incompleta');
+  e.target.removeAttribute?.('aria-invalid');
 });
 
 /* nota de deslocamento quando escolhe presencial */
@@ -835,6 +846,7 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
   const data = new FormData(this);
   const num = value => value === null || value === '' ? null : Number.parseInt(String(value), 10);
   const valor = nome => num(data.get(nome));
+  const valorMix = nome => valor(nome) ?? 0;
   const media = valores => valores.reduce((soma, atual) => soma + atual, 0) / valores.length;
   const arredonda = valores => Math.round(media(valores));
 
@@ -894,10 +906,10 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     d3_custo: arredonda(diagnosticoV2.d3.tecnologia),
     d4_colaboradores: valor('d4_tamanho_quadro'),
     d4_unidades: valor('d4_distribuicao_geo') <= 2 ? 1 : valor('d4_distribuicao_geo') <= 4 ? 3 : 5,
-    d4_mix_clt: String(valor('d4_mix_clt')),
-    d4_mix_pj: String(valor('d4_mix_pj')),
-    d4_mix_estagio: String(valor('d4_mix_estagio')),
-    d4_mix_freela: String(valor('d4_mix_freela')),
+    d4_mix_clt: String(valorMix('d4_mix_clt')),
+    d4_mix_pj: String(valorMix('d4_mix_pj')),
+    d4_mix_estagio: String(valorMix('d4_mix_estagio')),
+    d4_mix_freela: String(valorMix('d4_mix_freela')),
     d4_turnover: valor('d4_turnover_nivel'),
     l1_tecnologia: num(data.get('l1_tecnologia')),
     l2_execucao: num(data.get('l2_execucao')),

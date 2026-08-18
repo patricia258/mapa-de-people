@@ -159,10 +159,13 @@ function emailPatricia(r: Record<string, any>) {
     answerRow("Indicadores", scale(r.d3_indicadores)) + answerRow("Decisões por dados", scale(r.d3_decisao)) + answerRow("Custo de pessoas", scale(r.d3_custo)));
 
   const v2Mix = v2?.d4?.vinculos?.composicao;
+  const v2MixTexto = [v2Mix?.clt, v2Mix?.pj, v2Mix?.terceiros, v2Mix?.estagiarios].every((valor) => valor === null || valor === undefined)
+    ? "Não informada"
+    : `CLT ${v2Mix?.clt ?? "–"}% · PJ ${v2Mix?.pj ?? "–"}% · Terceiros ${v2Mix?.terceiros ?? "–"}% · Estagiários ${v2Mix?.estagiarios ?? "–"}%`;
   const d4 = v2 ? section("04 · Dimensões Operacionais",
     answerRow("4.1 · Tamanho do quadro", employees[String(v2.d4.tamanho[0])] || "—") +
     answerRow("4.1 · Distribuição geográfica", scale(v2.d4.tamanho[1])) +
-    answerRow("4.2 · Mix de vínculos", `CLT ${v2Mix?.clt ?? "–"}% · PJ ${v2Mix?.pj ?? "–"}% · Terceiros ${v2Mix?.terceiros ?? "–"}% · Estagiários ${v2Mix?.estagiarios ?? "–"}%`) +
+    answerRow("4.2 · Mix de vínculos", v2MixTexto) +
     answerRow("4.2 · Gestão dos regimes", scale(v2.d4.vinculos.gestao)) +
     answerRow("4.3 · Nível de turnover", scale(v2.d4.rotatividade[0])) +
     answerRow("4.3 · Custo de gente no resultado", scale(v2.d4.rotatividade[1]))) : section("04 · Dimensões Operacionais",

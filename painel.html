@@ -490,9 +490,12 @@ function renderizarRespostasV2(v2){
     grupoQa('3.2 · Decisão ancorada em dado', [['Decisões de gente',v2.d3.decisao[0]],['Referência compartilhada',v2.d3.decisao[1]]]) +
     grupoQa('3.3 · Tecnologia e IA', [['Ferramentas de RH',v2.d3.tecnologia[0]],['Uso de IA no RH',v2.d3.tecnologia[1]]]);
   const mix = v2.d4.vinculos.composicao || {};
+  const mixTexto = [mix.clt,mix.pj,mix.terceiros,mix.estagiarios].every(valor => valor === null || valor === undefined)
+    ? 'Não informada'
+    : `CLT ${mix.clt ?? '–'}% · PJ ${mix.pj ?? '–'}% · Terceiros ${mix.terceiros ?? '–'}% · Estagiários ${mix.estagiarios ?? '–'}%`;
   document.getElementById('qa-d4').innerHTML =
     grupoQa('4.1 · Tamanho e complexidade do time', [['Tamanho do quadro',v2.d4.tamanho[0]],['Distribuição geográfica',v2.d4.tamanho[1]]]) +
-    grupoQa('4.2 · Mix de vínculos e regimes', [['Composição',`CLT ${mix.clt ?? '–'}% · PJ ${mix.pj ?? '–'}% · Terceiros ${mix.terceiros ?? '–'}% · Estagiários ${mix.estagiarios ?? '–'}%`,false],['Gestão dos regimes',v2.d4.vinculos.gestao]]) +
+    grupoQa('4.2 · Mix de vínculos e regimes', [['Composição',mixTexto,false],['Gestão dos regimes',v2.d4.vinculos.gestao]]) +
     grupoQa('4.3 · Rotatividade e custo de gente', [['Nível de turnover',v2.d4.rotatividade[0]],['Custo de gente no resultado',v2.d4.rotatividade[1]]]);
 }
 

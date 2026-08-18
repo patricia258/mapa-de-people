@@ -686,6 +686,9 @@ function renderSubcamadas(leitura){
     }
     if(chave==='d4_vinculos' && leitura.v2){
       const m = leitura.v2.d4.vinculos.composicao;
+      if([m.clt,m.pj,m.terceiros,m.estagiarios].every(valor => valor === null || valor === undefined)){
+        return 'Composição percentual não informada pelo respondente.';
+      }
       return `Composição informada: CLT ${m.clt}% · PJ ${m.pj}% · terceiros ${m.terceiros}% · estagiários ${m.estagiarios}%.`;
     }
     return '';
