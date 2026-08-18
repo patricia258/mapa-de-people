@@ -837,8 +837,8 @@ function renderGraficoEsforco(scores){
 
   const dims = [
     {chave:'d1', codigo:'D1', nome:'Maturidade Estrutural', peso:0.15, lado:'esquerda', ajuste:-48},
-    {chave:'d2', codigo:'D2', nome:'Liderança & Cultura', peso:0.20, lado:'direita', ajuste:-48, jitter:-6},
-    {chave:'d3', codigo:'D3', nome:'Dados & Decisão', peso:0.20, lado:'esquerda', ajuste:34, jitter:6},
+    {chave:'d2', codigo:'D2', nome:'Liderança & Cultura', peso:0.20, lado:'direita', ajuste:-48, jitter:-10},
+    {chave:'d3', codigo:'D3', nome:'Dados & Decisão', peso:0.20, lado:'esquerda', ajuste:34, jitter:10},
     {chave:'d4', codigo:'D4', nome:'Dimensões Operacionais', peso:0.28, lado:'direita', ajuste:34}
   ].map(d=>({...d, desempenho:Number(scores[d.chave]) || 0}));
 
@@ -848,6 +848,7 @@ function renderGraficoEsforco(scores){
   const y = valor => plot.y + ((10-valor)/10)*plot.h;
   const fmt = valor => valor.toFixed(2).replace('.',',');
   const nota = valor => valor.toFixed(1).replace('.',',');
+  const esc = valor => String(valor).replace(/[&<>"']/g, caractere => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[caractere]));
   const menor = dims.reduce((a,b)=>b.desempenho<a.desempenho?b:a).chave;
   const xTicks = [0.10,0.15,0.20,0.25,0.30];
   const yTicks = [0,2.5,5,7.5,10];
@@ -872,20 +873,21 @@ function renderGraficoEsforco(scores){
   const gradesY = yTicks.map(t=>`<g><line x1="${plot.x}" y1="${y(t)}" x2="${plot.x+plot.w}" y2="${y(t)}" stroke="#B7A99A" stroke-opacity=".28"/><text x="${plot.x-10}" y="${y(t)+3}" text-anchor="end" font-size="9" fill="#2B2B2B">${String(t).replace('.',',')}</text></g>`).join('');
   const gradesX = xTicks.map(t=>`<g><line x1="${x(t)}" y1="${plot.y}" x2="${x(t)}" y2="${plot.y+plot.h}" stroke="#B7A99A" stroke-opacity=".22"/><text x="${x(t)}" y="${plot.y+plot.h+15}" text-anchor="middle" font-size="9" fill="#2B2B2B">${fmt(t)}</text></g>`).join('');
 
-  const bolhas = dims.map(d=>{
+  const dadosVisuais = dims.map(d=>{
     const cor = d.chave===menor ? '#5A1E2D' : '#B58C52';
     const cardX = d.lx, cardY = d.ly, cardW=180, cardH=36;
     const ancoraX = d.lado==='esquerda' ? cardX+cardW : cardX;
     const ancoraY = cardY+cardH/2;
-    return `<g aria-label="${d.codigo} ${d.nome}, peso ${fmt(d.peso)}, desempenho ${nota(d.desempenho)}">
-      <line x1="${d.cx}" y1="${d.cy}" x2="${ancoraX}" y2="${ancoraY}" stroke="${cor}" stroke-width="1" stroke-opacity=".58"/>
-      <circle cx="${d.cx}" cy="${d.cy}" r="${d.raio}" fill="${cor}" fill-opacity=".82" stroke="#F7F3EE" stroke-width="2"><title>${d.codigo} · ${d.nome} — peso ${fmt(d.peso)} · desempenho ${nota(d.desempenho)}</title></circle>
-      <text x="${d.cx}" y="${d.cy+3}" text-anchor="middle" font-size="10" font-weight="700" fill="#F7F3EE">${d.codigo}</text>
+    return {d,cor,cardX,cardY,cardW,cardH,ancoraX,ancoraY};
+  });
+  const conexoes = dadosVisuais.map(({d,cor,ancoraX,ancoraY})=>`<line x1="${d.cx}" y1="${d.cy}" x2="${ancoraX}" y2="${ancoraY}" stroke="${cor}" stroke-width="1" stroke-opacity=".58"/>`).join('');
+  const circulos = dadosVisuais.map(({d,cor})=>`<circle cx="${d.cx}" cy="${d.cy}" r="${d.raio}" fill="${cor}" fill-opacity=".82" stroke="#F7F3EE" stroke-width="2" aria-label="${d.codigo} ${esc(d.nome)}, peso ${fmt(d.peso)}, desempenho ${nota(d.desempenho)}"><title>${d.codigo} · ${esc(d.nome)} — peso ${fmt(d.peso)} · desempenho ${nota(d.desempenho)}</title></circle>`).join('');
+  const rotulos = dadosVisuais.map(({d,cor,cardX,cardY,cardW,cardH})=>`<g>
+      <text x="${d.cx}" y="${d.cy+3}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#F7F3EE" stroke="${cor}" stroke-width=".7" paint-order="stroke">${d.codigo}</text>
       <rect x="${cardX}" y="${cardY}" width="${cardW}" height="${cardH}" rx="5" fill="#F7F3EE" fill-opacity=".96" stroke="${cor}" stroke-opacity=".34"/>
-      <text x="${cardX+9}" y="${cardY+14}" font-family="Inter, sans-serif" font-size="9.5" font-weight="700" fill="#2B2B2B">${d.codigo} · ${d.nome}</text>
+      <text x="${cardX+9}" y="${cardY+14}" font-family="Inter, sans-serif" font-size="9.5" font-weight="700" fill="#2B2B2B">${d.codigo} · ${esc(d.nome)}</text>
       <text x="${cardX+9}" y="${cardY+27}" font-family="Inter, sans-serif" font-size="8.5" fill="#2B2B2B">Peso ${fmt(d.peso)} · Desempenho ${nota(d.desempenho)}</text>
-    </g>`;
-  }).join('');
+    </g>`).join('');
 
   const alertaX=x(0.20), alertaY=y(5);
   svg.innerHTML = `
@@ -896,7 +898,7 @@ function renderGraficoEsforco(scores){
     <line x1="${plot.x}" y1="${plot.y}" x2="${plot.x}" y2="${plot.y+plot.h}" stroke="#2B2B2B" stroke-width="1"/>
     <text x="${plot.x+plot.w/2}" y="${plot.y+plot.h+34}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#2B2B2B">Peso/Importância</text>
     <text x="17" y="${plot.y+plot.h/2}" text-anchor="middle" font-size="9.5" font-weight="600" fill="#2B2B2B" transform="rotate(-90 17 ${plot.y+plot.h/2})">Desempenho atual</text>
-    ${bolhas}`;
+    ${conexoes}${circulos}${rotulos}`;
 }
 
 function finalizarRenderizacao(scores){
