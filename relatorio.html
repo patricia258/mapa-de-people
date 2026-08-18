@@ -158,6 +158,10 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 }
 .matriz-legenda .dot{width:12px;height:12px;border-radius:50%;background:var(--dourado);border:2px solid var(--bordo);flex-shrink:0}
 .matriz-legenda b{color:var(--bordo)}
+.matriz-insights{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.matriz-insight{background:rgba(255,255,255,.7);border:1px solid var(--marfim-2);border-radius:7px;padding:14px 16px}
+.matriz-insight .k{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:4px}
+.matriz-insight p{font-size:11px;line-height:1.48;color:var(--grafite)}
 .score-resumo .txt{font-size:13px;color:var(--grafite);font-weight:400;max-width:480px}
 .score-resumo .txt b{font-weight:600;color:var(--bordo)}
 
@@ -286,7 +290,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .radar-wrap svg{width:100%;height:auto}
   .dim-head{gap:12px}
   .reco-etapas{grid-template-columns:1fr}
-  .metodo-grid,.radar-insights{grid-template-columns:1fr}
+  .metodo-grid,.radar-insights,.matriz-insights{grid-template-columns:1fr}
 }
 
 /* ══ IMPRESSÃO / PDF ══ */
@@ -315,6 +319,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .page-matriz .matriz-wrap{grid-template-columns:minmax(0,1.15fr) minmax(49mm,.85fr);gap:7mm;align-items:center}
   .page-matriz .matriz{height:102mm;aspect-ratio:auto}
   .page-matriz .matriz-legenda{margin-top:9mm}
+  .page-matriz .matriz-insights{margin-top:8mm}
   .page-radar .radar-wrap{padding:3mm 5mm 4mm;flex:1;justify-content:center}
   .page-radar #radar-svg{width:152mm;height:auto;max-height:112mm}
   .page-radar .radar-caption{margin-top:2mm}
@@ -429,6 +434,10 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
       <div class="barras" id="barras-quadrante"></div>
     </div>
     <div class="matriz-legenda"><span class="dot"></span><span>Você está aqui — quadrante <b id="quad-nome-legenda">Embrionário</b></span></div>
+    <div class="matriz-insights">
+      <div class="matriz-insight"><div class="k">Leitura do quadrante</div><p id="quad-leitura">—</p></div>
+      <div class="matriz-insight"><div class="k">Prioridade sugerida</div><p id="quad-prioridade">—</p></div>
+    </div>
   </section>
 
   <!-- ══════════ V2 · RADAR DE MATURIDADE ══════════ -->
@@ -686,6 +695,14 @@ document.getElementById('score-fraca').textContent = maisFraca.valor.toFixed(1).
 document.getElementById('dim-fraca-nome').textContent = maisFraca.nome;
 document.getElementById('dim-forte-nome').textContent = `${maisForte.nome} · ${maisForte.valor.toFixed(1).replace('.',',')}/10`;
 document.getElementById('dim-atencao-nome').textContent = `${maisFraca.nome} · ${maisFraca.valor.toFixed(1).replace('.',',')}/10`;
+const leiturasQuadrante = {
+  embrionario: 'A operação ainda cresce mais pela energia das pessoas do que por uma base previsível de gestão.',
+  fragil: 'A complexidade já chegou antes da estrutura necessária para sustentá-la com segurança.',
+  estruturacao: 'A base começou a ganhar forma; o desafio agora é transformar iniciativas em rotina consistente.',
+  estrategico: 'Maturidade e complexidade estão mais equilibradas, permitindo decisões de People ligadas ao negócio.'
+};
+document.getElementById('quad-leitura').textContent = leiturasQuadrante[quadClasse];
+document.getElementById('quad-prioridade').textContent = `Fortalecer ${maisFraca.nome} para reduzir o principal desequilíbrio sem perder o que já funciona.`;
 
 /* radar SVG — 4 eixos: topo, direita, baixo, esquerda */
 (function drawRadar(){
