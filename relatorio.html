@@ -293,7 +293,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 .fechamento p.frase{font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;
   max-width:520px;line-height:1.5;color:var(--marfim);margin-bottom:44px}
 .fechamento .assinatura{min-width:310px;margin-top:0}
-.assinatura-manuscrita{font-family:'Italianno',cursive;font-size:38px;font-weight:400;line-height:.95;color:rgba(247,243,238,.78);transform:rotate(-2deg);margin:0;padding:0 18px 8px;border-bottom:1px solid rgba(247,243,238,.38);text-shadow:none}
+.assinatura-manuscrita{font-family:'Italianno',cursive;font-size:38px;font-weight:400;line-height:.95;color:rgba(247,243,238,.78);transform:none;margin:0;padding:0 18px 8px;border-bottom:1px solid rgba(247,243,238,.38);text-shadow:none}
 .fechamento .assinatura .cargo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-top:14px}
 .fechamento .contatos{margin-top:28px;font-size:12px;color:var(--taupe);letter-spacing:.02em}
 .fechamento .contatos a{color:var(--marfim);text-decoration:none}
@@ -1064,8 +1064,12 @@ const servicosCali = {
 };
 
 function renderServico(nome){
-  const nomeResolvido = servicosCali[nome] ? nome : 'Diagnóstico Executivo de People';
-  const servico = servicosCali[nomeResolvido];
+  const nomeResolvido = String(nome || '').trim() || 'Diagnóstico Executivo de People';
+  const servico = servicosCali[nomeResolvido] || {
+    icone:'partner',
+    descricao:'Serviço recomendado pela Patrícia a partir da leitura executiva deste Mapa de People.',
+    etapas:['Alinhar prioridades','Definir a atuação','Iniciar a evolução']
+  };
   document.getElementById('servico-nome').textContent = nomeResolvido;
   document.getElementById('servico-icone').innerHTML = iconesServicos[servico.icone];
   document.getElementById('servico-texto').textContent = servico.descricao;
