@@ -86,6 +86,9 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .card .dscore{font-family:var(--serif);font-weight:700;color:var(--grafite);font-size:14px;float:right}
 .qa{font-size:12.5px;color:var(--grafite);margin:8px 0;padding-left:10px;border-left:2px solid var(--marfim-2)}
 .qa b{display:block;font-weight:600;margin-bottom:1px}
+.qa-grupo{margin-top:15px;padding-top:13px;border-top:1px solid var(--marfim-2)}
+.qa-grupo:first-child{margin-top:8px;padding-top:0;border-top:0}
+.qa-grupo-titulo{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:7px}
 textarea.obs-field{
   width:100%;margin-top:12px;border:1.5px solid var(--marfim-2);border-radius:6px;padding:10px 12px;
   font-family:var(--sans);font-size:13px;color:var(--grafite);min-height:70px;resize:vertical;outline:none;background:var(--marfim);
@@ -437,6 +440,16 @@ async function atualizarTudo(){
 function escala10(v){ return v == null ? null : v*2; }
 
 function calcularScores(r){
+  const v2 = r.diagnostico_v2;
+  if(v2?.version === 2){
+    const sub = {
+      d1:[media(v2.d1.processos),media(v2.d1.estrutura),media(v2.d1.governanca)],
+      d2:[media(v2.d2.comportamento),Number(v2.d2.valores.cultura_decisao),media(v2.d2.desenvolvimento)],
+      d3:[media(v2.d3.indicadores),media(v2.d3.decisao),media(v2.d3.tecnologia)],
+      d4:[media(v2.d4.tamanho),Number(v2.d4.vinculos.gestao),media(v2.d4.rotatividade)]
+    };
+    return {d1:escala10(media(sub.d1)),d2:escala10(media(sub.d2)),d3:escala10(media(sub.d3)),d4:escala10(media(sub.d4))};
+  }
   const d1 = media([r.d1_rh_hoje, r.d1_processos, r.d1_cargos_salarios]);
   const d2 = media([r.d2_valores, r.d2_lideres_preparo, r.d2_comportamento_dono, r.d2_sucessao]);
   const d3 = media([r.d3_indicadores, r.d3_decisao, r.d3_custo]);
@@ -451,6 +464,37 @@ function media(arr){
   return vals.reduce((a,b)=>a+b,0) / vals.length;
 }
 function fmt(v){ return v == null ? '–' : v.toFixed(1).replace('.',','); }
+
+function notaResposta(valor){
+  const n = Number(valor);
+  const esc = ['—','Muito baixo','Baixo','Médio','Alto','Muito alto'];
+  return Number.isFinite(n) && n >= 1 && n <= 5 ? `${n}/5 · ${esc[n]}` : '—';
+}
+
+function grupoQa(titulo, itens){
+  return `<div class="qa-grupo"><div class="qa-grupo-titulo">${escapeHtml(titulo)}</div>${itens.map(([rotulo,valor,escala=true])=>`<div class="qa"><b>${escapeHtml(rotulo)}</b>${escapeHtml(escala?notaResposta(valor):(valor||'—'))}</div>`).join('')}</div>`;
+}
+
+function renderizarRespostasV2(v2){
+  const lista = valor => Array.isArray(valor) && valor.length ? valor.join(', ') : '—';
+  document.getElementById('qa-d1').innerHTML =
+    grupoQa('1.1 · Processos e políticas formais', [['Cargos e atribuições',v2.d1.processos[0]],['Fluxos de admissão, promoção e saída',v2.d1.processos[1]],['Políticas aplicadas',v2.d1.processos[2]]]) +
+    grupoQa('1.2 · Estrutura e clareza de papéis', [['Hierarquia clara',v2.d1.estrutura[0]],['Proporção do time de gente',v2.d1.estrutura[1]]]) +
+    grupoQa('1.3 · Governança de gente', [['Regras de decisão',v2.d1.governanca[0]],['Registro e controle',v2.d1.governanca[1]]]);
+  document.getElementById('qa-d2').innerHTML =
+    grupoQa('2.1 · Comportamento de dono', [['Iniciativa',v2.d2.comportamento[0]],['Responsabilidade por resultado',v2.d2.comportamento[1]],['Postura com o negócio',v2.d2.comportamento[2]]]) +
+    grupoQa('2.2 · Fidelidade aos valores', [['Valores informados',lista(v2.d2.valores.lista),false],['Valores vividos',lista(v2.d2.valores.vividos),false],['Valor a desenvolver',v2.d2.valores.desenvolver,false],['Cultura orienta decisão',v2.d2.valores.cultura_decisao]]) +
+    grupoQa('2.3 · Desenvolvimento e sucessão', [['Pipeline de sucessão',v2.d2.desenvolvimento[0]],['Programa de liderança',v2.d2.desenvolvimento[1]],['Preparo para responsabilidades maiores',v2.d2.desenvolvimento[2]]]);
+  document.getElementById('qa-d3').innerHTML =
+    grupoQa('3.1 · Indicadores acompanhados', [['Indicadores existem',v2.d3.indicadores[0]],['Revisão periódica',v2.d3.indicadores[1]]]) +
+    grupoQa('3.2 · Decisão ancorada em dado', [['Decisões de gente',v2.d3.decisao[0]],['Referência compartilhada',v2.d3.decisao[1]]]) +
+    grupoQa('3.3 · Tecnologia e IA', [['Ferramentas de RH',v2.d3.tecnologia[0]],['Uso de IA no RH',v2.d3.tecnologia[1]]]);
+  const mix = v2.d4.vinculos.composicao || {};
+  document.getElementById('qa-d4').innerHTML =
+    grupoQa('4.1 · Tamanho e complexidade do time', [['Tamanho do quadro',v2.d4.tamanho[0]],['Distribuição geográfica',v2.d4.tamanho[1]]]) +
+    grupoQa('4.2 · Mix de vínculos e regimes', [['Composição',`CLT ${mix.clt ?? '–'}% · PJ ${mix.pj ?? '–'}% · Terceiros ${mix.terceiros ?? '–'}% · Estagiários ${mix.estagiarios ?? '–'}%`,false],['Gestão dos regimes',v2.d4.vinculos.gestao]]) +
+    grupoQa('4.3 · Rotatividade e custo de gente', [['Nível de turnover',v2.d4.rotatividade[0]],['Custo de gente no resultado',v2.d4.rotatividade[1]]]);
+}
 
 function abrirDetalhe(id){
   atual = respostas.find(r => r.id === id);
@@ -471,24 +515,14 @@ function abrirDetalhe(id){
   document.getElementById('s-d4').textContent = fmt(s.d4)+'/10';
 
   const esc = ['—','Muito baixo','Baixo','Médio','Alto','Muito alto'];
-  document.getElementById('qa-d1').innerHTML = `
-    <div class="qa"><b>Como descreve o RH hoje</b>${esc[atual.d1_rh_hoje]||'—'}</div>
-    <div class="qa"><b>Processos formalizados</b>${esc[atual.d1_processos]||'—'}</div>
-    <div class="qa"><b>Cargos e salários</b>${esc[atual.d1_cargos_salarios]||'—'}</div>`;
-  document.getElementById('qa-d2').innerHTML = `
-    <div class="qa"><b>Valores praticados</b>${esc[atual.d2_valores]||'—'}</div>
-    <div class="qa"><b>Preparo das lideranças</b>${esc[atual.d2_lideres_preparo]||'—'}</div>
-    <div class="qa"><b>Senso de responsabilidade</b>${esc[atual.d2_comportamento_dono]||'—'}</div>
-    <div class="qa"><b>Plano de sucessão</b>${esc[atual.d2_sucessao]||'—'}</div>`;
-  document.getElementById('qa-d3').innerHTML = `
-    <div class="qa"><b>Acompanha indicadores</b>${esc[atual.d3_indicadores]||'—'}</div>
-    <div class="qa"><b>Decisão por dado</b>${esc[atual.d3_decisao]||'—'}</div>
-    <div class="qa"><b>Conhece custo de gente</b>${esc[atual.d3_custo]||'—'}</div>`;
-  document.getElementById('qa-d4').innerHTML = `
-    <div class="qa"><b>Colaboradores</b>${['—','Até 20','20–50','50–100','100–200','+200'][atual.d4_colaboradores]||'—'}</div>
-    <div class="qa"><b>Unidades</b>${atual.d4_unidades===1?'Única':atual.d4_unidades===3?'2–3':atual.d4_unidades===5?'Mais de 3':'—'}</div>
-    <div class="qa"><b>Turnover</b>${atual.d4_turnover===1?'Baixa':atual.d4_turnover===3?'Média':atual.d4_turnover===5?'Alta':'—'}</div>
-    <div class="qa"><b>Mix de vínculos</b>CLT ${atual.d4_mix_clt||'–'}% · PJ ${atual.d4_mix_pj||'–'}% · Estágio ${atual.d4_mix_estagio||'–'}% · Freela ${atual.d4_mix_freela||'–'}%</div>`;
+  if(atual.diagnostico_v2?.version === 2){
+    renderizarRespostasV2(atual.diagnostico_v2);
+  }else{
+    document.getElementById('qa-d1').innerHTML = `<div class="qa"><b>Como descreve o RH hoje</b>${esc[atual.d1_rh_hoje]||'—'}</div><div class="qa"><b>Processos formalizados</b>${esc[atual.d1_processos]||'—'}</div><div class="qa"><b>Cargos e salários</b>${esc[atual.d1_cargos_salarios]||'—'}</div>`;
+    document.getElementById('qa-d2').innerHTML = `<div class="qa"><b>Valores praticados</b>${esc[atual.d2_valores]||'—'}</div><div class="qa"><b>Preparo das lideranças</b>${esc[atual.d2_lideres_preparo]||'—'}</div><div class="qa"><b>Senso de responsabilidade</b>${esc[atual.d2_comportamento_dono]||'—'}</div><div class="qa"><b>Plano de sucessão</b>${esc[atual.d2_sucessao]||'—'}</div>`;
+    document.getElementById('qa-d3').innerHTML = `<div class="qa"><b>Acompanha indicadores</b>${esc[atual.d3_indicadores]||'—'}</div><div class="qa"><b>Decisão por dado</b>${esc[atual.d3_decisao]||'—'}</div><div class="qa"><b>Conhece custo de gente</b>${esc[atual.d3_custo]||'—'}</div>`;
+    document.getElementById('qa-d4').innerHTML = `<div class="qa"><b>Colaboradores</b>${['—','Até 20','20–50','50–100','100–200','+200'][atual.d4_colaboradores]||'—'}</div><div class="qa"><b>Unidades</b>${atual.d4_unidades===1?'Única':atual.d4_unidades===3?'2–3':atual.d4_unidades===5?'Mais de 3':'—'}</div><div class="qa"><b>Turnover</b>${atual.d4_turnover===1?'Baixa':atual.d4_turnover===3?'Média':atual.d4_turnover===5?'Alta':'—'}</div><div class="qa"><b>Mix de vínculos</b>CLT ${atual.d4_mix_clt||'–'}% · PJ ${atual.d4_mix_pj||'–'}% · Estágio ${atual.d4_mix_estagio||'–'}% · Terceiros ${atual.d4_mix_freela||'–'}%</div>`;
+  }
   document.getElementById('qa-lentes').innerHTML = `
     <div class="qa"><b>L1 · Tecnologia/IA no RH</b>${esc[atual.l1_tecnologia]||'—'}</div>
     <div class="qa"><b>L2 · Capacidade de execução</b>${esc[atual.l2_execucao]||'—'}</div>
@@ -503,7 +537,8 @@ function abrirDetalhe(id){
   document.getElementById('c-preferencia').textContent = {email:'E-mail',whatsapp:'WhatsApp',ambos:'E-mail ou WhatsApp'}[atual.c_preferencia_contato] || 'Não informada';
   document.getElementById('c-linkedin-site').textContent = atual.c_linkedin_site || 'Não informado';
   const decisores = (atual.q_decisor||[]).join(', ') + (atual.q_decisor_outro ? ` (${atual.q_decisor_outro})` : '');
-  document.getElementById('c-qualif').innerHTML = `Prazo: ${escapeHtml(atual.q_prazo||'–')}<br/>Pessoas decisoras: ${escapeHtml(decisores||'–')}<br/>Formato: ${escapeHtml(atual.q_formato||'–')}<br/>Investimento: ${escapeHtml(atual.q_investimento||'–')}<br/>Origem: ${escapeHtml(atual.q_origem||'–')}`;
+  const qv2 = atual.diagnostico_v2?.qualificacao || {};
+  document.getElementById('c-qualif').innerHTML = `Prazo: ${escapeHtml(atual.q_prazo||'–')}<br/>Pessoas decisoras: ${escapeHtml(decisores||'–')}<br/>Formato: ${escapeHtml(atual.q_formato||'–')}<br/>Apoio posterior: ${escapeHtml(qv2.apoio_pos||'–')}<br/>Jurídico: ${escapeHtml(qv2.juridico||'–')}<br/>Investimento: ${escapeHtml(atual.q_investimento||'–')}<br/>Origem: ${escapeHtml(atual.q_origem||'–')}<br/>Possíveis sócios(as): ${escapeHtml(qv2.candidatos_socio||'–')}`;
 
   const obs = atual.observacoes || {};
   document.getElementById('obs-d1').value = obs.d1_obs || '';

@@ -111,23 +111,61 @@ function emailCliente(r: Record<string, unknown>) {
 function emailPatricia(r: Record<string, any>) {
   const decisores = [...(Array.isArray(r.q_decisor) ? r.q_decisor : []), r.q_decisor_outro].filter(Boolean).join(", ") || "—";
   const preferencias: Record<string, string> = { email: "E-mail", whatsapp: "WhatsApp", ambos: "E-mail ou WhatsApp" };
-  const mix = `CLT ${r.d4_mix_clt || "–"}% · PJ ${r.d4_mix_pj || "–"}% · Estágio ${r.d4_mix_estagio || "–"}% · Freela ${r.d4_mix_freela || "–"}%`;
+  const mix = `CLT ${r.d4_mix_clt ?? "–"}% · PJ ${r.d4_mix_pj ?? "–"}% · Estágio ${r.d4_mix_estagio ?? "–"}% · Terceiros ${r.d4_mix_freela ?? "–"}%`;
   const units: Record<string, string> = { "1": "Unidade única", "3": "2–3 unidades", "5": "Mais de 3 unidades" };
-  const employees: Record<string, string> = { "1": "Até 20", "2": "20–50", "3": "50–100", "4": "100–200", "5": "Mais de 200" };
+  const employees: Record<string, string> = { "1": "Até 20", "2": "21–50", "3": "51–150", "4": "151–500", "5": "Acima de 500" };
+  const v2 = r.diagnostico_v2?.version === 2 ? r.diagnostico_v2 : null;
+  const lista = (value: unknown) => Array.isArray(value) && value.length ? value.join(", ") : "—";
 
   const contact = section("Contato e qualificação",
     answerRow("Nome", r.c_nome) + answerRow("Cargo ou função", r.c_cargo) + answerRow("Empresa", r.c_empresa) +
     answerRow("E-mail profissional", r.c_email) + answerRow("E-mail confirmado", r.c_email_corporativo_confirmado ? "Sim" : "Não") +
     answerRow("WhatsApp", r.c_whatsapp) + answerRow("Preferência de contato", preferencias[String(r.c_preferencia_contato)] || "—") +
     answerRow("LinkedIn ou site", r.c_linkedin_site) + answerRow("Prazo", r.q_prazo) + answerRow("Pessoas decisoras", decisores) +
-    answerRow("Formato", r.q_formato) + answerRow("Investimento", r.q_investimento) + answerRow("Origem", r.q_origem));
-  const d1 = section("01 · Maturidade Estrutural",
+    answerRow("Formato", r.q_formato) + answerRow("Apoio posterior", v2?.qualificacao?.apoio_pos) +
+    answerRow("Apoio jurídico", v2?.qualificacao?.juridico) + answerRow("Possíveis sócios(as) / partners", v2?.qualificacao?.candidatos_socio) +
+    answerRow("Investimento", r.q_investimento) + answerRow("Origem", r.q_origem));
+
+  const d1 = v2 ? section("01 · Maturidade Estrutural",
+    answerRow("1.1 · Cargos e atribuições", scale(v2.d1.processos[0])) +
+    answerRow("1.1 · Fluxos de admissão, promoção e saída", scale(v2.d1.processos[1])) +
+    answerRow("1.1 · Políticas aplicadas", scale(v2.d1.processos[2])) +
+    answerRow("1.2 · Hierarquia clara", scale(v2.d1.estrutura[0])) +
+    answerRow("1.2 · Proporção do time de gente", scale(v2.d1.estrutura[1])) +
+    answerRow("1.3 · Regras de decisão", scale(v2.d1.governanca[0])) +
+    answerRow("1.3 · Registro e controle", scale(v2.d1.governanca[1]))) : section("01 · Maturidade Estrutural",
     answerRow("Como descreve o RH hoje", scale(r.d1_rh_hoje)) + answerRow("Processos formalizados", scale(r.d1_processos)) + answerRow("Cargos e salários", scale(r.d1_cargos_salarios)));
-  const d2 = section("02 · Liderança e Cultura",
+
+  const d2 = v2 ? section("02 · Liderança e Cultura",
+    answerRow("2.1 · Iniciativa de dono", scale(v2.d2.comportamento[0])) +
+    answerRow("2.1 · Responsabilidade por resultado", scale(v2.d2.comportamento[1])) +
+    answerRow("2.1 · Postura com o negócio", scale(v2.d2.comportamento[2])) +
+    answerRow("2.2 · Valores informados", lista(v2.d2.valores.lista)) +
+    answerRow("2.2 · Valores vividos", lista(v2.d2.valores.vividos)) +
+    answerRow("2.2 · Valor a desenvolver", v2.d2.valores.desenvolver) +
+    answerRow("2.2 · Cultura orienta decisão", scale(v2.d2.valores.cultura_decisao)) +
+    answerRow("2.3 · Pipeline de sucessão", scale(v2.d2.desenvolvimento[0])) +
+    answerRow("2.3 · Programa de liderança", scale(v2.d2.desenvolvimento[1])) +
+    answerRow("2.3 · Preparo para responsabilidades maiores", scale(v2.d2.desenvolvimento[2]))) : section("02 · Liderança e Cultura",
     answerRow("Valores praticados", scale(r.d2_valores)) + answerRow("Preparo das lideranças", scale(r.d2_lideres_preparo)) + answerRow("Senso de responsabilidade", scale(r.d2_comportamento_dono)) + answerRow("Plano de sucessão", scale(r.d2_sucessao)));
-  const d3 = section("03 · Dados e Decisão",
+
+  const d3 = v2 ? section("03 · Dados e Decisão",
+    answerRow("3.1 · Indicadores existem", scale(v2.d3.indicadores[0])) +
+    answerRow("3.1 · Revisão periódica", scale(v2.d3.indicadores[1])) +
+    answerRow("3.2 · Decisões de gente", scale(v2.d3.decisao[0])) +
+    answerRow("3.2 · Referência compartilhada", scale(v2.d3.decisao[1])) +
+    answerRow("3.3 · Ferramentas de RH", scale(v2.d3.tecnologia[0])) +
+    answerRow("3.3 · Uso de IA no RH", scale(v2.d3.tecnologia[1]))) : section("03 · Dados e Decisão",
     answerRow("Indicadores", scale(r.d3_indicadores)) + answerRow("Decisões por dados", scale(r.d3_decisao)) + answerRow("Custo de pessoas", scale(r.d3_custo)));
-  const d4 = section("04 · Dimensões Operacionais",
+
+  const v2Mix = v2?.d4?.vinculos?.composicao;
+  const d4 = v2 ? section("04 · Dimensões Operacionais",
+    answerRow("4.1 · Tamanho do quadro", employees[String(v2.d4.tamanho[0])] || "—") +
+    answerRow("4.1 · Distribuição geográfica", scale(v2.d4.tamanho[1])) +
+    answerRow("4.2 · Mix de vínculos", `CLT ${v2Mix?.clt ?? "–"}% · PJ ${v2Mix?.pj ?? "–"}% · Terceiros ${v2Mix?.terceiros ?? "–"}% · Estagiários ${v2Mix?.estagiarios ?? "–"}%`) +
+    answerRow("4.2 · Gestão dos regimes", scale(v2.d4.vinculos.gestao)) +
+    answerRow("4.3 · Nível de turnover", scale(v2.d4.rotatividade[0])) +
+    answerRow("4.3 · Custo de gente no resultado", scale(v2.d4.rotatividade[1]))) : section("04 · Dimensões Operacionais",
     answerRow("Colaboradores", employees[String(r.d4_colaboradores)] || "—") + answerRow("Unidades", units[String(r.d4_unidades)] || "—") + answerRow("Mix de vínculos", mix) + answerRow("Turnover", scale(r.d4_turnover)));
   const lenses = section("Considerações complementares",
     answerRow("Tecnologia e IA", scale(r.l1_tecnologia)) + answerRow("Capacidade de execução", scale(r.l2_execucao)) + answerRow("Maturidade do RH interno", scale(r.l3_rh_interno)));

@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="/logo.png"/>
 <link rel="apple-touch-icon" href="/logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italianno&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bordo:#5A1E2D;
@@ -129,7 +129,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 }
 .assinatura-inline{margin-top:36px;display:flex;align-items:center;gap:16px}
 .foto-patricia{
-  width:104px;height:112px;border-radius:18px;object-fit:cover;object-position:center 28%;
+  width:126px;height:126px;border-radius:20px;object-fit:cover;object-position:center 28%;
   border:2px solid var(--dourado);flex-shrink:0;background:var(--marfim-2);
 }
 .foto-patricia.placeholder{
@@ -242,6 +242,17 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   border-radius:0 3px 3px 0;
 }
 .obs-consultora b{font-style:normal;font-weight:700;color:var(--bordo);font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+.sintese-executiva{margin-top:16px;background:var(--bordo);color:var(--marfim);border-radius:8px;padding:20px 22px;border-left:4px solid var(--dourado)}
+.sintese-executiva h3{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:7px}
+.sintese-executiva p{font-size:12px;line-height:1.62;color:rgba(247,243,238,.9);font-weight:300}
+.subscore-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.subscore-card{background:rgba(255,255,255,.76);border:1px solid var(--marfim-2);border-radius:8px;padding:16px 17px;min-height:132px}
+.subscore-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:7px}
+.subscore-head .codigo{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--dourado);font-weight:700;display:block;margin-bottom:3px}
+.subscore-head .nome{font-family:var(--serif);font-size:15px;line-height:1.25;color:var(--bordo);font-weight:600}
+.subscore-head .nota{font-family:var(--serif);font-size:18px;color:var(--bordo);font-weight:700;white-space:nowrap}
+.subscore-card p{font-size:11.6px;line-height:1.55;color:var(--grafite);font-weight:300}
+.subscore-contexto{margin-top:7px;padding-top:7px;border-top:1px solid var(--marfim-2);font-size:10.5px;color:var(--taupe);line-height:1.45}
 
 /* ══ RECOMENDAÇÃO ══ */
 .reco-box{
@@ -272,10 +283,9 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 .fechamento .wordmark{margin-bottom:34px}
 .fechamento p.frase{font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;
   max-width:520px;line-height:1.5;color:var(--marfim);margin-bottom:44px}
-.fechamento .assinatura{border-top:1px solid rgba(247,243,238,.25);padding-top:18px;margin-top:6px}
-.assinatura-manuscrita{font-family:'Allura',cursive;font-size:48px;line-height:.9;color:var(--marfim);transform:rotate(-4deg);margin:-10px 0 13px;text-shadow:0 .5px 0 rgba(247,243,238,.35)}
-.fechamento .assinatura .nome{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--dourado)}
-.fechamento .assinatura .cargo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-top:4px}
+.fechamento .assinatura{min-width:310px;margin-top:0}
+.assinatura-manuscrita{font-family:'Italianno',cursive;font-size:38px;font-weight:400;line-height:.95;color:rgba(247,243,238,.78);transform:rotate(-2deg);margin:0;padding:0 18px 8px;border-bottom:1px solid rgba(247,243,238,.38);text-shadow:none}
+.fechamento .assinatura .cargo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-top:14px}
 .fechamento .contatos{margin-top:28px;font-size:12px;color:var(--taupe);letter-spacing:.02em}
 .fechamento .contatos a{color:var(--marfim);text-decoration:none}
 
@@ -332,10 +342,15 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
   .page-radar #radar-svg{width:152mm;height:auto;max-height:112mm}
   .page-radar .radar-caption{margin-top:2mm}
   .page-radar .radar-insights{margin-top:3mm}
-  .page-dimensoes .dim-grid{gap:4mm;flex:1;grid-template-rows:1fr 1fr}
+  .page-dimensoes .dim-grid{grid-template-columns:1fr;gap:4mm;flex:1;grid-template-rows:1fr 1fr}
   .page-dimensoes .dim-card{padding:5mm;display:flex;flex-direction:column;justify-content:flex-start}
-  .page-dimensoes .dim-texto{font-size:10.5pt;line-height:1.52}
+  .page-dimensoes .dim-texto{font-size:10.2pt;line-height:1.5}
   .page-dimensoes .obs-consultora{font-size:9.5pt;line-height:1.45}
+  .page-dimensoes .sintese-executiva{margin-top:4mm;padding:5mm 6mm}
+  .page-dimensoes .sintese-executiva p{font-size:9.6pt;line-height:1.46}
+  .page-subcamadas .subscore-grid{grid-template-rows:repeat(3,1fr);flex:1;gap:3.5mm}
+  .page-subcamadas .subscore-card{padding:4.5mm;min-height:0;display:flex;flex-direction:column;justify-content:center}
+  .page-subcamadas .subscore-card p{font-size:9.5pt;line-height:1.42}
   .page-recomendacao .reco-box{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:12mm}
   .page.compacta{padding:11mm 13mm 15mm}
   .page.compacta h2.titulo{font-size:26px}
@@ -468,11 +483,11 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     </div>
   </section>
 
-  <!-- ══════════ LEITURA POR DIMENSÃO ══════════ -->
+  <!-- ══════════ LEITURA POR DIMENSÃO · D1 E D2 ══════════ -->
   <section class="page page-analise page-dimensoes">
-    <div class="eyebrow">Detalhe</div>
+    <div class="eyebrow">Detalhe · 01</div>
     <h2 class="titulo">O que está por trás de cada nota</h2>
-    <p class="subtitulo">Minha leitura, dimensão por dimensão</p>
+    <p class="subtitulo">Estrutura, liderança e cultura</p>
     <hr class="divider"/>
 
     <div class="dim-grid">
@@ -488,20 +503,51 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
       <div class="obs-consultora" id="obscard-d2" style="display:none"><b>Observação da Patrícia</b><span id="obs-d2"></span></div>
     </div>
 
-    <div class="dim-card">
-      <div class="dim-head"><span class="nome">D3 · Dados & Decisão</span><span class="nota" id="nota-d3">–<small>/10</small></span></div>
-      <p class="dim-texto" id="texto-d3"></p>
-      <div class="obs-consultora" id="obscard-d3" style="display:none"><b>Observação da Patrícia</b><span id="obs-d3"></span></div>
     </div>
+  </section>
 
-    <div class="dim-card">
-      <div class="dim-head"><span class="nome">D4 · Dimensões Operacionais</span><span class="nota" id="nota-d4">–<small>/10</small></span></div>
-      <p class="dim-texto" id="texto-d4"></p>
-      <div class="obs-consultora" id="obscard-d4" style="display:none"><b>Observação da Patrícia</b><span id="obs-d4"></span></div>
-    </div>
-    </div>
+  <!-- ══════════ LEITURA POR DIMENSÃO · D3 E D4 ══════════ -->
+  <section class="page page-analise page-dimensoes">
+    <div class="eyebrow">Detalhe · 02</div>
+    <h2 class="titulo">Decisão e operação</h2>
+    <p class="subtitulo">Como dados, tecnologia e complexidade se encontram</p>
+    <hr class="divider"/>
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-head"><span class="nome">D3 · Dados & Decisão</span><span class="nota" id="nota-d3">–<small>/10</small></span></div>
+        <p class="dim-texto" id="texto-d3"></p>
+        <div class="obs-consultora" id="obscard-d3" style="display:none"><b>Observação da Patrícia</b><span id="obs-d3"></span></div>
+      </div>
 
+      <div class="dim-card">
+        <div class="dim-head"><span class="nome">D4 · Dimensões Operacionais</span><span class="nota" id="nota-d4">–<small>/10</small></span></div>
+        <p class="dim-texto" id="texto-d4"></p>
+        <div class="obs-consultora" id="obscard-d4" style="display:none"><b>Observação da Patrícia</b><span id="obs-d4"></span></div>
+      </div>
+    </div>
+    <div class="sintese-executiva">
+      <h3>Uma leitura que amarra tudo</h3>
+      <p id="sintese-texto"></p>
+    </div>
     <div style="margin-top:8px;font-size:11px;color:var(--taupe);letter-spacing:.02em" id="lentes-resumo"></div>
+  </section>
+
+  <!-- ══════════ LEITURA PROFUNDA · D1 E D2 ══════════ -->
+  <section class="page page-analise page-subcamadas">
+    <div class="eyebrow">Leitura profunda · 01</div>
+    <h2 class="titulo">Estrutura, liderança e cultura</h2>
+    <p class="subtitulo">Seis subcamadas mostram exatamente onde a base sustenta — e onde ainda depende de esforço individual.</p>
+    <hr class="divider"/>
+    <div class="subscore-grid" id="subcamadas-d1d2"></div>
+  </section>
+
+  <!-- ══════════ LEITURA PROFUNDA · D3 E D4 ══════════ -->
+  <section class="page page-analise page-subcamadas">
+    <div class="eyebrow">Leitura profunda · 02</div>
+    <h2 class="titulo">Decisão, tecnologia e operação</h2>
+    <p class="subtitulo">Seis subcamadas revelam a qualidade da decisão e o tamanho real da complexidade que o RH precisa suportar.</p>
+    <hr class="divider"/>
+    <div class="subscore-grid" id="subcamadas-d3d4"></div>
   </section>
 
   <!-- ══════════ RECOMENDAÇÃO ══════════ -->
@@ -521,7 +567,7 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
         <div class="reco-etapa"><b>02</b><span>Definir o plano</span></div>
         <div class="reco-etapa"><b>03</b><span>Executar em 90 dias</span></div>
       </div>
-      <a href="https://wa.me/5541987791933" class="reco-cta">Falar com a Pati →</a>
+      <a href="https://wa.me/5541987791933?text=Ol%C3%A1%2C%20Patr%C3%ADcia!%20Acabei%20de%20fazer%20o%20Mapa%20de%20People%20da%20minha%20empresa%20e%20queria%20conversar%20sobre%20o%20resultado." target="_blank" rel="noopener noreferrer" class="reco-cta">Falar com a Pati →</a>
     </div>
   </section>
 
@@ -532,7 +578,6 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
     <p class="frase">"A raiz de quem vem forte não falha: sustenta, atravessa, constrói e permanece."</p>
     <div class="assinatura">
       <div class="assinatura-manuscrita" aria-label="Assinatura de Patricia Lima">Patricia Lima</div>
-      <div class="nome">Patrícia Lima</div>
       <div class="cargo">People Advisory Executive · CALI</div>
     </div>
     <div class="contatos">patricia@calirh.com · (41) 98779-1933 · calirh.com</div>
@@ -557,31 +602,134 @@ function media(arr){
 }
 const esc10 = v => v*2;
 
-function textoDimensao(dim, score){
-  const banda = score < 4 ? 'baixo' : score < 7 ? 'medio' : 'alto';
+function calcularLeitura(r){
+  const v2 = r.diagnostico_v2;
+  if(v2?.version === 2){
+    const sub = {
+      d1_processos: esc10(media(v2.d1.processos)), d1_estrutura: esc10(media(v2.d1.estrutura)), d1_governanca: esc10(media(v2.d1.governanca)),
+      d2_comportamento: esc10(media(v2.d2.comportamento)), d2_valores: esc10(v2.d2.valores.cultura_decisao), d2_desenvolvimento: esc10(media(v2.d2.desenvolvimento)),
+      d3_indicadores: esc10(media(v2.d3.indicadores)), d3_decisao: esc10(media(v2.d3.decisao)), d3_tecnologia: esc10(media(v2.d3.tecnologia)),
+      d4_tamanho: esc10(media(v2.d4.tamanho)), d4_vinculos: esc10(v2.d4.vinculos.gestao), d4_rotatividade: esc10(media(v2.d4.rotatividade))
+    };
+    return {v2, sub, scores:{
+      d1:media([sub.d1_processos,sub.d1_estrutura,sub.d1_governanca]),
+      d2:media([sub.d2_comportamento,sub.d2_valores,sub.d2_desenvolvimento]),
+      d3:media([sub.d3_indicadores,sub.d3_decisao,sub.d3_tecnologia]),
+      d4:media([sub.d4_tamanho,sub.d4_vinculos,sub.d4_rotatividade])
+    }};
+  }
+  return {v2:null,sub:null,scores:{
+    d1:esc10(media([r.d1_rh_hoje,r.d1_processos,r.d1_cargos_salarios])),
+    d2:esc10(media([r.d2_valores,r.d2_lideres_preparo,r.d2_comportamento_dono,r.d2_sucessao])),
+    d3:esc10(media([r.d3_indicadores,r.d3_decisao,r.d3_custo])),
+    d4:esc10(media([r.d4_colaboradores,r.d4_unidades,r.d4_turnover]))
+  }};
+}
+
+const definicoesSubcamadas = [
+  ['1.1','Processos e políticas formais','d1_processos','Mostra se o básico está documentado, atualizado e aplicado.'],
+  ['1.2','Estrutura e clareza de papéis','d1_estrutura','Revela se hierarquia, responsabilidades e capacidade do RH acompanham a operação.'],
+  ['1.3','Governança de gente','d1_governanca','Indica se decisões relevantes têm responsáveis claros, registro e continuidade.'],
+  ['2.1','Comportamento de dono','d2_comportamento','Lê iniciativa, responsabilidade por resultado e cuidado com custo e qualidade.'],
+  ['2.2','Fidelidade aos valores','d2_valores','Mostra se os valores realmente orientam comportamento, decisão e feedback.'],
+  ['2.3','Desenvolvimento e sucessão','d2_desenvolvimento','Avalia continuidade da liderança, preparo e capacidade de assumir responsabilidades maiores.'],
+  ['3.1','Indicadores acompanhados','d3_indicadores','Mostra se dados essenciais existem e entram regularmente na agenda executiva.'],
+  ['3.2','Decisão ancorada em dado','d3_decisao','Revela se decisões de gente seguem uma referência comum, não apenas percepção individual.'],
+  ['3.3','Tecnologia e IA','d3_tecnologia','Avalia o quanto ferramentas ampliam eficiência e qualidade das decisões.'],
+  ['4.1','Tamanho e complexidade','d4_tamanho','Dimensiona o porte e a distribuição geográfica que a estrutura de People precisa suportar.'],
+  ['4.2','Mix de vínculos e regimes','d4_vinculos','Mostra se diferentes relações de trabalho convivem com papéis e regras claros.'],
+  ['4.3','Rotatividade e custo de gente','d4_rotatividade','Lê estabilidade do quadro e domínio do impacto financeiro de pessoas.']
+];
+
+function renderSubcamadas(leitura){
+  const banda = nota => nota < 4 ? 'Base ainda frágil.' : nota < 7 ? 'Estrutura parcial, com pontos de dependência.' : 'Base consistente e capaz de sustentar o crescimento.';
+  const contexto = chave => {
+    if(chave==='d2_valores' && leitura.v2){
+      const vivos = leitura.v2.d2.valores.vividos?.join(', ') || 'não destacados';
+      return `Valores mais vivos: ${vivos}. Valor a desenvolver: ${leitura.v2.d2.valores.desenvolver || '—'}.`;
+    }
+    if(chave==='d4_vinculos' && leitura.v2){
+      const m = leitura.v2.d4.vinculos.composicao;
+      return `Composição informada: CLT ${m.clt}% · PJ ${m.pj}% · terceiros ${m.terceiros}% · estagiários ${m.estagiarios}%.`;
+    }
+    return '';
+  };
+  const html = definicoesSubcamadas.map(([codigo,nome,chave,descricao]) => {
+    const nota = leitura.sub?.[chave];
+    const exibida = nota == null ? '—' : nota.toFixed(1).replace('.',',');
+    const extra = contexto(chave);
+    return `<article class="subscore-card"><div class="subscore-head"><div><span class="codigo">Subcamada ${codigo}</span><div class="nome">${nome}</div></div><span class="nota">${exibida}/10</span></div><p>${descricao} <b>${nota==null?'Sem leitura V2.':banda(nota)}</b></p>${extra?`<div class="subscore-contexto">${extra}</div>`:''}</article>`;
+  });
+  document.getElementById('subcamadas-d1d2').innerHTML = html.slice(0,6).join('');
+  document.getElementById('subcamadas-d3d4').innerHTML = html.slice(6).join('');
+}
+
+const subcamadasPorDimensao = {
+  d1:[['Processos e políticas formais','d1_processos'],['Estrutura e clareza de papéis','d1_estrutura'],['Governança de gente','d1_governanca']],
+  d2:[['Comportamento de dono','d2_comportamento'],['Fidelidade aos valores','d2_valores'],['Desenvolvimento e sucessão','d2_desenvolvimento']],
+  d3:[['Indicadores acompanhados','d3_indicadores'],['Decisão ancorada em dado','d3_decisao'],['Tecnologia e IA','d3_tecnologia']],
+  d4:[['Tamanho e complexidade do time','d4_tamanho'],['Mix de vínculos e regimes','d4_vinculos'],['Rotatividade e custo de gente','d4_rotatividade']]
+};
+
+function textoDimensao(dim, score, sub){
+  const faixa = score < 4 ? 'baixo' : score < 7 ? 'medio' : 'alto';
   const textos = {
-    d1: {
-      baixo: 'A estrutura básica ainda depende de quem está por perto para funcionar — processos, cargos e salários não estão documentados o suficiente para sobreviver a uma saída de liderança.',
-      medio: 'Existe alguma estrutura, mas ainda incompleta — parte do básico está documentado, parte ainda depende de memória e boa vontade.',
-      alto: 'A base estrutural está sólida — processos, cargos e salários documentados e sustentando a operação, não apenas as pessoas.'
+    d1:{
+      baixo:'A empresa ainda depende demais da memória e da disponibilidade de poucas pessoas para fazer a gestão de gente funcionar. Quando cargos, fluxos e decisões não deixam rastros claros, qualquer ausência vira perda de continuidade e a expansão aumenta o improviso.',
+      medio:'O começo existe, mas a casa ainda não funciona inteira sem esforço individual. Parte do essencial está formalizada e parte continua apoiada na experiência de quem conhece a operação. É o ponto em que organizar a base passa a ser condição para crescer sem retrabalho.',
+      alto:'A base estrutural está consistente: responsabilidades, fluxos e decisões conseguem sobreviver à rotina e às mudanças de pessoas. O desafio deixa de ser criar o básico e passa a ser manter essa estrutura atualizada, simples e conectada ao ritmo do negócio.'
     },
-    d2: {
-      baixo: 'Os valores ainda não aparecem no comportamento das lideranças de forma consistente, e a preparação para liderar pessoas é limitada.',
-      medio: 'Há sinais de cultura viva na liderança, mas de forma desigual — depende de quem está no comando em cada momento.',
-      alto: 'É uma dimensão forte — os valores aparecem no comportamento das lideranças, não só no papel. Isso é raro e vale ser protegido enquanto a empresa cresce.'
+    d2:{
+      baixo:'A liderança ainda opera mais por reação do que por direção compartilhada. Valores, responsabilidade por resultado e continuidade de sucessão aparecem de forma irregular, o que faz a experiência do time depender muito de quem está conduzindo cada área.',
+      medio:'Há sinais reais de cultura viva, mas eles não aparecem com a mesma força em todas as lideranças. A empresa já tem uma base valiosa; agora precisa transformar bons exemplos isolados em comportamento repetível, inclusive sob pressão e durante o crescimento.',
+      alto:'Esta é uma força que vale proteger. As lideranças demonstram responsabilidade pelo negócio e os valores aparecem nas decisões, não apenas na comunicação. O próximo cuidado é garantir que essa cultura sobreviva à expansão e não dependa somente de alguns gestores muito bons.'
     },
-    d3: {
-      baixo: 'As decisões de pessoas ainda são tomadas por instinto — o que funcionou até aqui, mas não escala. Não há custo real de contratação ou desligamento sendo acompanhado.',
-      medio: 'Alguns indicadores já são acompanhados, mas as decisões ainda misturam dado e intuição sem um critério muito claro.',
-      alto: 'A empresa já decide com base em dado, não apenas em instinto — isso é raro e é uma vantagem real na hora de crescer.'
+    d3:{
+      baixo:'As decisões de pessoas ainda nascem principalmente da percepção individual. Sem indicadores regulares, referências compartilhadas e ferramentas conectadas, a empresa demora mais para enxergar padrões e tende a descobrir o custo de uma decisão somente depois que ele aparece na operação.',
+      medio:'A empresa já produz informação e acompanha parte dos indicadores, mas ainda existe distância entre medir e decidir. O avanço está em combinar o significado dos números, criar uma régua comum para as decisões e usar tecnologia para reduzir o trabalho manual da leitura.',
+      alto:'Dados já participam de forma consistente das decisões de pessoas. Isso melhora a qualidade das escolhas e reduz diferenças de interpretação entre áreas. O próximo nível é integrar fontes, antecipar tendências e usar tecnologia para ampliar a capacidade de decisão, sem perder o olhar humano.'
     },
-    d4: {
-      baixo: 'A operação ainda é relativamente simples — o que é uma vantagem agora, mas exige atenção conforme a complexidade cresce.',
-      medio: 'A complexidade operacional já é real — unidades, mix de vínculos e turnover pesando na conta.',
-      alto: 'A operação já é grande e complexa — múltiplas unidades, mix de vínculos variado, rotatividade relevante. É essa complexidade que exige maturidade equivalente para não virar risco.'
+    d4:{
+      baixo:'A operação ainda tem baixa previsibilidade sobre vínculos, rotatividade e custo de gente, ou a estrutura de People não acompanhou a complexidade já existente. Esse descompasso transforma temas cotidianos em risco operacional e consome energia que deveria estar voltada ao crescimento.',
+      medio:'A complexidade operacional já é relevante e está parcialmente organizada. Porte, distribuição do time, vínculos e rotatividade pedem uma estrutura de gente mais coordenada. O foco agora é reduzir ambiguidades e tornar o custo de pessoas visível nas decisões do negócio.',
+      alto:'A empresa demonstra maior domínio sobre a complexidade da operação: vínculos, distribuição do quadro, rotatividade e custo de gente são mais claros. O cuidado é manter a estrutura de People no mesmo ritmo da expansão para que escala não volte a produzir desorganização.'
     }
   };
-  return textos[dim][banda];
+  let complemento = '';
+  if(sub){
+    const entradas = subcamadasPorDimensao[dim].map(([nome,chave])=>({nome,nota:sub[chave]})).filter(item=>Number.isFinite(item.nota));
+    if(entradas.length){
+      const forte = entradas.reduce((a,b)=>b.nota>a.nota?b:a);
+      const fraca = entradas.reduce((a,b)=>b.nota<a.nota?b:a);
+      complemento = ` Dentro desta dimensão, ${forte.nome.toLowerCase()} aparece como a sustentação mais forte (${forte.nota.toFixed(1).replace('.',',')}/10), enquanto ${fraca.nome.toLowerCase()} pede atenção primeiro (${fraca.nota.toFixed(1).replace('.',',')}/10).`;
+    }
+  }
+  return textos[dim][faixa] + complemento;
+}
+
+function textoSintese(scores){
+  const dimensoes = [
+    {nome:'Maturidade Estrutural',valor:scores.d1},
+    {nome:'Liderança & Cultura',valor:scores.d2},
+    {nome:'Dados & Decisão',valor:scores.d3},
+    {nome:'Dimensões Operacionais',valor:scores.d4}
+  ];
+  const forte = dimensoes.reduce((a,b)=>b.valor>a.valor?b:a);
+  const fraca = dimensoes.reduce((a,b)=>b.valor<a.valor?b:a);
+  const distancia = forte.valor-fraca.valor;
+  const equilibrio = distancia < 1.5
+    ? 'O desenho é relativamente equilibrado: não existe uma única ponta isolada, então a evolução depende de movimentos coordenados.'
+    : `Há um desequilíbrio de ${distancia.toFixed(1).replace('.',',')} pontos entre a maior força e o principal ponto de atenção; essa distância explica por que algumas iniciativas avançam enquanto outras voltam a depender de esforço individual.`;
+  return `${forte.nome} é hoje a principal sustentação da empresa (${forte.valor.toFixed(1).replace('.',',')}/10). ${fraca.nome} é onde o próximo movimento tende a gerar mais efeito (${fraca.valor.toFixed(1).replace('.',',')}/10). ${equilibrio} A prioridade não é fazer tudo ao mesmo tempo, e sim usar a força existente para elevar a dimensão mais frágil sem perder o que já funciona.`;
+}
+
+function servicoSugerido(scores){
+  const maturidade = (scores.d1 + scores.d2 + scores.d3) / 3;
+  const complexidade = scores.d4;
+  if(maturidade < 5 && complexidade < 5) return 'Diagnóstico Executivo de People';
+  if(maturidade < 5 && complexidade >= 5) return 'Projeto de Cultura e Direção';
+  if(maturidade >= 5 && complexidade < 5) return 'Assessoria Estratégica Mensal — CALI Partner';
+  return 'Assessoria Estratégica Mensal — CALI Full';
 }
 
 async function carregar(){
@@ -608,12 +756,8 @@ async function carregar(){
   }
 
   const obs = r.observacoes || {};
-  const scores = {
-    d1: esc10(media([r.d1_rh_hoje, r.d1_processos, r.d1_cargos_salarios])),
-    d2: esc10(media([r.d2_valores, r.d2_lideres_preparo, r.d2_comportamento_dono, r.d2_sucessao])),
-    d3: esc10(media([r.d3_indicadores, r.d3_decisao, r.d3_custo])),
-    d4: esc10(media([r.d4_colaboradores, r.d4_unidades, r.d4_turnover]))
-  };
+  const leitura = calcularLeitura(r);
+  const scores = leitura.scores;
   const pesos = { d1: 0.25, d2: 0.30, d3: 0.20, d4: 0.25 };
   const scoreFinal = (scores.d1*pesos.d1 + scores.d2*pesos.d2 + scores.d3*pesos.d3 + scores.d4*pesos.d4).toFixed(1).replace('.', ',');
 
@@ -625,7 +769,7 @@ async function carregar(){
 
   ['d1','d2','d3','d4'].forEach(d=>{
     document.getElementById('nota-'+d).innerHTML = scores[d].toFixed(1).replace('.',',')+'<small>/10</small>';
-    document.getElementById('texto-'+d).textContent = textoDimensao(d, scores[d]);
+    document.getElementById('texto-'+d).textContent = textoDimensao(d, scores[d], leitura.sub);
     const obsTxt = obs[d+'_obs'];
     if(obsTxt && obsTxt.trim()){
       document.getElementById('obs-'+d).textContent = obsTxt;
@@ -636,13 +780,15 @@ async function carregar(){
   const nomeLentes = v => v==null ? '—' : (v<=2?'baixa':v===3?'média':'alta');
   document.getElementById('lentes-resumo').innerHTML =
     `Considerações transversais lidas nesta resposta — Tecnologia: <b>${nomeLentes(r.l1_tecnologia)}</b> · Capacidade de execução: <b>${nomeLentes(r.l2_execucao)}</b> · Maturidade do RH interno: <b>${nomeLentes(r.l3_rh_interno)}</b>`;
+  document.getElementById('sintese-texto').textContent = textoSintese(scores);
 
   document.getElementById('parecer-texto').textContent = obs.parecer && obs.parecer.trim()
     ? obs.parecer
     : 'Cruzando o quadrante e a dimensão mais frágil, o próximo passo certo é organizar a leitura antes de agir.';
-  renderServico(obs.servico_recomendado || 'Diagnóstico Executivo de People');
+  renderServico(obs.servico_recomendado || servicoSugerido(scores));
+  renderSubcamadas(leitura);
 
-  window._dadosRelatorio = { scores, obs };
+  window._dadosRelatorio = { scores, subcamadas: leitura.sub, obs };
   finalizarRenderizacao(scores);
 
   document.getElementById('carregando').style.display = 'none';
@@ -807,9 +953,9 @@ const servicosCali = {
 };
 
 function renderServico(nome){
-  const padrao = servicosCali['Diagnóstico Executivo de People'];
-  const servico = servicosCali[nome] || padrao;
-  document.getElementById('servico-nome').textContent = nome;
+  const nomeResolvido = servicosCali[nome] ? nome : 'Diagnóstico Executivo de People';
+  const servico = servicosCali[nomeResolvido];
+  document.getElementById('servico-nome').textContent = nomeResolvido;
   document.getElementById('servico-icone').innerHTML = iconesServicos[servico.icone];
   document.getElementById('servico-texto').textContent = servico.descricao;
   document.querySelectorAll('.reco-etapa').forEach((etapa, i)=>{

@@ -17,7 +17,7 @@
 <meta property="og:image:type" content="image/png"/>
 <meta property="og:image:width" content="1917"/>
 <meta property="og:image:height" content="959"/>
-<meta property="og:image:alt" content="Identidade visual da CALI — Consultoria Estratégica em Pessoas"/>
+<meta property="og:image:alt" content="Identidade visual da CALI — HR for Business"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Mapa de People | CALI"/>
 <meta name="twitter:description" content="Descubra o nível de maturidade da gestão de pessoas da sua empresa."/>
@@ -51,8 +51,6 @@ body.formulario-ativo{background:var(--marfim-2)}
   color:var(--marfim);min-height:100vh;min-height:100dvh;align-items:center;justify-content:center;padding:40px 24px 92px}
 #step-welcome.ativo{display:flex}
 .welcome-inner{max-width:600px;text-align:center}
-.voltar-site{position:absolute;top:24px;left:24px;display:inline-flex;align-items:center;gap:7px;color:rgba(247,243,238,.82);text-decoration:none;font-size:12px;font-weight:600;border:1px solid rgba(247,243,238,.22);border-radius:100px;padding:8px 14px;transition:.2s}
-.voltar-site:hover{background:rgba(247,243,238,.1);color:var(--marfim)}
 .welcome-inner img{width:260px;margin:0 auto 30px}
 .welcome-inner .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--dourado);font-weight:600;margin-bottom:16px}
 .welcome-inner h1{font-family:var(--serif);font-weight:600;font-size:46px;line-height:1.15;margin-bottom:20px}
@@ -93,6 +91,11 @@ form.ativo{display:block}
 .bloco-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:8px}
 .bloco-titulo{font-family:var(--serif);font-weight:600;font-size:27px;color:var(--bordo);line-height:1.2}
 .bloco-sub{font-size:13.5px;color:var(--grafite);opacity:.75;margin-top:8px;line-height:1.5;max-width:480px}
+.subcamada{margin:28px 0 12px;padding:0 2px}
+.subcamada:first-child{margin-top:0}
+.subcamada-num{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:4px}
+.subcamada-titulo{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--bordo);line-height:1.3}
+.subcamada-desc{font-size:11.5px;color:var(--taupe);line-height:1.5;margin-top:4px}
 
 .q{background:rgba(255,255,255,.76);border:1px solid rgba(183,169,154,.32);border-radius:12px;padding:23px 24px;margin-bottom:16px;box-shadow:0 10px 30px rgba(62,21,32,.045);transition:border-color .2s,box-shadow .2s}
 .q:focus-within{border-color:rgba(181,140,82,.72);box-shadow:0 14px 34px rgba(62,21,32,.08)}
@@ -121,6 +124,12 @@ form.ativo{display:block}
 .q input:focus, .q textarea:focus{border-color:var(--dourado)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid-full{grid-column:1/-1}
+.valores-opcoes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.valores-lista{padding:14px;border:1px solid var(--marfim-2);border-radius:9px;background:rgba(247,243,238,.72)}
+.valores-lista legend{font-size:11px;font-weight:700;color:var(--bordo);padding:0 5px}
+.valores-lista label{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.35;margin:8px 0;cursor:pointer}
+.valores-lista input{accent-color:var(--bordo);margin-top:2px}
+.valores-ajuda{font-size:11px;color:var(--taupe);line-height:1.45;margin-top:8px}
 
 .nota-sutil{
   margin-top:12px;font-size:11.5px;font-style:italic;color:var(--taupe);
@@ -187,10 +196,10 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
   .escala label:first-child .cap{left:0;text-align:left}
   .escala label:last-child .cap{right:0;text-align:right}
   .grid2{grid-template-columns:1fr}
+  .valores-opcoes{grid-template-columns:1fr}
   .welcome-inner h1{font-size:30px}
   .welcome-inner img{width:190px}
   #step-welcome{padding:32px 20px 88px}
-  .voltar-site{top:16px;left:16px;padding:7px 11px;font-size:10.5px}
   .welcome-inner p.lead{font-size:14px;line-height:1.65}
   .welcome-meta{font-size:10.5px;line-height:1.55}
   .pilar-item .n, .pilar-item .t{font-size:13px}
@@ -212,7 +221,6 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 
 <!-- ══════════ ETAPA 0 · BOAS-VINDAS ══════════ -->
 <section id="step-welcome" class="step-view ativo">
-  <a class="voltar-site" href="https://calirh.com" aria-label="Voltar para a página principal da CALI">← Página principal</a>
   <div class="welcome-inner">
     <img src="logo.svg" alt="CALI — HR for Business"/>
     <div class="eyebrow">Bem-vinda(o) ao Mapa de People da CALI</div>
@@ -225,7 +233,7 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
       <div class="pilar-item"><span class="n">04</span><span class="t">Dimensões Operacionais</span></div>
     </div>
     <div class="pilar-dots" id="pilarDots"><span class="on"></span><span></span><span></span><span></span></div>
-    <div class="welcome-meta">⏱ Leva cerca de 10–12 minutos · 4 pilares + 3 considerações complementares</div>
+    <div class="welcome-meta">⏱ Leva cerca de 15–18 minutos · 4 dimensões + 12 subcamadas</div>
     <button type="button" class="btn-comecar" onclick="irPara(1)">Vamos lá →</button>
   </div>
 </section>
@@ -239,198 +247,53 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 
   <!-- D1 -->
   <section class="step-view bloco" data-step="1">
-    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
-    <div class="bloco-head">
-      <div class="bloco-eyebrow">01 · Estrutura</div>
-      <div class="bloco-titulo">Maturidade Estrutural</div>
-      <div class="bloco-sub">Como sua empresa organiza o básico: processos, políticas, cargos e salários.</div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Como você descreveria o RH da sua empresa hoje?</div>
-      <div class="escala">
-        <label><input type="radio" name="d1_rh_hoje" value="1"/><span class="pill">1<span class="cap">Não existe formalmente</span></span></label>
-        <label><input type="radio" name="d1_rh_hoje" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_rh_hoje" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_rh_hoje" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_rh_hoje" value="5"/><span class="pill">5<span class="cap">Estruturado, c/ indicadores</span></span></label>
+    <div>
+      <div class="bloco-head">
+        <div class="bloco-eyebrow">01 · Estrutura</div>
+        <div class="bloco-titulo">Maturidade Estrutural</div>
+        <div class="bloco-sub">O quanto a gestão de pessoas está formalizada e consegue funcionar sem depender da memória de quem está lá.</div>
       </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Existem políticas e processos de RH formalizados (admissão, avaliação, cargos e salários)?</div>
-      <div class="escala">
-        <label><input type="radio" name="d1_processos" value="1"/><span class="pill">1<span class="cap">Maioria é improviso</span></span></label>
-        <label><input type="radio" name="d1_processos" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_processos" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_processos" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_processos" value="5"/><span class="pill">5<span class="cap">Quase tudo documentado</span></span></label>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Como são definidos salários e cargos?</div>
-      <div class="escala">
-        <label><input type="radio" name="d1_cargos_salarios" value="1"/><span class="pill">1<span class="cap">Na conversa, sem base</span></span></label>
-        <label><input type="radio" name="d1_cargos_salarios" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_cargos_salarios" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_cargos_salarios" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d1_cargos_salarios" value="5"/><span class="pill">5<span class="cap">Tabela alinhada ao mercado</span></span></label>
-      </div>
-    </div>
-    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(0)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(2)">Próxima →</button></div>
+      <div id="perguntas-d1"></div>
+      <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(0)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(2)">Próxima →</button></div>
     </div>
   </section>
 
   <!-- D2 -->
   <section class="step-view bloco" data-step="2">
-    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
-    <div class="bloco-head">
-      <div class="bloco-eyebrow">02 · Liderança</div>
-      <div class="bloco-titulo">Liderança e Cultura</div>
-      <div class="bloco-sub">Se os valores saem do papel e viram comportamento — e se a liderança está pronta pra crescer com você.</div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Os valores da empresa são conhecidos e praticados pelas lideranças?</div>
-      <div class="escala">
-        <label><input type="radio" name="d2_valores" value="1"/><span class="pill">1<span class="cap">No papel</span></span></label>
-        <label><input type="radio" name="d2_valores" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_valores" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_valores" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_valores" value="5"/><span class="pill">5<span class="cap">Vivos no dia a dia</span></span></label>
+    <div>
+      <div class="bloco-head">
+        <div class="bloco-eyebrow">02 · Liderança</div>
+        <div class="bloco-titulo">Liderança & Cultura</div>
+        <div class="bloco-sub">A força dos valores e do comportamento das lideranças: a cultura viva que aparece no dia a dia.</div>
       </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">As lideranças atuais receberam preparo para liderar pessoas?</div>
-      <div class="escala">
-        <label><input type="radio" name="d2_lideres_preparo" value="1"/><span class="pill">1<span class="cap">Sem preparo formal</span></span></label>
-        <label><input type="radio" name="d2_lideres_preparo" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_lideres_preparo" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_lideres_preparo" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_lideres_preparo" value="5"/><span class="pill">5<span class="cap">Desenvolvidos continuamente</span></span></label>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Você reconhece lideranças com senso de responsabilidade pelo negócio hoje?</div>
-      <div class="escala">
-        <label><input type="radio" name="d2_comportamento_dono" value="1"/><span class="pill">1<span class="cap">Não identifico</span></span></label>
-        <label><input type="radio" name="d2_comportamento_dono" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_comportamento_dono" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_comportamento_dono" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_comportamento_dono" value="5"/><span class="pill">5<span class="cap">Em várias lideranças</span></span></label>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Existe plano de sucessão para posições-chave?</div>
-      <div class="escala">
-        <label><input type="radio" name="d2_sucessao" value="1"/><span class="pill">1<span class="cap">Não</span></span></label>
-        <label><input type="radio" name="d2_sucessao" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_sucessao" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_sucessao" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_sucessao" value="5"/><span class="pill">5<span class="cap">Estruturado</span></span></label>
-      </div>
-    </div>
-    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(1)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(3)">Próxima →</button></div>
+      <div id="perguntas-d2"></div>
+      <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(1)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(3)">Próxima →</button></div>
     </div>
   </section>
 
   <!-- D3 -->
   <section class="step-view bloco" data-step="3">
-    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
-    <div class="bloco-head">
-      <div class="bloco-eyebrow">03 · Dados</div>
-      <div class="bloco-titulo">Dados e Decisão</div>
-      <div class="bloco-sub">Se as decisões sobre pessoas nascem de dado ou de instinto — e o que isso custa.</div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">A empresa acompanha indicadores de gente (turnover, absenteísmo, clima, custo)?</div>
-      <div class="escala">
-        <label><input type="radio" name="d3_indicadores" value="1"/><span class="pill">1<span class="cap">Nunca</span></span></label>
-        <label><input type="radio" name="d3_indicadores" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_indicadores" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_indicadores" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_indicadores" value="5"/><span class="pill">5<span class="cap">Mensal</span></span></label>
+    <div>
+      <div class="bloco-head">
+        <div class="bloco-eyebrow">03 · Dados</div>
+        <div class="bloco-titulo">Dados & Decisão</div>
+        <div class="bloco-sub">O quanto informações de pessoas viram decisões consistentes, em vez de depender apenas da intuição.</div>
       </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">As decisões de contratação, promoção e saída usam dados ou intuição?</div>
-      <div class="escala">
-        <label><input type="radio" name="d3_decisao" value="1"/><span class="pill">1<span class="cap">Sempre intuição</span></span></label>
-        <label><input type="radio" name="d3_decisao" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_decisao" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_decisao" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_decisao" value="5"/><span class="pill">5<span class="cap">Sempre dado</span></span></label>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">A empresa conhece o custo real de uma contratação e de um desligamento?</div>
-      <div class="escala">
-        <label><input type="radio" name="d3_custo" value="1"/><span class="pill">1<span class="cap">Não</span></span></label>
-        <label><input type="radio" name="d3_custo" value="2"/><span class="pill">2<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_custo" value="3"/><span class="pill">3<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_custo" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d3_custo" value="5"/><span class="pill">5<span class="cap">Medido e acompanhado</span></span></label>
-      </div>
-    </div>
-    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(2)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(4)">Próxima →</button></div>
+      <div id="perguntas-d3"></div>
+      <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(2)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(4)">Próxima →</button></div>
     </div>
   </section>
 
   <!-- D4 -->
   <section class="step-view bloco" data-step="4">
-    <div style="max-width:640px;margin:0 auto;padding:36px 24px 0">
-    <div class="bloco-head">
-      <div class="bloco-eyebrow">04 · Operação</div>
-      <div class="bloco-titulo">Dimensões Operacionais</div>
-      <div class="bloco-sub">O tamanho real da operação: pessoas, unidades, vínculos e rotatividade.</div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Quantos colaboradores a empresa tem hoje?</div>
-      <div class="chips">
-        <label><input type="radio" name="d4_colaboradores" value="1"/><span class="chip">Até 20</span></label>
-        <label><input type="radio" name="d4_colaboradores" value="2"/><span class="chip">20–50</span></label>
-        <label><input type="radio" name="d4_colaboradores" value="3"/><span class="chip">50–100</span></label>
-        <label><input type="radio" name="d4_colaboradores" value="4"/><span class="chip">100–200</span></label>
-        <label><input type="radio" name="d4_colaboradores" value="5"/><span class="chip">+200</span></label>
+    <div>
+      <div class="bloco-head">
+        <div class="bloco-eyebrow">04 · Operação</div>
+        <div class="bloco-titulo">Dimensões Operacionais</div>
+        <div class="bloco-sub">A complexidade real da operação e se a estrutura de gente acompanhou esse tamanho.</div>
       </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">A empresa opera em quantas unidades ou filiais?</div>
-      <div class="chips">
-        <label><input type="radio" name="d4_unidades" value="1"/><span class="chip">Única</span></label>
-        <label><input type="radio" name="d4_unidades" value="3"/><span class="chip">2–3</span></label>
-        <label><input type="radio" name="d4_unidades" value="5"/><span class="chip">Mais de 3</span></label>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Qual o mix de vínculos hoje? <em style="font-weight:400;color:var(--taupe)">(estimativa é suficiente)</em></div>
-      <div class="grid2">
-        <input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric" required/>
-        <input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric" required/>
-        <input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric" required/>
-        <input type="number" name="d4_mix_freela" placeholder="% Freelancers" min="0" max="100" inputmode="numeric" required/>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-texto">Qual a rotatividade (turnover) no último ano?</div>
-      <div class="chips">
-        <label><input type="radio" name="d4_turnover" value="1"/><span class="chip">Baixa</span></label>
-        <label><input type="radio" name="d4_turnover" value="3"/><span class="chip">Média</span></label>
-        <label><input type="radio" name="d4_turnover" value="5"/><span class="chip">Alta</span></label>
-      </div>
-    </div>
-    <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(3)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(5)">Próxima →</button></div>
+      <div id="perguntas-d4"></div>
+      <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(3)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(5)">Próxima →</button></div>
     </div>
   </section>
 
@@ -494,7 +357,7 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
         <label><input type="radio" name="q_prazo" value="ate1"/><span class="chip">Até 1 mês</span></label>
         <label><input type="radio" name="q_prazo" value="1a3"/><span class="chip">1–3 meses</span></label>
         <label><input type="radio" name="q_prazo" value="3a6"/><span class="chip">3–6 meses</span></label>
-        <label><input type="radio" name="q_prazo" value="avaliando"/><span class="chip">Só avaliando</span></label>
+        <label><input type="radio" name="q_prazo" value="mais6"/><span class="chip">Mais de 6 meses</span></label>
       </div>
     </div>
 
@@ -516,18 +379,44 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
         <label><input type="radio" name="q_formato" value="presencial" id="rd-presencial"/><span class="chip">Presencial</span></label>
         <label><input type="radio" name="q_formato" value="hibrido"/><span class="chip">Híbrido</span></label>
         <label><input type="radio" name="q_formato" value="remoto"/><span class="chip">Remoto</span></label>
+        <label><input type="radio" name="q_formato" value="cali_sugere"/><span class="chip">A CALI sugere</span></label>
       </div>
       <div class="nota-sutil" id="nota-presencial" style="display:none">Atendimento presencial disponível em Curitiba e Região Metropolitana (até 10 km de deslocamento). Fora desse raio, pode haver custo adicional de deslocamento.</div>
     </div>
 
     <div class="q">
+      <div class="q-texto">Depois da implementação, qual formato de acompanhamento faria mais sentido?</div>
+      <div class="chips">
+        <label><input type="radio" name="q_apoio_pos" value="mensal"/><span class="chip">Contínuo mensal</span></label>
+        <label><input type="radio" name="q_apoio_pos" value="trimestral"/><span class="chip">Trimestral</span></label>
+        <label><input type="radio" name="q_apoio_pos" value="depende"/><span class="chip">Depende do desenho</span></label>
+        <label><input type="radio" name="q_apoio_pos" value="implementacao"/><span class="chip">Só implementação</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Como a empresa se apoia juridicamente em temas trabalhistas e de pessoas?</div>
+      <div class="chips">
+        <label><input type="radio" name="q_juridico" value="interno"/><span class="chip">Jurídico interno</span></label>
+        <label><input type="radio" name="q_juridico" value="externo"/><span class="chip">Jurídico externo</span></label>
+        <label><input type="radio" name="q_juridico" value="com_cali"/><span class="chip">Definir com a CALI</span></label>
+        <label><input type="radio" name="q_juridico" value="duvida"/><span class="chip">Ainda em dúvida</span></label>
+      </div>
+    </div>
+
+    <div class="q">
       <div class="q-texto">Faixa de investimento que considera razoável para transformar a gestão de pessoas <em style="font-weight:400;color:var(--taupe)">(varia com porte e profundidade — isto só me ajuda a calibrar a proposta)</em></div>
       <div class="chips">
-        <label><input type="radio" name="q_investimento" value="3a8"/><span class="chip">A partir de R$ 3 mil</span></label>
+        <label><input type="radio" name="q_investimento" value="apartir3"/><span class="chip">A partir de R$ 3 mil</span></label>
+        <label><input type="radio" name="q_investimento" value="3a8"/><span class="chip">R$ 3 a 8 mil</span></label>
         <label><input type="radio" name="q_investimento" value="8a15"/><span class="chip">R$ 8 a 15 mil</span></label>
-        <label><input type="radio" name="q_investimento" value="15a30"/><span class="chip">R$ 15 a 30 mil</span></label>
-        <label><input type="radio" name="q_investimento" value="30mais"/><span class="chip">Acima de R$ 30 mil</span></label>
+        <label><input type="radio" name="q_investimento" value="15mais"/><span class="chip">Acima de R$ 15 mil</span></label>
       </div>
+    </div>
+
+    <div class="q">
+      <div class="q-texto">Há candidaturas naturais a sócio(a) ou partner nos próximos 12 meses? <span style="font-weight:400;color:var(--taupe)">(opcional)</span></div>
+      <textarea name="q_candidatos_socio" rows="3" placeholder="Se fizer sentido, conte quem ou quais posições estão nesse caminho."></textarea>
     </div>
 
     <div class="q">
@@ -609,6 +498,103 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 <footer id="rodape">CALI — HR for Business · calirh.com · patricia@calirh.com</footer>
 
 <script>
+const bancoPerguntasV2 = {
+  d1: [
+    {codigo:'1.1', titulo:'Processos e políticas formais', descricao:'O que está escrito, atualizado e aplicado na rotina.', perguntas:[
+      {nome:'d1_cargos_atribuicoes', texto:'Sua empresa tem descrição formal de cargos e responsabilidades documentadas?', min:'Quase nada documentado', max:'Tudo documentado e atualizado'},
+      {nome:'d1_fluxos_ciclo', texto:'Como é formalizado o ciclo de admissão, promoção e saída?', min:'No improviso', max:'Fluxos escritos, seguidos e revisados'},
+      {nome:'d1_politicas_aplicadas', texto:'As políticas de RH existem no dia a dia ou só no arquivo?', min:'Só no papel', max:'Aplicadas e revisitadas pelos gestores'}
+    ]},
+    {codigo:'1.2', titulo:'Estrutura do time e clareza de papéis', descricao:'Como responsabilidades, hierarquia e capacidade do RH sustentam a operação.', perguntas:[
+      {nome:'d1_hierarquia', texto:'Todos sabem a quem respondem e quem responde a quem?', min:'Papéis embaralhados', max:'Organograma claro e vivido'},
+      {nome:'d1_time_gente', texto:'O RH ou a gestão de pessoas tem tamanho e alcance compatíveis com a operação?', min:'Sozinho e sufocado', max:'Time dimensionado'}
+    ]},
+    {codigo:'1.3', titulo:'Governança de gente', descricao:'Como as decisões importantes de pessoas são tomadas e registradas.', perguntas:[
+      {nome:'d1_regras_decisao', texto:'Existe clareza de quem decide o quê em contratação, aumento e promoção?', min:'Todo mundo decide ou ninguém', max:'Regra clara e registrada'},
+      {nome:'d1_registro_controle', texto:'As decisões importantes de pessoas ficam registradas e podem ser verificadas depois?', min:'Sem registro', max:'Com trilha e controles comuns'}
+    ]}
+  ],
+  d2: [
+    {codigo:'2.1', titulo:'Comportamento de dono', descricao:'A postura das lideranças diante de decisão, resultado, custo e qualidade.', perguntas:[
+      {nome:'d2_iniciativa_dono', texto:'As lideranças decidem e resolvem por conta própria ou esperam ordem?', min:'Esperam ordem', max:'Agem como donas'},
+      {nome:'d2_responsabilidade_resultado', texto:'As lideranças assumem o resultado da área como seu?', min:'Culpam fatores externos', max:'Assumem e cobram melhoria'},
+      {nome:'d2_postura_negocio', texto:'As lideranças cuidam do negócio como se fosse delas, protegendo custo e qualidade?', min:'Só cumprem', max:'Protegem o negócio ativamente'}
+    ]},
+    {codigo:'2.2', titulo:'Fidelidade aos valores', descricao:'Quais valores realmente aparecem na liderança e orientam escolhas.', perguntas:[
+      {tipo:'valores', nome:'d2_lista_valores', texto:'Quais valores da empresa aparecem de fato no comportamento das lideranças?'},
+      {nome:'d2_cultura_decisao', texto:'Os valores são usados para orientar decisões e feedbacks ou só enfeitam o site?', min:'Só decoração', max:'Guiam decisões reais'}
+    ]},
+    {codigo:'2.3', titulo:'Desenvolvimento e sucessão', descricao:'A continuidade das lideranças e o preparo para responsabilidades maiores.', perguntas:[
+      {nome:'d2_pipeline_sucessao', texto:'Se uma liderança-chave saísse amanhã, há alguém preparado para assumir?', min:'Ninguém', max:'Sucessor pronto e preparado'},
+      {nome:'d2_programa_lideranca', texto:'Existe um programa ativo de desenvolvimento de lideranças?', min:'Nenhum', max:'Estruturado e com resultados'},
+      {nome:'d2_preparo_partner', texto:'As lideranças estão sendo preparadas para responsabilidades maiores e de longo prazo?', min:'Não', max:'Sim, com trilha clara'}
+    ]}
+  ],
+  d3: [
+    {codigo:'3.1', titulo:'Indicadores acompanhados', descricao:'A existência de indicadores e a frequência com que entram na agenda de decisão.', perguntas:[
+      {nome:'d3_indicadores_existem', texto:'Turnover, absenteísmo, clima e custo de gente são medidos?', min:'Não existem', max:'Medidos e revisados regularmente'},
+      {nome:'d3_revisao_periodica', texto:'Os indicadores são analisados em um fórum regular de decisão?', min:'Nunca', max:'Em rituais fixos'}
+    ]},
+    {codigo:'3.2', titulo:'Decisão ancorada em dado', descricao:'O quanto decisões de pessoas seguem uma referência comum e verificável.', perguntas:[
+      {nome:'d3_decisoes_gente', texto:'Contratação, promoção, aumento e desligamento usam dados como referência?', min:'No feeling', max:'Com dados sistematizados'},
+      {nome:'d3_regua_compartilhada', texto:'Duas pessoas olhando os mesmos números tendem a tomar a mesma decisão?', min:'Divergem', max:'Há referência clara e compartilhada'}
+    ]},
+    {codigo:'3.3', titulo:'Tecnologia e IA a serviço da decisão', descricao:'Ferramentas que reduzem trabalho manual e ampliam a qualidade da leitura.', perguntas:[
+      {nome:'d3_ferramentas_rh', texto:'Como a empresa usa HRIS, ATS, People Analytics ou outras ferramentas de RH?', min:'Recursos dispersos ou nenhum', max:'Plataformas integradas'},
+      {nome:'d3_uso_ia', texto:'Ferramentas digitais ou IA apoiam decisões e rotinas de gente?', min:'Nenhum uso', max:'Uso rotineiro e integrado à decisão'}
+    ]}
+  ],
+  d4: [
+    {codigo:'4.1', titulo:'Tamanho e complexidade do time', descricao:'O porte e a distribuição geográfica que a estrutura de pessoas precisa suportar.', perguntas:[
+      {tipo:'chips', nome:'d4_tamanho_quadro', texto:'Quantas pessoas trabalham na empresa hoje?', opcoes:[['1','Até 20'],['2','21–50'],['3','51–150'],['4','151–500'],['5','Acima de 500']]},
+      {nome:'d4_distribuicao_geo', texto:'A operação está concentrada em um local ou distribuída geograficamente?', min:'Um único local', max:'Múltiplas unidades geográficas'}
+    ]},
+    {codigo:'4.2', titulo:'Mix de vínculos e regimes', descricao:'A composição do time e a clareza para gerir diferentes relações de trabalho.', perguntas:[
+      {tipo:'mix', nome:'d4_mix', texto:'Qual é a composição aproximada dos vínculos hoje?'},
+      {nome:'d4_gestao_regimes', texto:'Os diferentes vínculos coexistem com papéis e regras claros?', min:'Geram ambiguidade', max:'Regra clara por vínculo'}
+    ]},
+    {codigo:'4.3', titulo:'Rotatividade e custo de gente', descricao:'A estabilidade do quadro e o conhecimento do impacto de pessoas no resultado.', perguntas:[
+      {nome:'d4_turnover_nivel', texto:'Como está a rotatividade da empresa?', min:'Alta e preocupante', max:'Baixa e saudável'},
+      {nome:'d4_custo_gente', texto:'O peso do custo de gente no resultado é conhecido e acompanhado?', min:'Desconhecido', max:'Mapeado e gerido'}
+    ]}
+  ]
+};
+
+function escalaHtml(pergunta){
+  return `<div class="q"><div class="q-texto">${pergunta.texto}</div><div class="escala">${[1,2,3,4,5].map(valor => `<label><input type="radio" name="${pergunta.nome}" value="${valor}"/><span class="pill">${valor}<span class="cap">${valor===1?pergunta.min:valor===5?pergunta.max:''}</span></span></label>`).join('')}</div></div>`;
+}
+
+function perguntaHtml(pergunta){
+  if(pergunta.tipo === 'chips'){
+    return `<div class="q"><div class="q-texto">${pergunta.texto}</div><div class="chips">${pergunta.opcoes.map(([valor,rotulo]) => `<label><input type="radio" name="${pergunta.nome}" value="${valor}"/><span class="chip">${rotulo}</span></label>`).join('')}</div></div>`;
+  }
+  if(pergunta.tipo === 'mix'){
+    return `<div class="q"><div class="q-texto">${pergunta.texto} <em style="font-weight:400;color:var(--taupe)">(a soma deve ser 100%)</em></div><div class="grid2"><input type="number" name="d4_mix_clt" placeholder="% CLT" min="0" max="100" inputmode="numeric" required/><input type="number" name="d4_mix_pj" placeholder="% PJ" min="0" max="100" inputmode="numeric" required/><input type="number" name="d4_mix_freela" placeholder="% Terceiros" min="0" max="100" inputmode="numeric" required/><input type="number" name="d4_mix_estagio" placeholder="% Estagiários" min="0" max="100" inputmode="numeric" required/></div></div>`;
+  }
+  if(pergunta.tipo === 'valores'){
+    return `<div class="q" data-values-card><div class="q-texto">${pergunta.texto}</div><input type="text" name="d2_lista_valores" placeholder="Digite os valores separados por vírgulas" autocomplete="off" required/><div class="valores-ajuda">Depois de digitar, marque quais estão mais vivos e escolha o que mais precisa ser desenvolvido.</div><div class="valores-opcoes" id="valores-opcoes"></div></div>`;
+  }
+  return escalaHtml(pergunta);
+}
+
+function renderizarBancoPerguntas(){
+  Object.entries(bancoPerguntasV2).forEach(([dimensao, grupos]) => {
+    document.getElementById(`perguntas-${dimensao}`).innerHTML = grupos.map(grupo => `<div class="subcamada"><div class="subcamada-num">Subcamada ${grupo.codigo}</div><div class="subcamada-titulo">${grupo.titulo}</div><div class="subcamada-desc">${grupo.descricao}</div></div>${grupo.perguntas.map(perguntaHtml).join('')}`).join('');
+  });
+}
+
+renderizarBancoPerguntas();
+
+const campoValores = document.querySelector('input[name="d2_lista_valores"]');
+campoValores.addEventListener('input', function(){
+  const valores = [...new Set(this.value.split(/[,;\n]/).map(v => v.trim()).filter(Boolean))].slice(0, 8);
+  const opcoes = document.getElementById('valores-opcoes');
+  const seguro = valor => valor.replace(/[&<>"']/g, caractere => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[caractere]));
+  opcoes.innerHTML = valores.length ? `
+    <fieldset class="valores-lista"><legend>Valores vividos · marque um ou mais</legend>${valores.map(valor=>`<label><input type="checkbox" name="d2_valores_vividos" value="${seguro(valor)}"/><span>${seguro(valor)}</span></label>`).join('')}</fieldset>
+    <fieldset class="valores-lista"><legend>Valor a desenvolver · escolha um</legend>${valores.map(valor=>`<label><input type="radio" name="d2_valor_desenvolver" value="${seguro(valor)}"/><span>${seguro(valor)}</span></label>`).join('')}</fieldset>` : '';
+});
+
 const totalEtapas = 7;
 let etapaAtual = 0; // 0 = welcome
 
@@ -819,27 +805,72 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
   btnEnviar.disabled = true;
 
   const data = new FormData(this);
-  const num = (v) => v === null || v === '' ? null : parseInt(v, 10);
+  const num = value => value === null || value === '' ? null : Number.parseInt(String(value), 10);
+  const valor = nome => num(data.get(nome));
+  const media = valores => valores.reduce((soma, atual) => soma + atual, 0) / valores.length;
+  const arredonda = valores => Math.round(media(valores));
+
+  const diagnosticoV2 = {
+    version: 2,
+    d1: {
+      processos: [valor('d1_cargos_atribuicoes'), valor('d1_fluxos_ciclo'), valor('d1_politicas_aplicadas')],
+      estrutura: [valor('d1_hierarquia'), valor('d1_time_gente')],
+      governanca: [valor('d1_regras_decisao'), valor('d1_registro_controle')]
+    },
+    d2: {
+      comportamento: [valor('d2_iniciativa_dono'), valor('d2_responsabilidade_resultado'), valor('d2_postura_negocio')],
+      valores: {
+        lista: String(data.get('d2_lista_valores') || '').split(/[,;\n]/).map(v => v.trim()).filter(Boolean).slice(0, 8),
+        vividos: data.getAll('d2_valores_vividos'),
+        desenvolver: data.get('d2_valor_desenvolver'),
+        cultura_decisao: valor('d2_cultura_decisao')
+      },
+      desenvolvimento: [valor('d2_pipeline_sucessao'), valor('d2_programa_lideranca'), valor('d2_preparo_partner')]
+    },
+    d3: {
+      indicadores: [valor('d3_indicadores_existem'), valor('d3_revisao_periodica')],
+      decisao: [valor('d3_decisoes_gente'), valor('d3_regua_compartilhada')],
+      tecnologia: [valor('d3_ferramentas_rh'), valor('d3_uso_ia')]
+    },
+    d4: {
+      tamanho: [valor('d4_tamanho_quadro'), valor('d4_distribuicao_geo')],
+      vinculos: {
+        composicao: {clt:valor('d4_mix_clt'), pj:valor('d4_mix_pj'), terceiros:valor('d4_mix_freela'), estagiarios:valor('d4_mix_estagio')},
+        gestao: valor('d4_gestao_regimes')
+      },
+      rotatividade: [valor('d4_turnover_nivel'), valor('d4_custo_gente')]
+    },
+    qualificacao: {
+      apoio_pos: data.get('q_apoio_pos'),
+      juridico: data.get('q_juridico'),
+      candidatos_socio: data.get('q_candidatos_socio') || null
+    }
+  };
+
+  const d1Media = media([media(diagnosticoV2.d1.processos), media(diagnosticoV2.d1.estrutura), media(diagnosticoV2.d1.governanca)]);
+  const d2Media = media([media(diagnosticoV2.d2.comportamento), diagnosticoV2.d2.valores.cultura_decisao, media(diagnosticoV2.d2.desenvolvimento)]);
+  const d3Media = media([media(diagnosticoV2.d3.indicadores), media(diagnosticoV2.d3.decisao), media(diagnosticoV2.d3.tecnologia)]);
 
   const payload = {
     protocolo: gerarProtocolo(),
-    d1_rh_hoje: num(data.get('d1_rh_hoje')),
-    d1_processos: num(data.get('d1_processos')),
-    d1_cargos_salarios: num(data.get('d1_cargos_salarios')),
-    d2_valores: num(data.get('d2_valores')),
-    d2_lideres_preparo: num(data.get('d2_lideres_preparo')),
-    d2_comportamento_dono: num(data.get('d2_comportamento_dono')),
-    d2_sucessao: num(data.get('d2_sucessao')),
-    d3_indicadores: num(data.get('d3_indicadores')),
-    d3_decisao: num(data.get('d3_decisao')),
-    d3_custo: num(data.get('d3_custo')),
-    d4_colaboradores: num(data.get('d4_colaboradores')),
-    d4_unidades: num(data.get('d4_unidades')),
-    d4_mix_clt: num(data.get('d4_mix_clt')),
-    d4_mix_pj: num(data.get('d4_mix_pj')),
-    d4_mix_estagio: num(data.get('d4_mix_estagio')),
-    d4_mix_freela: num(data.get('d4_mix_freela')),
-    d4_turnover: num(data.get('d4_turnover')),
+    diagnostico_v2: diagnosticoV2,
+    d1_rh_hoje: Math.round(d1Media),
+    d1_processos: valor('d1_fluxos_ciclo'),
+    d1_cargos_salarios: valor('d1_cargos_atribuicoes'),
+    d2_valores: valor('d2_cultura_decisao'),
+    d2_lideres_preparo: valor('d2_programa_lideranca'),
+    d2_comportamento_dono: arredonda(diagnosticoV2.d2.comportamento),
+    d2_sucessao: valor('d2_pipeline_sucessao'),
+    d3_indicadores: arredonda(diagnosticoV2.d3.indicadores),
+    d3_decisao: arredonda(diagnosticoV2.d3.decisao),
+    d3_custo: arredonda(diagnosticoV2.d3.tecnologia),
+    d4_colaboradores: valor('d4_tamanho_quadro'),
+    d4_unidades: valor('d4_distribuicao_geo') <= 2 ? 1 : valor('d4_distribuicao_geo') <= 4 ? 3 : 5,
+    d4_mix_clt: String(valor('d4_mix_clt')),
+    d4_mix_pj: String(valor('d4_mix_pj')),
+    d4_mix_estagio: String(valor('d4_mix_estagio')),
+    d4_mix_freela: String(valor('d4_mix_freela')),
+    d4_turnover: valor('d4_turnover_nivel'),
     l1_tecnologia: num(data.get('l1_tecnologia')),
     l2_execucao: num(data.get('l2_execucao')),
     l3_rh_interno: num(data.get('l3_rh_interno')),
