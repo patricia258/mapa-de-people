@@ -446,7 +446,7 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
           <div><div class="q-texto">Nome</div><input type="text" name="c_nome" autocomplete="name" required/></div>
           <div><div class="q-texto">Empresa</div><input type="text" name="c_empresa" autocomplete="organization" required/></div>
           <div><div class="q-texto">Cargo ou função</div><input type="text" name="c_cargo" autocomplete="organization-title" placeholder="Ex.: Diretora, CEO, RH" required/></div>
-          <div><div class="q-texto">WhatsApp</div><input type="tel" name="c_whatsapp" autocomplete="tel" placeholder="DDD + número, só números" inputmode="numeric" pattern="[0-9]{10,11}" title="Só números, com DDD. Ex: 41987791933" required/></div>
+          <div><div class="q-texto">WhatsApp</div><input type="tel" name="c_whatsapp" autocomplete="tel" placeholder="DDD + número, com ou sem 55" inputmode="numeric" pattern="(?:55)?[0-9]{10,11}" title="Informe DDD + número, com ou sem o código 55. Ex.: 41987791933 ou 5541987791933" required/></div>
           <div class="grid-full"><div class="q-texto">E-mail corporativo ou profissional</div><input type="email" name="c_email" autocomplete="email" placeholder="voce@empresa.com ou voce@gmail.com" pattern="[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}" title="Digite um e-mail válido, ex: nome@empresa.com" required/>
             <label class="confirmacao-email"><input type="checkbox" name="c_email_corporativo_confirmado" required/><span>Confirmo que este é o e-mail que uso profissionalmente — mesmo que seja @gmail.com ou outro provedor sem domínio próprio.</span></label>
           </div>
@@ -664,10 +664,30 @@ function validarEtapa(n, exibirAviso = true){
     aviso.className = 'aviso-validacao';
     aviso.setAttribute('role', 'alert');
     const misturaInvalida = incompletas.some(q => q.querySelector?.('input[name^="d4_mix_"]'));
-    aviso.textContent = misturaInvalida
-      ? 'Preencha todas as respostas desta etapa. No mix de vínculos, informe inclusive os valores zero e confira se a soma é 100%.'
-      : 'Antes de continuar, responda todas as perguntas desta etapa. Elas são necessárias para o relatório final.';
+    const campoInvalido = incompletas[0].querySelector?.('input:invalid, textarea:invalid, input, textarea');
+    const nomesCampos = {
+      c_nome: 'Nome',
+      c_empresa: 'Empresa',
+      c_cargo: 'Cargo ou função',
+      c_whatsapp: 'WhatsApp',
+      c_email: 'E-mail',
+      c_email_corporativo_confirmado: 'Confirmação do e-mail',
+      c_preferencia_contato: 'Preferência de contato',
+      lgpd_aceite: 'Consentimento LGPD'
+    };
+    if(campoInvalido?.name === 'c_whatsapp'){
+      aviso.textContent = 'Confira o campo WhatsApp. Informe DDD + número, com ou sem o código 55.';
+    } else if(campoInvalido?.name === 'c_email'){
+      aviso.textContent = 'Confira o campo E-mail e informe um endereço válido, como nome@empresa.com.';
+    } else if(n === 7 && campoInvalido){
+      aviso.textContent = `Confira o campo ${nomesCampos[campoInvalido.name] || 'destacado'} antes de enviar.`;
+    } else {
+      aviso.textContent = misturaInvalida
+        ? 'Preencha todas as respostas desta etapa. No mix de vínculos, informe inclusive os valores zero e confira se a soma é 100%.'
+        : 'Antes de continuar, responda todas as perguntas desta etapa. Elas são necessárias para o relatório final.';
+    }
     bloco.querySelector('.step-nav').before(aviso);
+    registrarEvento('validation_error', n, { campo: campoInvalido?.name || campoInvalido?.id || 'etapa' });
     incompletas[0].scrollIntoView({behavior:'smooth', block:'center'});
   }
   return false;
@@ -681,7 +701,12 @@ function irPara(n){
   mostrarEtapa(n);
 }
 
-/* WhatsApp só aceita números */
+/* WhatsApp aceita DDD + número, com ou sem o código do Brasil. */
+function normalizarWhatsApp(valor){
+  const numeros = String(valor || '').replace(/\D/g,'');
+  return numeros.startsWith('55') && numeros.length > 11 ? numeros.slice(2) : numeros;
+}
+
 document.querySelector('input[name="c_whatsapp"]').addEventListener('input', function(){
   this.value = this.value.replace(/\D/g,'');
 });
@@ -751,8 +776,9 @@ function origemHost(){
 
 function registrarEvento(eventType, step = 0, metadata = {}){
   const chave = `cali_event_${eventType}_${step}`;
-  if(eventType !== 'copy' && sessionStorage.getItem(chave)) return;
-  if(eventType !== 'copy') sessionStorage.setItem(chave, '1');
+  const repetivel = ['copy', 'submit_attempt', 'validation_error', 'submit_error'].includes(eventType);
+  if(!repetivel && sessionStorage.getItem(chave)) return;
+  if(!repetivel) sessionStorage.setItem(chave, '1');
   fetch(`${SUPABASE_URL}/rest/v1/mapa_eventos`, {
     method: 'POST',
     keepalive: true,
@@ -791,6 +817,7 @@ function gerarProtocolo(){
 /* envio — grava a resposta no Supabase e notifica a Patrícia (via trigger + Resend, configurado à parte) */
 document.getElementById('mapaForm').addEventListener('submit', async function(e){
   e.preventDefault();
+  registrarEvento('submit_attempt', 7);
   for(let etapa = 1; etapa <= totalEtapas; etapa++){
     if(!validarEtapa(etapa, false)){
       mostrarEtapa(etapa);
@@ -804,6 +831,7 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
   btnEnviar.textContent = 'Enviando...';
   btnEnviar.disabled = true;
 
+  try{
   const data = new FormData(this);
   const num = value => value === null || value === '' ? null : Number.parseInt(String(value), 10);
   const valor = nome => num(data.get(nome));
@@ -885,13 +913,12 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     c_cargo: data.get('c_cargo'),
     c_email: data.get('c_email'),
     c_email_corporativo_confirmado: data.get('c_email_corporativo_confirmado') === 'on',
-    c_whatsapp: data.get('c_whatsapp'),
+    c_whatsapp: normalizarWhatsApp(data.get('c_whatsapp')),
     c_preferencia_contato: data.get('c_preferencia_contato'),
     c_linkedin_site: data.get('c_linkedin_site') || null,
     lgpd_aceite: true
   };
 
-  try{
     const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas`, {
       method: 'POST',
       headers: {
@@ -904,7 +931,7 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     });
     if(!resp.ok){
       const errText = await resp.text();
-      throw new Error(errText);
+      throw new Error(`HTTP ${resp.status}: ${errText.slice(0, 120)}`);
     }
 
     registrarEvento('submit', 7, { protocolo: payload.protocolo });
@@ -919,6 +946,7 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     window.scrollTo({top:0, behavior:'smooth'});
   } catch(err){
     console.error('Erro ao enviar respostas:', err);
+    registrarEvento('submit_error', 7, { mensagem: String(err?.message || err).slice(0, 180) });
     alert('Não consegui enviar suas respostas agora. Tenta de novo em instantes ou chama a Pati direto pelo WhatsApp.');
     btnEnviar.textContent = textoOriginal;
     btnEnviar.disabled = false;
