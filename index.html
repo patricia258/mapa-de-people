@@ -15,7 +15,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scrollbar-width:none}
 body::-webkit-scrollbar{width:0px;background:transparent}
-body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);line-height:1.6;min-height:100vh}
+body{font-family:var(--sans);background:var(--bordo);color:var(--grafite);line-height:1.6;min-height:100vh;transition:background .35s ease}
+body.formulario-ativo{background:var(--marfim-2)}
 
 /* ══ TRANSIÇÕES DE ETAPA — lentas e suaves ══ */
 .step-view{display:none;animation:entrar .55s ease both}
@@ -61,19 +62,25 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .progress-label{max-width:640px;margin:0 auto;padding:10px 24px;font-size:11px;letter-spacing:.05em;color:var(--taupe);font-weight:600;text-transform:uppercase;display:flex;justify-content:space-between}
 
 /* ══ FORM ══ */
-form{max-width:640px;margin:0 auto;padding:44px 24px 60px}
+form{display:none;max-width:none;margin:0;padding:0;min-height:calc(100vh - 58px);background:
+  radial-gradient(circle at 8% 12%,rgba(181,140,82,.12),transparent 24%),
+  linear-gradient(180deg,var(--marfim) 0%,var(--marfim-2) 100%)}
+form.ativo{display:block}
+.bloco>div{max-width:720px!important;margin:0 auto!important;padding:48px 24px 78px!important}
 .bloco-head{margin-bottom:24px}
 .bloco-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dourado);font-weight:700;margin-bottom:8px}
 .bloco-titulo{font-family:var(--serif);font-weight:600;font-size:27px;color:var(--bordo);line-height:1.2}
 .bloco-sub{font-size:13.5px;color:var(--grafite);opacity:.75;margin-top:8px;line-height:1.5;max-width:480px}
 
-.q{background:var(--branco);border:1px solid var(--marfim-2);border-radius:6px;padding:22px 24px;margin-bottom:14px}
+.q{background:rgba(255,255,255,.76);border:1px solid rgba(183,169,154,.32);border-radius:12px;padding:23px 24px;margin-bottom:16px;box-shadow:0 10px 30px rgba(62,21,32,.045);transition:transform .2s,border-color .2s,box-shadow .2s}
+.q:focus-within{border-color:rgba(181,140,82,.72);box-shadow:0 14px 34px rgba(62,21,32,.08);transform:translateY(-1px)}
 .q-texto{font-size:14px;font-weight:500;color:var(--grafite);margin-bottom:16px;line-height:1.55}
 
 .escala{display:flex;gap:8px}
 .escala label{flex:1;text-align:center;cursor:pointer}
 .escala input{display:none}
-.escala .pill{display:flex;flex-direction:column;align-items:center;gap:4px;border:1.5px solid var(--marfim-2);border-radius:8px;padding:10px 4px;transition:.15s;font-weight:700;font-family:var(--serif);font-size:16px;color:var(--taupe)}
+.escala .pill{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px solid var(--marfim-2);border-radius:10px;padding:10px 4px;min-height:64px;transition:.18s;font-weight:700;font-family:var(--serif);font-size:16px;color:var(--taupe)}
+.escala label:hover .pill{border-color:var(--dourado);transform:translateY(-1px)}
 .escala .pill .cap{font-family:var(--sans);font-size:8.5px;font-weight:600;letter-spacing:.02em;color:var(--taupe);text-transform:uppercase}
 .escala input:checked + .pill{background:var(--bordo);border-color:var(--bordo);color:var(--marfim)}
 .escala input:checked + .pill .cap{color:var(--dourado)}
@@ -115,7 +122,7 @@ form{max-width:640px;margin:0 auto;padding:44px 24px 60px}
 .step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
 .btn-nav{
   font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.02em;
-  border-radius:100px;padding:13px 30px;cursor:pointer;transition:.2s;border:1.5px solid var(--bordo);
+  border-radius:100px;padding:13px 30px;min-height:48px;cursor:pointer;transition:.2s;border:1.5px solid var(--bordo);
 }
 .btn-voltar{background:transparent;color:var(--bordo)}
 .btn-voltar:hover{background:var(--marfim-2)}
@@ -142,15 +149,27 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
 .obrigado-contato{font-size:12.5px;color:var(--taupe);letter-spacing:.03em}
 
 @media(max-width:520px){
-  .escala{flex-wrap:wrap}
-  .escala label{flex:1 0 30%}
+  .escala{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+  .escala label{min-width:0}
+  .escala .pill{min-height:72px;padding:8px 2px;font-size:15px}
+  .escala .pill .cap{font-size:7px;line-height:1.25;overflow-wrap:anywhere}
   .grid2{grid-template-columns:1fr}
   .welcome-inner h1{font-size:30px}
   .welcome-inner img{width:190px}
+  #step-welcome{padding:32px 20px}
+  .welcome-inner p.lead{font-size:14px;line-height:1.65}
+  .welcome-meta{font-size:10.5px;line-height:1.55}
   .pilar-item .n, .pilar-item .t{font-size:13px}
-  .q{padding:18px 16px}
-  .step-nav{flex-wrap:wrap;gap:10px}
-  .btn-nav{padding:12px 22px;font-size:12.5px}
+  .bloco>div{padding:34px 16px 54px!important}
+  .q{padding:19px 15px;border-radius:10px}
+  .step-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .step-nav>span:empty{display:block}
+  .btn-nav{width:100%;padding:12px 10px;font-size:12.5px;margin-left:0;min-height:50px}
+  .progress-label{padding:9px 16px;font-size:9.5px;gap:8px}
+  .progress-label span:last-child{text-align:right}
+  .contato-box{padding:22px 16px}
+  #step-obrigado{padding:34px 22px}
+  #step-obrigado h1{font-size:29px}
 }
 </style>
 </head>
@@ -529,7 +548,8 @@ footer{text-align:center;padding:28px;font-size:11px;color:var(--taupe)}
 <section id="step-obrigado" class="step-view">
   <img class="logo" src="logo.png" alt="CALI — HR for Business"/>
   <h1>Obrigada pelas suas respostas.</h1>
-  <p>Entraremos em contato em alguns dias, por e-mail e/ou WhatsApp, com a leitura completa do seu Mapa de People.</p>
+  <p>Recebemos seu Mapa de People. Você também receberá uma confirmação por e-mail agora, e a Pati fará a leitura pessoalmente para retornar em até 3 dias úteis, por e-mail e/ou WhatsApp.</p>
+  <div id="confirmacao-protocolo" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dourado);margin:-18px 0 28px"></div>
   <div class="socials">
     <a href="https://instagram.com/calirh_" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .24 2.6.5.7.27 1.2.6 1.7 1.1.5.5.9 1 1.1 1.7.3.6.4 1.4.5 2.6.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 2-.5 2.6-.2.7-.6 1.2-1.1 1.7-.5.5-1 .9-1.7 1.1-.6.3-1.4.4-2.6.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.2-2.6-.5-.7-.2-1.2-.6-1.7-1.1-.5-.5-.9-1-1.1-1.7-.3-.6-.4-1.4-.5-2.6C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-2 .5-2.6.2-.7.6-1.2 1.1-1.7.5-.5 1-.9 1.7-1.1.6-.3 1.4-.4 2.6-.5C9.6 2.2 10 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-1 .05-1.6.2-1.9.34-.5.2-.8.4-1.2.8-.4.4-.6.7-.8 1.2-.14.4-.29 1-.34 1.9C3 9.5 3 9.9 3 13s0 3.5.07 4.7c.05 1 .2 1.6.34 1.9.2.5.4.8.8 1.2.4.4.7.6 1.2.8.4.14 1 .29 1.9.34 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c1-.05 1.6-.2 1.9-.34.5-.2.8-.4 1.2-.8.4-.4.6-.7.8-1.2.14-.4.29-1 .34-1.9.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.05-1-.2-1.6-.34-1.9-.2-.5-.4-.8-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.14-1-.29-1.9-.34C15.5 4 15.1 4 12 4zm0 3.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.8a3.7 3.7 0 100 7.4 3.7 3.7 0 000-7.4zm5.7-2a1.3 1.3 0 11-2.6 0 1.3 1.3 0 012.6 0z"/></svg></a>
     <a href="https://linkedin.com/in/patriciaazumi" target="_blank" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.4 3H3.6A.6.6 0 003 3.6v16.8a.6.6 0 00.6.6h16.8a.6.6 0 00.6-.6V3.6a.6.6 0 00-.6-.6zM8.3 18.1H5.7V9.9h2.6v8.2zM7 8.8a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm11.1 9.3h-2.6v-4c0-1-.4-1.6-1.2-1.6-.7 0-1.1.5-1.3 1-.1.2-.1.5-.1.7v3.9H10s0-7.4 0-8.2h2.6v1.2c.3-.5 1-1.3 2.3-1.3 1.7 0 3 1.1 3 3.5v4.8z"/></svg></a>
@@ -546,6 +566,8 @@ let etapaAtual = 0; // 0 = welcome
 
 function irPara(n){
   document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
+  document.getElementById('mapaForm').classList.toggle('ativo', n > 0);
+  document.body.classList.toggle('formulario-ativo', n > 0);
   if(n === 0){
     document.getElementById('step-welcome').classList.add('ativo');
     document.getElementById('barraWrap').classList.remove('ativo');
@@ -672,6 +694,9 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
     document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
     document.getElementById('barraWrap').classList.remove('ativo');
     document.getElementById('rodape').style.display = 'none';
+    document.getElementById('mapaForm').classList.remove('ativo');
+    document.body.classList.remove('formulario-ativo');
+    document.getElementById('confirmacao-protocolo').textContent = `Protocolo ${payload.protocolo}`;
     document.getElementById('step-obrigado').classList.add('ativo');
     window.scrollTo({top:0, behavior:'smooth'});
   } catch(err){

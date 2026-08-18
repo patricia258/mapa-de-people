@@ -28,6 +28,9 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
+.auth-pendente .toolbar,.auth-pendente .doc,.auth-pendente #carregando{visibility:hidden}
+.auth-loader{display:none;position:fixed;inset:0;background:var(--bordo);color:var(--marfim);z-index:100;place-items:center;text-align:center;font-size:13px;letter-spacing:.08em}
+.auth-pendente .auth-loader{display:grid}
 
 /* ══ TOPO FIXO — ferramenta interna de edição/envio, não aparece impresso ══ */
 .toolbar{
@@ -243,10 +246,19 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 
 /* ══ RESPONSIVO ══ */
 @media(max-width:760px){
-  .page{padding:44px 26px}
-  .capa h1{font-size:36px}
+  .doc{padding:0 10px 34px}
+  .page{padding:38px 22px;margin-top:12px}
+  .capa{min-height:520px}
+  .capa h1{font-size:34px}
   .matriz-wrap{grid-template-columns:1fr}
   .toolbar{padding:10px 16px;flex-wrap:wrap;gap:8px}
+  .toolbar .actions{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .toolbar button{padding:8px 7px;font-size:10.5px}
+  .meta-row{gap:16px;flex-wrap:wrap}
+  .score-resumo{align-items:flex-start;gap:10px;padding:16px;flex-direction:column}
+  .reco-box{padding:28px 22px}
+  .radar-wrap svg{width:100%;height:auto}
+  .dim-head{gap:12px}
 }
 
 /* ══ IMPRESSÃO / PDF ══ */
@@ -265,12 +277,16 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 }
 </style>
 </head>
-<body>
+<body class="auth-pendente">
+
+<div class="auth-loader"><div>Validando acesso seguro…</div></div>
 
 <div class="toolbar">
   <span class="tag">CALI · Mapa de People</span>
   <div class="actions">
-    <button onclick="window.print()">Imprimir / Salvar PDF</button>
+    <button onclick="voltarPainel()">← Painel</button>
+    <button class="primary" onclick="window.print()">Imprimir / Salvar PDF</button>
+    <button onclick="sair()">Sair</button>
   </div>
 </div>
 
@@ -426,9 +442,12 @@ h2.titulo{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--bo
 
 </div>
 
-<script>
-const SUPABASE_URL = 'https://kqtbfeeqbcllwvlkbrkq.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxdGJmZWVxYmNsbHd2bGticmtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTIyODMsImV4cCI6MjEwMjU2ODI4M30.G8xr2MR_YWKWjzSk88r9ryVzCyR9QqQEWHrHNeWE7Cg';
+<script type="module">
+import { SUPABASE_URL, SUPABASE_ANON_KEY, requireAdmin, signOut } from './auth.js';
+
+const session = await requireAdmin();
+if (!session) throw new Error('Acesso não autorizado');
+document.body.classList.remove('auth-pendente');
 
 const params = new URLSearchParams(window.location.search);
 const respostaId = params.get('id');
@@ -475,8 +494,10 @@ async function carregar(){
   let r;
   try{
     const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas?id=eq.${respostaId}&select=*`, {
-      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${session.access_token}` }
     });
+    if(resp.status === 401 || resp.status === 403){ await signOut(); return; }
+    if(!resp.ok) throw new Error(await resp.text());
     const rows = await resp.json();
     r = rows[0];
   }catch(err){
@@ -650,7 +671,8 @@ function contourPaths(seed){
 
 } // fecha finalizarRenderizacao
 
-carregar();
+Object.assign(window, {sair: signOut, voltarPainel: () => window.location.assign('painel.html')});
+await carregar();
 </script>
 </body>
 </html>

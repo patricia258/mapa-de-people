@@ -5,22 +5,36 @@ Diagnóstico gratuito de maturidade em gestão de pessoas, usado como isca de ca
 ## Arquivos
 
 - `index.html` — questionário público que o cliente preenche (wizard multi-etapas, com boas-vindas e página de obrigado embutidas). Grava as respostas direto no Supabase (tabela `mapa_respostas`).
+- `login.html` — acesso administrativo exclusivo de `patricia@calirh.com`, com criação do primeiro acesso e recuperação de senha.
+- `auth.js` — cliente de autenticação compartilhado pelo login, painel e relatório.
 - `painel.html` — painel interno da Patrícia. Lista as respostas recebidas, mostra cada uma com os scores calculados, permite escrever observações por dimensão + parecer final + serviço recomendado, e gera o link do relatório.
 - `relatorio.html` — relatório final que o cliente recebe. Não tem dados fixos: lê a resposta pelo parâmetro `?id=` na URL, busca no Supabase e monta a matriz de quadrantes, o radar e o texto na hora.
 - `logo.png` — logo da CALI, fundo transparente, usada nos três arquivos acima.
 
 ## Fluxo completo
 
-1. Cliente preenche `index.html` → grava uma linha em `mapa_respostas` no Supabase.
-2. Patrícia abre `painel.html`, vê a lista, abre uma resposta, escreve as observações por dimensão e o parecer final, escolhe o serviço recomendado, salva.
-3. Patrícia clica em "Ver relatório" → abre `relatorio.html?id=...` numa aba nova, já com tudo preenchido.
-4. Ela confere, aperta "Imprimir / Salvar PDF" no relatório (sai em A4), e envia esse PDF pro cliente por e-mail e/ou WhatsApp.
+1. Cliente preenche `index.html` → grava uma linha em `mapa_respostas` no Supabase e recebe a confirmação por e-mail.
+2. Patrícia recebe por e-mail o formulário completo e abre `painel.html`. O painel exige login e aceita somente `patricia@calirh.com`.
+3. No painel, Patrícia abre uma resposta, escreve as observações por dimensão e o parecer final, escolhe o serviço recomendado e salva.
+4. Patrícia clica em "Ver relatório" → abre `relatorio.html?id=...` numa aba nova autenticada, já com tudo preenchido.
+5. Ela confere, aperta "Imprimir / Salvar PDF" no relatório (sai em A4), e envia esse PDF pro cliente por e-mail e/ou WhatsApp.
 
-## Pendências conhecidas
+## Acesso e segurança
 
-1. **Notificação por e-mail.** Falta ligar um gatilho (Supabase Database Webhook) que dispara ao entrar uma resposta nova, chamando uma Edge Function que usa a API do Resend pra avisar patricia@calirh.com. Falta a chave da API do Resend — a Patrícia vai gerar e enviar.
-2. **Segurança do painel.** Hoje `painel.html` usa a mesma chave pública (anon) do formulário — não tem login. Qualquer pessoa com o link do painel consegue ver as respostas de todos os leads (nome, e-mail, WhatsApp). Enquanto não houver poucos leads e o link não circular, o risco é baixo, mas o ideal é adicionar Supabase Auth (login só da Patrícia) antes de divulgar o painel ou crescer o volume de leads.
-3. **Envio automático ao cliente.** Hoje o envio final (e-mail/WhatsApp com o relatório) é manual, feito pela Patrícia depois de revisar. Não há disparo automático — é proposital, é o toque pessoal que ela queria manter.
+- O formulário público tem somente permissão de inserir uma nova resposta.
+- A leitura e a revisão das respostas exigem login e são liberadas apenas para `patricia@calirh.com`.
+- O relatório também exige a mesma sessão autenticada.
+- A função que notifica por e-mail fica em schema privado e não pode ser chamada diretamente pelas chaves públicas.
+- O envio final do PDF continua manual, depois da leitura pessoal da Patrícia.
+
+## Primeiro acesso
+
+1. Abra `https://mapa.calirh.com/login.html`.
+2. Clique em **Primeiro acesso** e defina uma senha de pelo menos 8 caracteres.
+3. Confirme o cadastro no e-mail recebido.
+4. Para trocar uma senha esquecida, use **Esqueci minha senha** na mesma página.
+
+No Supabase Auth, configure a Site URL como `https://mapa.calirh.com` e permita o redirect `https://mapa.calirh.com/login.html*`.
 
 ## Banco de dados (Supabase)
 
