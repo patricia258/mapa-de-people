@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const FROM_EMAIL = "CALI — Mapa de People <mapa@calirh.com>";
-const LOGO_URL = "https://mapa.calirh.com/logo.png";
+const LOGO_URL = "https://mapa.calirh.com/logo.svg";
 const PAINEL_URL = "https://mapa.calirh.com/painel.html";
 const PRAZO_RETORNO = "em até 3 dias úteis";
 
