@@ -98,7 +98,7 @@ function emailCliente(r: Record<string, unknown>) {
   return emailBaseWrap(`
     <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:${DOURADO};font-weight:bold;margin-bottom:12px;">Mapa de People recebido</div>
     <p style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:${BORDO};margin:0 0 18px;">Oi${primeiroNome ? ", " + escapeHtml(primeiroNome) : ""}.</p>
-    <p style="margin:0 0 16px;">Recebi as respostas do Mapa de People da <b>${escapeHtml(r.c_empresa)}</b>. Obrigada pela confiança em compartilhar esse momento da empresa comigo.</p>
+    <p style="margin:0 0 16px;">Recebi as respostas do Mapa de People da <b>${escapeHtml(r.c_empresa)}</b>. Agradeço pela confiança em compartilhar esse momento da empresa comigo.</p>
     <div style="background:${MARFIM};border-left:3px solid ${DOURADO};padding:16px 18px;margin:22px 0;border-radius:0 8px 8px 0;">
       <div style="font-size:11px;color:${TAUPE};text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Protocolo</div>
       <div style="font-family:Georgia,serif;color:${BORDO};font-size:18px;font-weight:bold;">${escapeHtml(r.protocolo)}</div>
@@ -116,12 +116,12 @@ function emailPatricia(r: Record<string, any>) {
 
   const contact = section("Contato e qualificação",
     answerRow("Nome", r.c_nome) + answerRow("Empresa", r.c_empresa) + answerRow("E-mail", r.c_email) +
-    answerRow("WhatsApp", r.c_whatsapp) + answerRow("Prazo", r.q_prazo) + answerRow("Decisor(es)", decisores) +
+    answerRow("WhatsApp", r.c_whatsapp) + answerRow("Prazo", r.q_prazo) + answerRow("Pessoas decisoras", decisores) +
     answerRow("Formato", r.q_formato) + answerRow("Investimento", r.q_investimento) + answerRow("Origem", r.q_origem));
   const d1 = section("01 · Maturidade Estrutural",
     answerRow("Como descreve o RH hoje", scale(r.d1_rh_hoje)) + answerRow("Processos formalizados", scale(r.d1_processos)) + answerRow("Cargos e salários", scale(r.d1_cargos_salarios)));
   const d2 = section("02 · Liderança e Cultura",
-    answerRow("Valores praticados", scale(r.d2_valores)) + answerRow("Líderes preparados", scale(r.d2_lideres_preparo)) + answerRow("Comportamento de dono", scale(r.d2_comportamento_dono)) + answerRow("Plano de sucessão", scale(r.d2_sucessao)));
+    answerRow("Valores praticados", scale(r.d2_valores)) + answerRow("Preparo das lideranças", scale(r.d2_lideres_preparo)) + answerRow("Senso de responsabilidade", scale(r.d2_comportamento_dono)) + answerRow("Plano de sucessão", scale(r.d2_sucessao)));
   const d3 = section("03 · Dados e Decisão",
     answerRow("Indicadores", scale(r.d3_indicadores)) + answerRow("Decisões por dados", scale(r.d3_decisao)) + answerRow("Custo de pessoas", scale(r.d3_custo)));
   const d4 = section("04 · Dimensões Operacionais",

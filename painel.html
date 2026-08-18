@@ -31,11 +31,24 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .topbar button{background:transparent;border:1px solid rgba(247,243,238,.3);color:var(--marfim);padding:7px 16px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer}
 .topbar button:hover{background:rgba(247,243,238,.12)}
 
-.wrap{max-width:1100px;margin:0 auto;padding:32px 24px 80px}
+.wrap{max-width:1220px;margin:0 auto;padding:32px 24px 80px}
 
 /* ══ LISTA ══ */
 #view-lista h1{font-family:var(--serif);font-weight:600;font-size:26px;color:var(--bordo);margin-bottom:4px}
 #view-lista .sub{color:var(--taupe);font-size:13px;margin-bottom:24px}
+.tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid rgba(183,169,154,.45)}
+.tab{appearance:none;border:0;background:transparent;color:#75695f;padding:11px 3px;margin-right:22px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;border-bottom:3px solid transparent}
+.tab.ativo{color:var(--bordo);border-bottom-color:var(--dourado)}
+.painel-tab{display:none}.painel-tab.ativo{display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--branco);border:1px solid rgba(183,169,154,.25);border-radius:10px;padding:17px 18px;box-shadow:0 8px 26px rgba(62,21,32,.035)}
+.kpi .numero{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1;color:var(--bordo)}
+.kpi .rotulo{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--taupe);font-weight:700;margin-top:7px}
+.filtros{display:grid;grid-template-columns:minmax(220px,1.7fr) minmax(150px,.7fr) minmax(150px,.7fr);gap:10px;background:rgba(255,255,255,.55);border:1px solid rgba(183,169,154,.25);border-radius:10px;padding:12px;margin-bottom:14px}
+.filtro-campo{position:relative}
+.filtros input,.filtros select{width:100%;height:42px;margin:0;border:1px solid var(--marfim-2);border-radius:7px;background:var(--branco);font-family:var(--sans);font-size:12.5px;color:var(--grafite);padding:0 12px;outline:none}
+.filtros input:focus,.filtros select:focus{border-color:var(--dourado)}
+.tabela-wrap{border-radius:9px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .tabela{width:100%;border-collapse:collapse;background:var(--branco);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .tabela th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--taupe);padding:14px 16px;border-bottom:1px solid var(--marfim-2)}
 .tabela td{padding:14px 16px;border-bottom:1px solid var(--marfim-2);font-size:13.5px}
@@ -45,6 +58,10 @@ body{font-family:var(--sans);background:var(--marfim-2);color:var(--grafite);lin
 .badge.novo{background:#FDECEC;color:#B0433E}
 .badge.em_revisao{background:#FCF3DC;color:#9A7418}
 .badge.enviado{background:#E4F0E7;color:var(--verde)}
+.badge.abandono{background:#FDECEC;color:#B0433E}
+.badge.andamento{background:#FCF3DC;color:#8A691E}
+.badge.concluido{background:#E4F0E7;color:var(--verde)}
+.copy-count{font-weight:700;color:var(--bordo)}
 .btn-abrir{background:var(--bordo);color:var(--marfim);border:none;padding:8px 16px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer}
 .btn-abrir:hover{background:var(--bordo-escuro)}
 .vazio{padding:60px 20px;text-align:center;color:var(--taupe)}
@@ -98,12 +115,16 @@ select, input.parecer-input{
   .topbar-actions button{padding:7px 11px;font-size:11px}
   .card{padding:19px 16px}
   .detalhe-head h2{font-size:21px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filtros{grid-template-columns:1fr}
+  .tabela-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 }
 @media(max-width:520px){
   .topbar .brand{display:none}
   .topbar-actions button:first-child{display:none}
   #view-lista h1{font-size:23px}
   .acoes .btn-primario,.acoes .btn-secundario{min-height:48px}
+  .tabs{overflow-x:auto}.tab{white-space:nowrap;margin-right:12px}
 }
 </style>
 </head>
@@ -113,22 +134,69 @@ select, input.parecer-input{
 
 <div class="topbar">
   <div class="topbar-left"><img src="logo.svg" alt="CALI"/><div class="brand"><b>Painel</b> · Mapa de People</div></div>
-  <div class="topbar-actions"><button onclick="location.reload()">Atualizar</button><button onclick="sair()">Sair</button></div>
+  <div class="topbar-actions"><button onclick="window.open('https://calirh.com','_blank')">Site principal</button><button onclick="atualizarTudo()">Atualizar</button><button onclick="sair()">Sair</button></div>
 </div>
 
 <div class="wrap">
 
   <!-- ══════ LISTA ══════ -->
   <div id="view-lista">
-    <h1>Respostas recebidas</h1>
-    <div class="sub">Clique em uma linha pra revisar, comentar e gerar o relatório.</div>
-    <table class="tabela">
-      <thead>
-        <tr><th>Data</th><th>Protocolo</th><th>Empresa</th><th>Contato</th><th>Status</th><th></th></tr>
-      </thead>
-      <tbody id="corpoTabela"></tbody>
-    </table>
-    <div id="vazio" class="vazio" style="display:none">Nenhuma resposta ainda. Assim que alguém preencher o Mapa de People, aparece aqui.</div>
+    <h1>Visão administrativa</h1>
+    <div class="sub">Respostas, relatórios e jornada de acesso organizados em uma única visão.</div>
+    <div class="tabs" role="tablist" aria-label="Áreas do painel">
+      <button class="tab ativo" id="tab-respostas" onclick="trocarAba('respostas')">Respostas e relatórios</button>
+      <button class="tab" id="tab-acessos" onclick="trocarAba('acessos')">Acessos e abandonos</button>
+    </div>
+
+    <section id="painel-respostas" class="painel-tab ativo">
+      <div class="kpis">
+        <div class="kpi"><div class="numero" id="kpi-total">0</div><div class="rotulo">Respostas</div></div>
+        <div class="kpi"><div class="numero" id="kpi-novos">0</div><div class="rotulo">Novas</div></div>
+        <div class="kpi"><div class="numero" id="kpi-revisao">0</div><div class="rotulo">Em revisão</div></div>
+        <div class="kpi"><div class="numero" id="kpi-enviados">0</div><div class="rotulo">Relatórios enviados</div></div>
+      </div>
+      <div class="filtros">
+        <input id="filtro-busca" type="search" placeholder="Buscar empresa, contato, e-mail ou protocolo" oninput="renderRespostas()"/>
+        <select id="filtro-status" onchange="renderRespostas()">
+          <option value="todos">Todos os status</option><option value="novo">Novo</option><option value="em_revisao">Em revisão</option><option value="enviado">Enviado</option>
+        </select>
+        <select id="filtro-periodo" onchange="renderRespostas()">
+          <option value="todos">Todo o período</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option>
+        </select>
+      </div>
+      <div class="tabela-wrap">
+        <table class="tabela">
+          <thead><tr><th>Data</th><th>Protocolo</th><th>Empresa</th><th>Contato</th><th>Score</th><th>Status</th><th></th></tr></thead>
+          <tbody id="corpoTabela"></tbody>
+        </table>
+      </div>
+      <div id="vazio" class="vazio" style="display:none">Nenhuma resposta encontrada com estes filtros.</div>
+    </section>
+
+    <section id="painel-acessos" class="painel-tab">
+      <div class="kpis">
+        <div class="kpi"><div class="numero" id="kpi-visitas">0</div><div class="rotulo">Acessos</div></div>
+        <div class="kpi"><div class="numero" id="kpi-iniciados">0</div><div class="rotulo">Formulários iniciados</div></div>
+        <div class="kpi"><div class="numero" id="kpi-abandonos">0</div><div class="rotulo">Abandonos</div></div>
+        <div class="kpi"><div class="numero" id="kpi-copias">0</div><div class="rotulo">Eventos de cópia</div></div>
+      </div>
+      <div class="filtros">
+        <input id="filtro-origem" type="search" placeholder="Buscar por origem ou aparelho" oninput="renderAcessos()"/>
+        <select id="filtro-jornada" onchange="renderAcessos()">
+          <option value="todos">Todas as jornadas</option><option value="abandono">Abandonou</option><option value="andamento">Em andamento</option><option value="concluido">Enviou</option><option value="copiou">Com evento de cópia</option>
+        </select>
+        <select id="filtro-acesso-periodo" onchange="renderAcessos()">
+          <option value="30">Últimos 30 dias</option><option value="7">Últimos 7 dias</option><option value="90">Últimos 90 dias</option><option value="todos">Todo o período</option>
+        </select>
+      </div>
+      <div class="tabela-wrap">
+        <table class="tabela">
+          <thead><tr><th>Primeiro acesso</th><th>Última atividade</th><th>Progresso</th><th>Aparelho</th><th>Origem</th><th>Cópias</th><th>Situação</th></tr></thead>
+          <tbody id="corpoAcessos"></tbody>
+        </table>
+      </div>
+      <div id="vazio-acessos" class="vazio" style="display:none">Ainda não há acessos registrados. O histórico começa após esta atualização entrar no ar.</div>
+    </section>
   </div>
 
   <!-- ══════ DETALHE ══════ -->
@@ -238,32 +306,125 @@ const headers = apiHeaders(session);
 document.body.classList.remove('auth-pendente');
 
 let respostas = [];
+let sessoes = [];
 let atual = null;
+
+function escapeHtml(valor){
+  return String(valor ?? '').replace(/[&<>'"]/g, caractere => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+  })[caractere]);
+}
+
+function dentroDoPeriodo(data, dias){
+  if(dias === 'todos') return true;
+  const limite = Date.now() - Number(dias) * 86400000;
+  return new Date(data).getTime() >= limite;
+}
 
 async function carregarLista(){
   const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_respostas?select=*&order=created_at.desc`, { headers });
   if(resp.status === 401 || resp.status === 403){ await signOut(); return; }
   if(!resp.ok){ document.getElementById('vazio').style.display='block'; document.getElementById('vazio').textContent='Não foi possível carregar as respostas agora.'; return; }
   respostas = await resp.json();
+  document.getElementById('kpi-total').textContent = respostas.length;
+  document.getElementById('kpi-novos').textContent = respostas.filter(r=>r.status === 'novo').length;
+  document.getElementById('kpi-revisao').textContent = respostas.filter(r=>r.status === 'em_revisao').length;
+  document.getElementById('kpi-enviados').textContent = respostas.filter(r=>r.status === 'enviado').length;
+  renderRespostas();
+}
+
+function renderRespostas(){
   const corpo = document.getElementById('corpoTabela');
   corpo.innerHTML = '';
-  if(respostas.length === 0){
+  const busca = document.getElementById('filtro-busca').value.trim().toLocaleLowerCase('pt-BR');
+  const status = document.getElementById('filtro-status').value;
+  const periodo = document.getElementById('filtro-periodo').value;
+  const filtradas = respostas.filter(r=>{
+    const alvo = [r.c_empresa,r.c_nome,r.c_email,r.protocolo].join(' ').toLocaleLowerCase('pt-BR');
+    return (!busca || alvo.includes(busca)) && (status === 'todos' || r.status === status) && dentroDoPeriodo(r.created_at, periodo);
+  });
+  if(filtradas.length === 0){
     document.getElementById('vazio').style.display = 'block';
     return;
   }
   document.getElementById('vazio').style.display = 'none';
-  respostas.forEach(r=>{
+  filtradas.forEach(r=>{
     const dt = new Date(r.created_at).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'});
+    const scores = calcularScores(r);
+    const score = (scores.d1*.25 + scores.d2*.30 + scores.d3*.20 + scores.d4*.25).toFixed(1).replace('.',',');
+    const statusLabel = {novo:'Novo',em_revisao:'Em revisão',enviado:'Enviado'}[r.status] || r.status;
     corpo.innerHTML += `
       <tr class="linha">
         <td>${dt}</td>
-        <td>${r.protocolo}</td>
-        <td>${r.c_empresa}</td>
-        <td>${r.c_nome}</td>
-        <td><span class="badge ${r.status}">${r.status.replace('_',' ')}</span></td>
+        <td>${escapeHtml(r.protocolo)}</td>
+        <td><b>${escapeHtml(r.c_empresa)}</b></td>
+        <td>${escapeHtml(r.c_nome)}</td>
+        <td>${score}</td>
+        <td><span class="badge ${escapeHtml(r.status)}">${escapeHtml(statusLabel)}</span></td>
         <td><button class="btn-abrir" onclick="abrirDetalhe('${r.id}')">Abrir</button></td>
       </tr>`;
   });
+}
+
+function situacaoSessao(sessao){
+  if(sessao.submitted) return 'concluido';
+  const minutos = (Date.now() - new Date(sessao.last_seen_at).getTime()) / 60000;
+  return minutos <= 15 ? 'andamento' : 'abandono';
+}
+
+async function carregarAcessos(){
+  const resp = await fetch(`${SUPABASE_URL}/rest/v1/mapa_sessoes_resumo?select=*&order=accessed_at.desc&limit=1000`, { headers });
+  if(resp.status === 401 || resp.status === 403){ await signOut(); return; }
+  if(!resp.ok){
+    document.getElementById('vazio-acessos').style.display='block';
+    document.getElementById('vazio-acessos').textContent='Não foi possível carregar os acessos agora.';
+    return;
+  }
+  sessoes = await resp.json();
+  document.getElementById('kpi-visitas').textContent = sessoes.length;
+  document.getElementById('kpi-iniciados').textContent = sessoes.filter(s=>s.started).length;
+  document.getElementById('kpi-abandonos').textContent = sessoes.filter(s=>situacaoSessao(s)==='abandono').length;
+  document.getElementById('kpi-copias').textContent = sessoes.reduce((total,s)=>total+Number(s.copy_events||0),0);
+  renderAcessos();
+}
+
+function renderAcessos(){
+  const corpo = document.getElementById('corpoAcessos');
+  corpo.innerHTML = '';
+  const busca = document.getElementById('filtro-origem').value.trim().toLocaleLowerCase('pt-BR');
+  const jornada = document.getElementById('filtro-jornada').value;
+  const periodo = document.getElementById('filtro-acesso-periodo').value;
+  const filtradas = sessoes.filter(s=>{
+    const situacao = situacaoSessao(s);
+    const alvo = `${s.referrer_host||'direto'} ${s.device_type||'unknown'}`.toLocaleLowerCase('pt-BR');
+    const bateJornada = jornada === 'todos' || jornada === situacao || (jornada === 'copiou' && Number(s.copy_events)>0);
+    return (!busca || alvo.includes(busca)) && bateJornada && dentroDoPeriodo(s.accessed_at, periodo);
+  });
+  document.getElementById('vazio-acessos').style.display = filtradas.length ? 'none' : 'block';
+  const rotulos = {abandono:'Abandonou',andamento:'Em andamento',concluido:'Enviou'};
+  const dispositivos = {mobile:'Celular',tablet:'Tablet',desktop:'Computador',unknown:'Não identificado'};
+  filtradas.forEach(s=>{
+    const situacao = situacaoSessao(s);
+    const formato = {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'};
+    corpo.innerHTML += `<tr class="linha">
+      <td>${new Date(s.accessed_at).toLocaleString('pt-BR',formato)}</td>
+      <td>${new Date(s.last_seen_at).toLocaleString('pt-BR',formato)}</td>
+      <td>${s.submitted ? 'Enviado' : s.started ? `Etapa ${Number(s.max_step)||1} de 7` : 'Só abriu'}</td>
+      <td>${escapeHtml(dispositivos[s.device_type]||s.device_type)}</td>
+      <td>${escapeHtml(s.referrer_host||'Acesso direto')}</td>
+      <td class="copy-count">${Number(s.copy_events)||0}</td>
+      <td><span class="badge ${situacao}">${rotulos[situacao]}</span></td>
+    </tr>`;
+  });
+}
+
+function trocarAba(aba){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('ativo',el.id===`tab-${aba}`));
+  document.querySelectorAll('.painel-tab').forEach(el=>el.classList.toggle('ativo',el.id===`painel-${aba}`));
+}
+
+async function atualizarTudo(){
+  await Promise.all([carregarLista(),carregarAcessos()]);
 }
 
 function escala10(v){ return v == null ? null : v*2; }
@@ -309,8 +470,8 @@ function abrirDetalhe(id){
     <div class="qa"><b>Cargos e salários</b>${esc[atual.d1_cargos_salarios]||'—'}</div>`;
   document.getElementById('qa-d2').innerHTML = `
     <div class="qa"><b>Valores praticados</b>${esc[atual.d2_valores]||'—'}</div>
-    <div class="qa"><b>Líderes preparados</b>${esc[atual.d2_lideres_preparo]||'—'}</div>
-    <div class="qa"><b>Comportamento de dono</b>${esc[atual.d2_comportamento_dono]||'—'}</div>
+    <div class="qa"><b>Preparo das lideranças</b>${esc[atual.d2_lideres_preparo]||'—'}</div>
+    <div class="qa"><b>Senso de responsabilidade</b>${esc[atual.d2_comportamento_dono]||'—'}</div>
     <div class="qa"><b>Plano de sucessão</b>${esc[atual.d2_sucessao]||'—'}</div>`;
   document.getElementById('qa-d3').innerHTML = `
     <div class="qa"><b>Acompanha indicadores</b>${esc[atual.d3_indicadores]||'—'}</div>
@@ -324,14 +485,14 @@ function abrirDetalhe(id){
   document.getElementById('qa-lentes').innerHTML = `
     <div class="qa"><b>L1 · Tecnologia/IA no RH</b>${esc[atual.l1_tecnologia]||'—'}</div>
     <div class="qa"><b>L2 · Capacidade de execução</b>${esc[atual.l2_execucao]||'—'}</div>
-    <div class="qa"><b>L3 · RH interno carrega sozinho?</b>${esc[atual.l3_rh_interno]||'—'}</div>`;
+    <div class="qa"><b>L3 · RH interno opera sem apoio?</b>${esc[atual.l3_rh_interno]||'—'}</div>`;
 
   document.getElementById('c-nome').textContent = atual.c_nome;
   document.getElementById('c-empresa').textContent = atual.c_empresa;
   document.getElementById('c-email').textContent = atual.c_email;
   document.getElementById('c-whatsapp').textContent = atual.c_whatsapp;
   const decisores = (atual.q_decisor||[]).join(', ') + (atual.q_decisor_outro ? ` (${atual.q_decisor_outro})` : '');
-  document.getElementById('c-qualif').innerHTML = `Prazo: ${atual.q_prazo||'–'}<br/>Decisor: ${decisores||'–'}<br/>Formato: ${atual.q_formato||'–'}<br/>Investimento: ${atual.q_investimento||'–'}<br/>Origem: ${atual.q_origem||'–'}`;
+  document.getElementById('c-qualif').innerHTML = `Prazo: ${escapeHtml(atual.q_prazo||'–')}<br/>Pessoas decisoras: ${escapeHtml(decisores||'–')}<br/>Formato: ${escapeHtml(atual.q_formato||'–')}<br/>Investimento: ${escapeHtml(atual.q_investimento||'–')}<br/>Origem: ${escapeHtml(atual.q_origem||'–')}`;
 
   const obs = atual.observacoes || {};
   document.getElementById('obs-d1').value = obs.d1_obs || '';
@@ -387,8 +548,8 @@ function abrirRelatorio(){
   window.open(`relatorio.html?id=${atual.id}`, '_blank');
 }
 
-Object.assign(window, {abrirDetalhe, voltarLista, salvar, abrirRelatorio, sair: signOut});
-await carregarLista();
+Object.assign(window, {abrirDetalhe, voltarLista, salvar, abrirRelatorio, trocarAba, renderRespostas, renderAcessos, atualizarTudo, sair: signOut});
+await Promise.all([carregarLista(), carregarAcessos()]);
 </script>
 
 </body>

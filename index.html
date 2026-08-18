@@ -12,15 +12,16 @@
 <meta property="og:site_name" content="CALI — HR for Business"/>
 <meta property="og:title" content="Mapa de People | CALI"/>
 <meta property="og:description" content="Uma leitura estratégica para entender onde sua gestão de pessoas está hoje e o que precisa vir primeiro."/>
-<meta property="og:image" content="https://mapa.calirh.com/preview-whatsapp.jpg"/>
-<meta property="og:image:type" content="image/jpeg"/>
-<meta property="og:image:width" content="1092"/>
-<meta property="og:image:height" content="1092"/>
+<meta property="og:image" content="https://mapa.calirh.com/preview-whatsapp.png?v=2"/>
+<meta property="og:image:secure_url" content="https://mapa.calirh.com/preview-whatsapp.png?v=2"/>
+<meta property="og:image:type" content="image/png"/>
+<meta property="og:image:width" content="1917"/>
+<meta property="og:image:height" content="959"/>
 <meta property="og:image:alt" content="Identidade visual da CALI — Consultoria Estratégica em Pessoas"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Mapa de People | CALI"/>
 <meta name="twitter:description" content="Descubra o nível de maturidade da gestão de pessoas da sua empresa."/>
-<meta name="twitter:image" content="https://mapa.calirh.com/preview-whatsapp.jpg"/>
+<meta name="twitter:image" content="https://mapa.calirh.com/preview-whatsapp.png?v=2"/>
 <link rel="icon" type="image/png" href="/logo.png"/>
 <link rel="apple-touch-icon" href="/logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +51,8 @@ body.formulario-ativo{background:var(--marfim-2)}
   color:var(--marfim);min-height:100vh;min-height:100dvh;align-items:center;justify-content:center;padding:40px 24px 92px}
 #step-welcome.ativo{display:flex}
 .welcome-inner{max-width:600px;text-align:center}
+.voltar-site{position:absolute;top:24px;left:24px;display:inline-flex;align-items:center;gap:7px;color:rgba(247,243,238,.82);text-decoration:none;font-size:12px;font-weight:600;border:1px solid rgba(247,243,238,.22);border-radius:100px;padding:8px 14px;transition:.2s}
+.voltar-site:hover{background:rgba(247,243,238,.1);color:var(--marfim)}
 .welcome-inner img{width:260px;margin:0 auto 30px}
 .welcome-inner .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--dourado);font-weight:600;margin-bottom:16px}
 .welcome-inner h1{font-family:var(--serif);font-weight:600;font-size:46px;line-height:1.15;margin-bottom:20px}
@@ -182,6 +185,7 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
   .welcome-inner h1{font-size:30px}
   .welcome-inner img{width:190px}
   #step-welcome{padding:32px 20px 88px}
+  .voltar-site{top:16px;left:16px;padding:7px 11px;font-size:10.5px}
   .welcome-inner p.lead{font-size:14px;line-height:1.65}
   .welcome-meta{font-size:10.5px;line-height:1.55}
   .pilar-item .n, .pilar-item .t{font-size:13px}
@@ -203,9 +207,10 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 
 <!-- ══════════ ETAPA 0 · BOAS-VINDAS ══════════ -->
 <section id="step-welcome" class="step-view ativo">
+  <a class="voltar-site" href="https://calirh.com" aria-label="Voltar para a página principal da CALI">← Página principal</a>
   <div class="welcome-inner">
     <img src="logo.svg" alt="CALI — HR for Business"/>
-    <div class="eyebrow">Bem-vinda ao Mapa de People da CALI</div>
+    <div class="eyebrow">Bem-vinda(o) ao Mapa de People da CALI</div>
     <h1>Vamos entender onde sua gestão de pessoas está hoje.</h1>
     <p class="lead"><span class="assina">Oi, eu sou a Pati.</span>Sou a fundadora da CALI e posso ser sua People Partner. Criei este mapa pra te dar uma dimensão verdadeira sobre o status da sua operação de gestão de pessoas. Você responde, eu leio pessoalmente e te devolvo uma posição clara: onde você está e o que precisa vir primeiro.</p>
     <div class="pilares-timeline" id="pilaresTimeline">
@@ -293,9 +298,9 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
     </div>
 
     <div class="q">
-      <div class="q-texto">Os líderes atuais foram preparados para liderar pessoas?</div>
+      <div class="q-texto">As lideranças atuais receberam preparo para liderar pessoas?</div>
       <div class="escala">
-        <label><input type="radio" name="d2_lideres_preparo" value="1"/><span class="pill">1<span class="cap">Promovidos sem preparo</span></span></label>
+        <label><input type="radio" name="d2_lideres_preparo" value="1"/><span class="pill">1<span class="cap">Sem preparo formal</span></span></label>
         <label><input type="radio" name="d2_lideres_preparo" value="2"/><span class="pill">2<span class="cap"></span></span></label>
         <label><input type="radio" name="d2_lideres_preparo" value="3"/><span class="pill">3<span class="cap"></span></span></label>
         <label><input type="radio" name="d2_lideres_preparo" value="4"/><span class="pill">4<span class="cap"></span></span></label>
@@ -304,13 +309,13 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
     </div>
 
     <div class="q">
-      <div class="q-texto">Você reconhece líderes com comportamento de dono hoje?</div>
+      <div class="q-texto">Você reconhece lideranças com senso de responsabilidade pelo negócio hoje?</div>
       <div class="escala">
-        <label><input type="radio" name="d2_comportamento_dono" value="1"/><span class="pill">1<span class="cap">Nenhum</span></span></label>
+        <label><input type="radio" name="d2_comportamento_dono" value="1"/><span class="pill">1<span class="cap">Não identifico</span></span></label>
         <label><input type="radio" name="d2_comportamento_dono" value="2"/><span class="pill">2<span class="cap"></span></span></label>
         <label><input type="radio" name="d2_comportamento_dono" value="3"/><span class="pill">3<span class="cap"></span></span></label>
         <label><input type="radio" name="d2_comportamento_dono" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="d2_comportamento_dono" value="5"/><span class="pill">5<span class="cap">Vários</span></span></label>
+        <label><input type="radio" name="d2_comportamento_dono" value="5"/><span class="pill">5<span class="cap">Em várias lideranças</span></span></label>
       </div>
     </div>
 
@@ -456,13 +461,13 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
     </div>
 
     <div class="q">
-      <div class="q-texto">O RH interno consegue carregar sozinho um programa de estruturação de pessoas, ou precisaria de apoio contínuo?</div>
+      <div class="q-texto">O RH interno consegue conduzir um programa de estruturação de pessoas sem apoio, ou precisaria de acompanhamento contínuo?</div>
       <div class="escala">
         <label><input type="radio" name="l3_rh_interno" value="1"/><span class="pill">1<span class="cap">Precisaria muito</span></span></label>
         <label><input type="radio" name="l3_rh_interno" value="2"/><span class="pill">2<span class="cap"></span></span></label>
         <label><input type="radio" name="l3_rh_interno" value="3"/><span class="pill">3<span class="cap"></span></span></label>
         <label><input type="radio" name="l3_rh_interno" value="4"/><span class="pill">4<span class="cap"></span></span></label>
-        <label><input type="radio" name="l3_rh_interno" value="5"/><span class="pill">5<span class="cap">Carrega sozinho</span></span></label>
+        <label><input type="radio" name="l3_rh_interno" value="5"/><span class="pill">5<span class="cap">Conduz sem apoio</span></span></label>
       </div>
     </div>
     <div class="step-nav"><button type="button" class="btn-nav btn-voltar" onclick="irPara(4)">← Voltar</button><button type="button" class="btn-nav btn-proxima" onclick="irPara(6)">Próxima →</button></div>
@@ -495,7 +500,7 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
         <label><input type="checkbox" name="q_decisor" value="diretoria"/><span class="chip">Diretoria</span></label>
         <label><input type="checkbox" name="q_decisor" value="rh"/><span class="chip">RH</span></label>
         <label><input type="checkbox" name="q_decisor" value="eu_mesma" id="chk-eu-mesma"/><span class="chip">Sou eu</span></label>
-        <label><input type="checkbox" name="q_decisor" value="outro" id="chk-decisor-outro"/><span class="chip">Outro</span></label>
+        <label><input type="checkbox" name="q_decisor" value="outro" id="chk-decisor-outro"/><span class="chip">Outra pessoa</span></label>
       </div>
       <input type="text" id="decisor-outro-campo" name="q_decisor_outro" placeholder="Quem?" style="display:none"/>
     </div>
@@ -573,7 +578,7 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 <!-- ══════════ OBRIGADO ══════════ -->
 <section id="step-obrigado" class="step-view">
   <img class="logo" src="logo.svg" alt="CALI — HR for Business"/>
-  <h1>Obrigada pelas suas respostas.</h1>
+  <h1>Agradecemos pelas suas respostas.</h1>
   <p>Recebemos seu Mapa de People. Você também receberá uma confirmação por e-mail agora, e a Pati fará a leitura pessoalmente para retornar em até 3 dias úteis, por e-mail e/ou WhatsApp.</p>
   <div id="confirmacao-protocolo" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dourado);margin:-18px 0 28px"></div>
   <div class="socials">
@@ -665,6 +670,9 @@ function validarEtapa(n, exibirAviso = true){
 
 function irPara(n){
   if(n > etapaAtual && etapaAtual > 0 && !validarEtapa(etapaAtual)) return;
+  if(n > etapaAtual && n > 0){
+    registrarEvento(etapaAtual === 0 ? 'start' : 'step', n);
+  }
   mostrarEtapa(n);
 }
 
@@ -715,6 +723,61 @@ document.querySelectorAll('input[name="q_formato"]').forEach(r=>{
 /* ══ SUPABASE ══ */
 const SUPABASE_URL = 'https://kqtbfeeqbcllwvlkbrkq.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxdGJmZWVxYmNsbHd2bGticmtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTIyODMsImV4cCI6MjEwMjU2ODI4M30.G8xr2MR_YWKWjzSk88r9ryVzCyR9QqQEWHrHNeWE7Cg';
+
+/* Rastreamento mínimo da jornada: não guarda respostas parciais, texto copiado, IP ou user-agent. */
+const TRACKING_SESSION_KEY = 'cali_mapa_session_id';
+let trackingSessionId = sessionStorage.getItem(TRACKING_SESSION_KEY);
+if(!trackingSessionId){
+  trackingSessionId = crypto.randomUUID();
+  sessionStorage.setItem(TRACKING_SESSION_KEY, trackingSessionId);
+}
+
+function tipoDispositivo(){
+  if(window.innerWidth <= 600) return 'mobile';
+  if(window.innerWidth <= 1024) return 'tablet';
+  return 'desktop';
+}
+
+function origemHost(){
+  if(!document.referrer) return null;
+  try{ return new URL(document.referrer).hostname.slice(0, 160) || null; }
+  catch{ return null; }
+}
+
+function registrarEvento(eventType, step = 0, metadata = {}){
+  const chave = `cali_event_${eventType}_${step}`;
+  if(eventType !== 'copy' && sessionStorage.getItem(chave)) return;
+  if(eventType !== 'copy') sessionStorage.setItem(chave, '1');
+  fetch(`${SUPABASE_URL}/rest/v1/mapa_eventos`, {
+    method: 'POST',
+    keepalive: true,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      session_id: trackingSessionId,
+      event_type: eventType,
+      step,
+      page_path: '/',
+      referrer_host: origemHost(),
+      device_type: tipoDispositivo(),
+      metadata
+    })
+  }).catch(()=>{});
+}
+
+let ultimaCopiaRegistrada = 0;
+document.addEventListener('copy', ()=>{
+  const agora = Date.now();
+  if(agora - ultimaCopiaRegistrada < 30000) return;
+  ultimaCopiaRegistrada = agora;
+  registrarEvento('copy', etapaAtual, { area: etapaAtual === 0 ? 'abertura' : 'formulario' });
+});
+
+registrarEvento('visit', 0);
 
 function gerarProtocolo(){
   return 'MP-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-6);
@@ -789,6 +852,8 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
       const errText = await resp.text();
       throw new Error(errText);
     }
+
+    registrarEvento('submit', 7, { protocolo: payload.protocolo });
 
     document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
     document.getElementById('barraWrap').classList.remove('ativo');
