@@ -1,7 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/+esm';
 
 export const SUPABASE_URL = 'https://kqtbfeeqbcllwvlkbrkq.supabase.co';
-export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxdGJmZWVxYmNsbHd2bGticmtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5OTIyODMsImV4cCI6MjEwMjU2ODI4M30.G8xr2MR_YWKWjzSk88r9ryVzCyR9QqQEWHrHNeWE7Cg';
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
 export const ADMIN_EMAIL = 'patricia@calirh.com';
 const WORKSPACE_ORIGINS = new Set([
   'https://app.calirh.com',
@@ -33,8 +33,26 @@ export function safeNext(value, fallback = 'painel.html') {
   }
 }
 
+function workspacePeer() {
+  if (window.opener && !window.opener.closed) return window.opener;
+  if (window.parent && window.parent !== window) return window.parent;
+  return null;
+}
+
+function workspaceTargetOrigins() {
+  try {
+    const referrerOrigin = document.referrer ? new URL(document.referrer).origin : '';
+    if (WORKSPACE_ORIGINS.has(referrerOrigin)) return [referrerOrigin];
+  } catch {
+    // Fallback para os domínios explicitamente autorizados abaixo.
+  }
+  return Array.from(WORKSPACE_ORIGINS);
+}
+
 async function sessionFromWorkspace() {
-  if (!window.opener || window.opener.closed) return null;
+  const peer = workspacePeer();
+  if (!peer) return null;
+
   return await new Promise((resolve) => {
     let settled = false;
     const finish = (value) => {
@@ -46,7 +64,7 @@ async function sessionFromWorkspace() {
     };
     const onMessage = async (event) => {
       if (!WORKSPACE_ORIGINS.has(event.origin)) return;
-      if (event.source !== window.opener) return;
+      if (event.source !== peer) return;
       if (event.data?.type !== 'CALI_MAPA_AUTH_RESPONSE') return;
       const accessToken = String(event.data?.access_token || '');
       if (!accessToken) return finish(null);
@@ -60,13 +78,34 @@ async function sessionFromWorkspace() {
     };
     const timeout = setTimeout(() => finish(null), 4500);
     window.addEventListener('message', onMessage);
-    try {
-      window.opener.postMessage({ type: 'CALI_MAPA_AUTH_REQUEST', href: window.location.href }, 'https://app.calirh.com');
-    } catch {
-      finish(null);
+
+    let sent = false;
+    for (const origin of workspaceTargetOrigins()) {
+      try {
+        peer.postMessage({ type: 'CALI_MAPA_AUTH_REQUEST', href: window.location.href }, origin);
+        sent = true;
+      } catch {
+        // Tenta o próximo domínio autorizado.
+      }
     }
+    if (!sent) finish(null);
   });
 }
+
+window.addEventListener('message', (event) => {
+  if (!WORKSPACE_ORIGINS.has(event.origin)) return;
+  const peer = workspacePeer();
+  if (!peer || event.source !== peer) return;
+
+  if (event.data?.type === 'CALI_MAPA_PRINT_REQUEST') {
+    const printReport = window.imprimirRelatorio;
+    if (typeof printReport === 'function') {
+      Promise.resolve(printReport()).catch(() => window.print());
+    } else {
+      window.print();
+    }
+  }
+});
 
 export async function requireAdmin() {
   const { data: { session }, error } = await supabase.auth.getSession();
