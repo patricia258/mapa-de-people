@@ -11,6 +11,8 @@ const FROM_EMAIL = "Patrícia Lima · CALI RH <patricia@calirh.com>";
 const LOGO_URL = "https://mapa.calirh.com/logo.png";
 const WHATSAPP_URL = "https://wa.me/5541987791933?text=Oi%2C%20Patr%C3%ADcia!%20Recebi%20meu%20relat%C3%B3rio%20do%20Mapa%20de%20People%20e%20gostaria%20de%20conversar%20sobre%20o%20resultado.";
 const MAX_PDF_BYTES = 8 * 1024 * 1024;
+const MAX_RECIPIENTS = 8;
+const MAX_CUSTOM_MESSAGE = 3000;
 
 const BORDO = "#5A1E2D";
 const MARFIM = "#F7F3EE";
@@ -20,6 +22,7 @@ const TAUPE = "#B7A99A";
 
 const ALLOWED_ORIGINS = new Set([
   "https://mapa.calirh.com",
+  "https://app.calirh.com",
   "http://localhost:3000",
   "http://localhost:4173",
   "http://localhost:5173",
@@ -93,7 +96,42 @@ function decodeBase64Pdf(value: unknown) {
   return base64;
 }
 
-function emailHtml(record: MapaResposta) {
+function normalizeRecipients(value: unknown, fallback: unknown) {
+  let source: unknown[];
+  if(Array.isArray(value)) source = value;
+  else if(typeof value === "string") source = value.split(/[;,]/);
+  else source = [fallback];
+
+  const recipients = [...new Set(source
+    .map(item => String(item ?? "").trim().toLowerCase())
+    .filter(Boolean))];
+
+  if(!recipients.length) throw new Error("Informe pelo menos um destinatário válido.");
+  if(recipients.length > MAX_RECIPIENTS) throw new Error(`Use no máximo ${MAX_RECIPIENTS} destinatários por envio.`);
+  const invalid = recipients.find(email => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+  if(invalid) throw new Error(`E-mail de destinatário inválido: ${invalid}`);
+  return recipients;
+}
+
+function normalizeCustomMessage(value: unknown) {
+  return String(value ?? "")
+    .replace(/\r\n/g, "\n")
+    .trim()
+    .slice(0, MAX_CUSTOM_MESSAGE);
+}
+
+function customMessageHtml(value: string) {
+  if(!value) return "";
+  const safe = escapeHtml(value).replaceAll("\n", "<br>");
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;background:#FBF7F3;border:1px solid #E8DDD4;border-radius:10px;">
+    <tr><td style="padding:17px 18px;">
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:${DOURADO};font-weight:700;margin-bottom:7px;">Uma observação minha</div>
+      <div style="font-size:14px;line-height:1.65;color:${GRAFITE};">${safe}</div>
+    </td></tr>
+  </table>`;
+}
+
+function emailHtml(record: MapaResposta, customMessage = "") {
   const name = firstName(record.c_nome);
   const company = escapeHtml(record.c_empresa || "sua empresa");
   const protocol = escapeHtml(record.protocolo || "—");
@@ -115,6 +153,7 @@ function emailHtml(record: MapaResposta) {
           <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:${DOURADO};font-weight:700;margin-bottom:11px;">Mapa de People · devolutiva</div>
           <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:29px;line-height:1.18;font-weight:400;color:${BORDO};margin:0 0 20px;">Seu relatório chegou 🎉</h1>
           <p style="font-size:15px;line-height:1.7;margin:0 0 15px;">Olá${name ? `, ${escapeHtml(name)}` : ""}.</p>
+          ${customMessageHtml(customMessage)}
           <p style="font-size:15px;line-height:1.7;margin:0 0 15px;">O relatório gratuito do <b>Mapa de People da ${company}</b> está pronto e segue anexado a este e-mail.</p>
           <p style="font-size:15px;line-height:1.7;margin:0 0 20px;">A análise traduz as respostas em uma leitura prática sobre o momento atual da empresa. No material, você encontrará:</p>
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${MARFIM};border-left:3px solid ${DOURADO};border-radius:0 10px 10px 0;">
@@ -142,12 +181,13 @@ function emailHtml(record: MapaResposta) {
 </html>`;
 }
 
-function emailText(record: MapaResposta) {
+function emailText(record: MapaResposta, customMessage = "") {
   const name = firstName(record.c_nome);
   const company = record.c_empresa || "sua empresa";
+  const personal = customMessage ? `${customMessage}\n\n` : "";
   return `Olá${name ? `, ${name}` : ""}.
 
-Seu relatório do Mapa de People da ${company} chegou 🎉
+${personal}Seu relatório do Mapa de People da ${company} chegou 🎉
 
 O PDF segue anexado. Nele, você encontrará a posição da empresa no mapa de maturidade, a leitura das quatro dimensões avaliadas, os principais riscos e prioridades e meus apontamentos sobre o próximo passo recomendado.
 
@@ -163,7 +203,7 @@ patricia@calirh.com · (41) 98779-1933 · calirh.com
 Protocolo: ${record.protocolo || "—"}`;
 }
 
-async function sendReport(record: MapaResposta, pdfBase64: string, requestId: unknown) {
+async function sendReport(record: MapaResposta, pdfBase64: string, requestId: unknown, recipients: string[], customMessage: string) {
   if(!RESEND_API_KEY) throw new Error("RESEND_API_KEY não configurada.");
   const safeRequestId = String(requestId ?? crypto.randomUUID()).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 80);
   const response = await fetch("https://api.resend.com/emails", {
@@ -175,11 +215,11 @@ async function sendReport(record: MapaResposta, pdfBase64: string, requestId: un
     },
     body: JSON.stringify({
       from: FROM_EMAIL,
-      to: [record.c_email],
+      to: recipients,
       reply_to: ADMIN_EMAIL,
       subject: "Seu relatório do Mapa de People chegou 🎉 | CALI RH",
-      html: emailHtml(record),
-      text: emailText(record),
+      html: emailHtml(record, customMessage),
+      text: emailText(record, customMessage),
       attachments: [{ filename: reportFilename(record), content: pdfBase64 }],
     }),
   });
@@ -225,25 +265,24 @@ Deno.serve(async (request: Request) => {
       .eq("id", responseId)
       .single<MapaResposta>();
     if(recordError || !record) return json(request, { ok: false, error: "Relatório não encontrado." }, 404);
-    if(!record.c_email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(record.c_email)) {
-      return json(request, { ok: false, error: "O lead não possui um e-mail válido." }, 400);
-    }
 
-    const email = await sendReport(record, pdfBase64, payload?.request_id);
+    const recipients = normalizeRecipients(payload?.recipients, record.c_email);
+    const customMessage = normalizeCustomMessage(payload?.custom_message);
+    const email = await sendReport(record, pdfBase64, payload?.request_id, recipients, customMessage);
     const { error: statusError } = await adminClient.from("mapa_respostas").update({ status: "enviado" }).eq("id", record.id);
     if(statusError) console.error("E-mail enviado, mas o status não foi atualizado", statusError);
 
     return json(request, {
       ok: true,
       email_id: email?.id ?? null,
-      to: record.c_email,
+      to: recipients,
       filename: reportFilename(record),
       status_updated: !statusError,
     });
   } catch(error) {
     console.error("Falha ao enviar relatório", error);
     const message = error instanceof Error ? error.message : "Falha inesperada ao enviar o relatório.";
-    const status = /PDF|anexo|8 MB/i.test(message) ? 400 : 500;
+    const status = /PDF|anexo|8 MB|e-mail|destinatário/i.test(message) ? 400 : 500;
     return json(request, { ok: false, error: message }, status);
   }
 });
