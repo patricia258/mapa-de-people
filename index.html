@@ -24,12 +24,12 @@
 <meta name="twitter:image" content="https://mapa.calirh.com/preview-whatsapp.png?v=2"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bordo:#5A1E2D;--bordo-escuro:#3E1520;--marfim:#F7F3EE;--marfim-2:#EFE8DF;
   --grafite:#2B2B2B;--taupe:#B7A99A;--dourado:#B58C52;--branco:#FFFFFF;
-  --serif:'Playfair Display',serif;--sans:'Inter',sans-serif;
+  --serif:'Playfair Display',serif;--sans:'DM Sans',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scrollbar-width:none;background:var(--bordo);overscroll-behavior-y:none}
@@ -214,6 +214,102 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
   #step-obrigado h1{font-size:29px}
   footer{padding:14px 16px;font-size:9px;line-height:1.5}
 }
+
+/* Identidade CALI · abertura e encerramento em uma tela. */
+body:not(.formulario-ativo){display:flex;flex-direction:column;min-height:100dvh}
+#step-welcome,#step-obrigado{position:relative;isolation:isolate;overflow:hidden;flex:1;min-height:0;padding:clamp(22px,4vh,48px) 24px}
+#step-welcome{background:radial-gradient(ellipse at 50% 0%,#713145 0%,transparent 55%),linear-gradient(145deg,#5a1e2d,#3e1520)}
+#step-welcome::before,#step-obrigado::before{content:"";position:absolute;z-index:-2;inset:0;background-image:linear-gradient(#f7f3ee0b 1px,transparent 1px),linear-gradient(90deg,#f7f3ee0b 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(90deg,#0008,#0001 55%,#0007);pointer-events:none}
+#step-welcome::after,#step-obrigado::after{content:"";position:absolute;z-index:-1;width:clamp(280px,36vw,470px);height:clamp(280px,36vw,470px);left:-9%;bottom:-19%;background:url('cali-lime-mark.svg') center/contain no-repeat;filter:brightness(0) invert(1);opacity:.12;pointer-events:none}
+#step-obrigado::after{left:auto;right:-10%;bottom:-24%;opacity:.10}
+.welcome-inner{position:relative;width:min(100%,720px);max-width:720px}
+.welcome-inner img{width:clamp(130px,13vw,176px);margin:0 auto clamp(16px,2.4vh,25px)}
+.welcome-inner .eyebrow{font-size:11px;letter-spacing:.22em;color:#dfbc80;margin-bottom:clamp(9px,1.6vh,15px)}
+.welcome-inner h1{font-size:clamp(38px,4.2vw,60px);font-weight:500;letter-spacing:-.035em;line-height:1.12;margin-bottom:clamp(14px,2vh,22px)}
+.welcome-inner h1 span,#step-obrigado h1 span{color:#e4bd88;font-style:normal}
+.welcome-inner p.lead{font-size:clamp(14px,1.2vw,16px);font-weight:400;line-height:1.55;max-width:600px;margin-bottom:clamp(17px,2.6vh,26px)}
+.welcome-inner p.lead .assina{font-family:var(--sans);font-style:normal;font-size:inherit;font-weight:700;color:#f7f3ee;margin-bottom:3px}
+.pilares-timeline{height:32px;margin-bottom:13px}
+.pilar-item .n{font-size:13px}.pilar-item .t{font-size:15px}
+.pilar-dots{margin:0 auto clamp(15px,2vh,21px)}
+.welcome-meta{font-size:12px;color:#f7f3eebd;margin-bottom:clamp(16px,2.2vh,24px)}
+.btn-comecar{min-height:48px;background:#f7f3ee;color:#5a1e2d;padding:12px 27px;box-shadow:0 12px 25px #210b1433}
+.btn-comecar:hover{background:#ead8bd;box-shadow:0 14px 32px #210b1455}
+.btn-comecar span{margin-left:8px}
+
+/* Mesmas cores e dimensões do rodapé do site institucional. */
+footer.cali-standard-footer{position:static;display:block;flex:none;background:#35121f;color:#f7f3ee;text-align:left;letter-spacing:normal;border:0;padding:20px 0 0;backdrop-filter:none}
+body.formulario-ativo footer.cali-standard-footer{background:#35121f;color:#f7f3ee}
+.cali-standard-footer .footer-container{max-width:1240px;margin:auto;padding-inline:clamp(24px,5vw,72px)}
+.cali-standard-footer .footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:25px;border-top:1px solid #ffffff35;padding-top:22px}
+.cali-standard-footer .footer-bottom img{width:100px;height:60px;object-fit:contain}
+.cali-standard-footer .footer-bottom>div:not(.social){display:flex;gap:22px;flex-wrap:wrap}
+.cali-standard-footer .footer-bottom a{font-size:13px;color:#f7f3eec9;text-decoration:none}
+.cali-standard-footer .footer-bottom a:hover{color:#e2b97e}
+.cali-standard-footer .footer-bottom .social{display:flex;align-items:center;gap:22px;flex:none}
+.cali-standard-footer .footer-bottom .social a{display:grid;place-items:center;width:26px;height:34px}
+.cali-standard-footer .footer-bottom .social svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cali-standard-footer .copyright{font-size:12px;color:#f7f3ee80;padding-top:16px;padding-bottom:18px}
+
+/* Formulário: hierarquia e estados visuais, mantendo nomes e valores dos campos. */
+.q{background:#fffdfa;border-color:#ddcfc2;border-radius:16px;box-shadow:0 12px 28px #5a1e2d0b}
+.q:focus-within{border-color:#b58c52;box-shadow:0 0 0 3px #b58c5229,0 15px 32px #5a1e2d12}
+.q-texto{font-size:15px;font-weight:600;color:#4b2631}
+.escala .pill{background:#f7f3ee;border-color:#dfd0c2;border-radius:12px;color:#5a1e2d}
+.escala label:hover .pill,.chips label:hover .chip{border-color:#b58c52;background:#f7f3ee;transform:translateY(-2px)}
+.escala input:checked + .pill,.chips input:checked + .chip{background:#5a1e2d;border-color:#5a1e2d;color:#fffdfa;box-shadow:0 7px 16px #5a1e2d24}
+.escala input:checked + .pill .cap{color:#e4bd88}
+.chips .chip{border-color:#dfd0c2;background:#fffdfa}
+.q input[type=text],.q input[type=email],.q input[type=tel],.q input[type=number],.q textarea{background:#fffdfa;border-color:#d8c7b9;border-radius:10px;min-height:44px}
+.q input:focus,.q textarea:focus{border-color:#b58c52;box-shadow:0 0 0 3px #b58c5228}
+
+#step-obrigado{background:linear-gradient(145deg,#5a1e2d,#3e1520);justify-content:center;text-align:center}
+.obrigado-inner{position:relative;width:min(100%,680px);margin:auto}
+#step-obrigado img.logo{width:clamp(125px,13vw,175px);margin:0 auto 25px}
+.obrigado-eyebrow{display:block;margin-bottom:16px;color:#dfbc80;font-size:11px;font-weight:700;letter-spacing:.18em}
+#step-obrigado h1{font-size:clamp(34px,4.1vw,53px);font-weight:500;line-height:1.15;letter-spacing:-.03em;max-width:660px;margin:0 auto 20px}
+#step-obrigado p{font-size:16px;font-weight:400;line-height:1.55;max-width:520px;margin:0 auto 15px}
+#step-obrigado p.obrigado-assinatura{font-family:var(--serif);font-size:20px;color:#fffdfa;margin:12px auto 34px}
+.obrigado-social-label{font-size:13px;font-weight:600;color:#f7f3eedd;margin-bottom:13px}
+#step-obrigado .socials{justify-content:center;gap:13px;margin:0}
+#step-obrigado .socials a{border-color:#dfbc80a6;width:42px;height:42px}
+@media(max-width:850px){.cali-standard-footer .footer-bottom{align-items:start;flex-direction:column;gap:12px}.cali-standard-footer .footer-bottom>div:not(.social){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 16px;width:100%}}
+@media(max-width:760px){
+  #step-welcome,#step-obrigado{padding:18px 20px}
+  .welcome-inner img{width:132px;margin-bottom:12px}
+  .welcome-inner .eyebrow{font-size:9px;margin-bottom:8px}
+  .welcome-inner h1{font-size:clamp(31px,8.1vw,42px);margin-bottom:12px}
+  .welcome-inner p.lead{font-size:12.8px;line-height:1.45;margin-bottom:15px}
+  .pilares-timeline{height:28px;margin-bottom:7px}.pilar-dots{margin-bottom:11px}
+  .pilar-item .n,.pilar-item .t{font-size:12px}
+  .welcome-meta{font-size:10px;line-height:1.3;margin-bottom:12px}
+  .btn-comecar{min-height:42px;font-size:12px;padding:10px 20px}
+  footer.cali-standard-footer{padding:13px 0 0}
+  .cali-standard-footer .footer-bottom{padding-top:14px;gap:9px}
+  .cali-standard-footer .footer-bottom img{width:80px;height:38px}
+  .cali-standard-footer .footer-bottom a{font-size:10px;line-height:1.25}
+  .cali-standard-footer .footer-bottom .social{gap:13px}
+  .cali-standard-footer .footer-bottom .social a{width:24px;height:25px}
+  .cali-standard-footer .footer-bottom .social svg{width:19px;height:19px}
+  .cali-standard-footer .copyright{font-size:9px;line-height:1.25;padding-top:10px;padding-bottom:11px}
+  #step-obrigado img.logo{width:130px;margin-bottom:18px}
+  #step-obrigado h1{font-size:clamp(31px,8vw,42px);margin-bottom:15px}
+  #step-obrigado p{font-size:13px}
+  #step-obrigado p.obrigado-assinatura{font-size:17px;margin:9px auto 22px}
+}
+@media(max-width:760px) and (max-height:720px){
+  #step-welcome,#step-obrigado{padding:10px 18px}
+  .welcome-inner img{width:96px;margin-bottom:6px}
+  .welcome-inner .eyebrow{margin-bottom:5px}
+  .welcome-inner h1{font-size:clamp(27px,7.3vw,35px);margin-bottom:8px}
+  .welcome-inner p.lead{font-size:11.2px;line-height:1.35;margin-bottom:7px}
+  .pilares-timeline{height:22px;margin-bottom:4px}.pilar-dots{display:none}
+  .welcome-meta{font-size:9px;margin-bottom:7px}.btn-comecar{min-height:37px;padding:8px 17px}
+  #step-obrigado img.logo{width:100px;margin-bottom:10px}
+  #step-obrigado h1{font-size:29px}
+  #step-obrigado p.obrigado-assinatura{margin-bottom:15px}
+}
+@media(prefers-reduced-motion:reduce){.step-view,.pilar-item,.pilar-dots span,.btn-comecar,.q,.escala .pill,.chips .chip{animation:none;transition:none}}
 </style>
   <link rel="icon" type="image/svg+xml" href="/cali-favicon.svg?v=20260924-leaf2">
   <link rel="shortcut icon" type="image/svg+xml" href="/cali-favicon.svg?v=20260924-leaf2">
@@ -224,10 +320,10 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 <!-- ══════════ ETAPA 0 · BOAS-VINDAS ══════════ -->
 <section id="step-welcome" class="step-view ativo">
   <div class="welcome-inner">
-    <img src="logo.svg" alt="CALI — HR for Business"/>
-    <div class="eyebrow">Bem-vinda(o) ao Mapa de People da CALI</div>
-    <h1>Vamos entender onde sua gestão de pessoas está hoje.</h1>
-    <p class="lead"><span class="assina">Oi, eu sou a Pati.</span>Sou a fundadora da CALI e posso ser sua People Partner. Criei este mapa pra te dar uma dimensão verdadeira sobre o status da sua operação de gestão de pessoas. Você responde, eu leio pessoalmente e te devolvo uma posição clara: onde você está e o que precisa vir primeiro.</p>
+    <img src="cali-logo-light.svg" alt="CALI — HR for Business"/>
+    <div class="eyebrow">GRATUITO · PARA EMPRESAS</div>
+    <h1>Faça aqui o seu <span>Mapa de People.</span></h1>
+    <p class="lead"><span class="assina">Oi, eu sou a Pati, fundadora da CALI.</span>Responda sobre a gestão de pessoas da sua empresa. Eu analiso as respostas e você recebe um relatório exclusivo com os riscos identificados e as prioridades para começar.</p>
     <div class="pilares-timeline" id="pilaresTimeline">
       <div class="pilar-item on"><span class="n">01</span><span class="t">Maturidade Estrutural</span></div>
       <div class="pilar-item"><span class="n">02</span><span class="t">Liderança & Cultura</span></div>
@@ -235,8 +331,8 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
       <div class="pilar-item"><span class="n">04</span><span class="t">Dimensões Operacionais</span></div>
     </div>
     <div class="pilar-dots" id="pilarDots"><span class="on"></span><span></span><span></span><span></span></div>
-    <div class="welcome-meta">⏱ Leva cerca de 15–18 minutos · 4 dimensões + 12 subcamadas</div>
-    <button type="button" class="btn-comecar" onclick="irPara(1)">Vamos lá →</button>
+    <div class="welcome-meta">Cerca de 15–18 minutos · 4 dimensões · 12 subcamadas</div>
+    <button type="button" class="btn-comecar" onclick="irPara(1)">Começar meu Mapa <span aria-hidden="true">↗</span></button>
   </div>
 </section>
 
@@ -485,19 +581,25 @@ body.formulario-ativo footer{position:static;background:var(--bordo-escuro);colo
 
 <!-- ══════════ OBRIGADO ══════════ -->
 <section id="step-obrigado" class="step-view">
-  <img class="logo" src="logo.svg" alt="CALI — HR for Business"/>
-  <h1>Agradecemos pelas suas respostas.</h1>
-  <p>Recebemos seu Mapa de People. Você também receberá uma confirmação por e-mail agora, e a Pati fará a leitura pessoalmente para retornar em até 3 dias úteis, por e-mail e/ou WhatsApp.</p>
-  <div id="confirmacao-protocolo" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dourado);margin:-18px 0 28px"></div>
+  <div class="obrigado-inner">
+  <img class="logo" src="cali-logo-light.svg" alt="CALI — HR for Business"/>
+  <span class="obrigado-eyebrow">MAPA DE PEOPLE · RESPOSTAS RECEBIDAS</span>
+  <h1>Prontinho. <span>Recebemos suas respostas.</span></h1>
+  <p>Em breve, você receberá seu relatório exclusivo no e-mail cadastrado.</p>
+  <p class="obrigado-assinatura">Beijos, Pati.</p>
+  <div id="confirmacao-protocolo" hidden></div>
+  <div class="obrigado-social-label">Acompanhe a CALI nas redes sociais</div>
   <div class="socials">
     <a href="https://instagram.com/calirh_" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .24 2.6.5.7.27 1.2.6 1.7 1.1.5.5.9 1 1.1 1.7.3.6.4 1.4.5 2.6.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 2-.5 2.6-.2.7-.6 1.2-1.1 1.7-.5.5-1 .9-1.7 1.1-.6.3-1.4.4-2.6.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.2-2.6-.5-.7-.2-1.2-.6-1.7-1.1-.5-.5-.9-1-1.1-1.7-.3-.6-.4-1.4-.5-2.6C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-2 .5-2.6.2-.7.6-1.2 1.1-1.7.5-.5 1-.9 1.7-1.1.6-.3 1.4-.4 2.6-.5C9.6 2.2 10 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-1 .05-1.6.2-1.9.34-.5.2-.8.4-1.2.8-.4.4-.6.7-.8 1.2-.14.4-.29 1-.34 1.9C3 9.5 3 9.9 3 13s0 3.5.07 4.7c.05 1 .2 1.6.34 1.9.2.5.4.8.8 1.2.4.4.7.6 1.2.8.4.14 1 .29 1.9.34 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c1-.05 1.6-.2 1.9-.34.5-.2.8-.4 1.2-.8.4-.4.6-.7.8-1.2.14-.4.29-1 .34-1.9.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.05-1-.2-1.6-.34-1.9-.2-.5-.4-.8-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.14-1-.29-1.9-.34C15.5 4 15.1 4 12 4zm0 3.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.8a3.7 3.7 0 100 7.4 3.7 3.7 0 000-7.4zm5.7-2a1.3 1.3 0 11-2.6 0 1.3 1.3 0 012.6 0z"/></svg></a>
     <a href="https://linkedin.com/in/patriciaazumi" target="_blank" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.4 3H3.6A.6.6 0 003 3.6v16.8a.6.6 0 00.6.6h16.8a.6.6 0 00.6-.6V3.6a.6.6 0 00-.6-.6zM8.3 18.1H5.7V9.9h2.6v8.2zM7 8.8a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm11.1 9.3h-2.6v-4c0-1-.4-1.6-1.2-1.6-.7 0-1.1.5-1.3 1-.1.2-.1.5-.1.7v3.9H10s0-7.4 0-8.2h2.6v1.2c.3-.5 1-1.3 2.3-1.3 1.7 0 3 1.1 3 3.5v4.8z"/></svg></a>
-    <a href="https://wa.me/5541987791933" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.1-1.3A10 10 0 1012 2zm0 1.8a8.2 8.2 0 014.9 14.8l-.3.2.3 2.4-2.5-.7-.3.2A8.2 8.2 0 1112 3.8zm-3.4 4.1c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1.1 2.6c.1.2 1.8 2.9 4.5 4 2.2.9 2.7.7 3.1.7.6-.1 1.8-.7 2.1-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-1 1.2-.1.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.7-1.4-1.7-1.6-1.9-.1-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.5.1-.1 0-.3 0-.4-.1-.1-.6-1.6-.9-2.1-.2-.5-.4-.5-.6-.5h-.5z"/></svg></a>
   </div>
-  <div class="obrigado-contato">patricia@calirh.com · (41) 98779-1933 · calirh.com</div>
+  </div>
 </section>
 
-<footer id="rodape">© 2026 CALI RH · Patrícia Lima — Metodologia autoral e aplicação estratégica. Todos os direitos reservados.</footer>
+<footer id="rodape" class="cali-standard-footer">
+  <div class="footer-container footer-bottom"><a href="https://calirh.com" aria-label="CALI RH, ir para o site"><img src="cali-logo-light.svg" alt="CALI RH"></a><div><a href="https://calirh.com/assessoria">Assessoria mensal</a><a href="https://calirh.com/projetos">Projetos</a><a href="https://calirh.com/sobre">A CALI</a><a href="https://portal.calirh.com">Portal de propostas</a><a href="https://app.calirh.com">Acesso ao app</a><a href="https://calirh.com/privacidade.html">Privacidade</a></div><div class="social"><a href="https://www.instagram.com/calirh_/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a><a href="https://www.linkedin.com/in/patriciaazumi/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a><a href="mailto:patricia@calirh.com" aria-label="E-mail"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7 10-7"/></svg></a></div></div>
+  <div class="footer-container copyright">© 2026 CALI RH · HRB — RH para o Negócio · Todos os direitos reservados.</div>
+</footer>
 
 <script>
 const bancoPerguntasV2 = {
@@ -952,7 +1054,6 @@ document.getElementById('mapaForm').addEventListener('submit', async function(e)
 
     document.querySelectorAll('.step-view').forEach(el => el.classList.remove('ativo'));
     document.getElementById('barraWrap').classList.remove('ativo');
-    document.getElementById('rodape').style.display = 'none';
     document.getElementById('mapaForm').classList.remove('ativo');
     document.body.classList.remove('formulario-ativo');
     document.getElementById('confirmacao-protocolo').textContent = `Protocolo ${payload.protocolo}`;
