@@ -214,7 +214,7 @@ form.ativo{display:block}
 
 /* Identidade CALI · abertura e encerramento em uma tela. */
 body:not(.formulario-ativo){display:flex;flex-direction:column;min-height:100dvh}
-#step-welcome,#step-obrigado{position:relative;isolation:isolate;overflow:hidden;flex:1;min-height:0;padding:clamp(22px,4vh,48px) 24px}
+#step-welcome,#step-obrigado{position:relative;isolation:isolate;overflow:clip;flex:1;min-height:0;padding:clamp(22px,4vh,48px) 24px}
 #step-welcome{background:radial-gradient(ellipse at 50% 0%,#713145 0%,transparent 55%),linear-gradient(145deg,#5a1e2d,#3e1520)}
 #step-welcome::before,#step-obrigado::before{content:"";position:absolute;z-index:-2;inset:0;background-image:linear-gradient(#f7f3ee0b 1px,transparent 1px),linear-gradient(90deg,#f7f3ee0b 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(90deg,#0008,#0001 55%,#0007);pointer-events:none}
 #step-welcome::after,#step-obrigado::after{content:"";position:absolute;z-index:-1;width:clamp(280px,36vw,470px);height:clamp(280px,36vw,470px);left:-9%;bottom:-19%;background:url('cali-lime-mark.svg') center/contain no-repeat;filter:brightness(0) invert(1);opacity:.12;pointer-events:none}
@@ -333,6 +333,7 @@ form{background:radial-gradient(circle at 92% 8%,#b58c5219,transparent 28%),#f7f
   #step-obrigado h1{font-size:29px}
   #step-obrigado p.obrigado-assinatura{margin-bottom:15px}
 }
+@media(max-width:760px) and (max-height:560px){#step-welcome,#step-obrigado{overflow:auto}}
 @media(prefers-reduced-motion:reduce){.step-view,.pilar-item,.pilar-dots span,.btn-comecar,.q,.escala .pill,.chips .chip,.btn-nav{animation:none;transition:none}}
 </style>
   <link rel="icon" type="image/svg+xml" href="/cali-favicon.svg?v=20260924-leaf2">
