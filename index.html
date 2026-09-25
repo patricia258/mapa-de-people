@@ -274,6 +274,8 @@ form{background:radial-gradient(circle at 92% 8%,#b58c5219,transparent 28%),#f7f
 .contato-box{border-radius:18px;background:linear-gradient(145deg,#5a1e2d,#421725);padding:32px}
 .contato-box .q{background:#fffdfa}
 .contato-box .q-texto{color:#4b2631}
+.contato-box .q .confirmacao-email{color:#4b2631}
+.contato-box .q .confirmacao-email strong{color:#5a1e2d}
 .contato-box .chips .chip{color:#5a1e2d;border-color:#dfd0c2}
 .contato-box .chips input:checked + .chip{color:#fffdfa;border-color:#5a1e2d;background:#5a1e2d}
 .lgpd-box{border-radius:14px}
@@ -310,12 +312,17 @@ form{background:radial-gradient(circle at 92% 8%,#b58c5219,transparent 28%),#f7f
   .subcamada-desc{font-size:12px}
   .q{padding:18px 17px 20px;border-radius:14px;margin-bottom:13px}
   .q-texto{font-size:15px;margin-bottom:17px}
-  .escala{gap:6px!important;padding-bottom:40px}
+  .escala{gap:6px!important;padding-bottom:44px}
+  .escala label:first-child,.escala label:last-child{position:static}
   .escala .pill{height:58px;min-height:58px;font-size:20px;padding:7px 2px}
-  .escala label:first-child .cap,.escala label:last-child .cap{top:65px;font-size:9px;width:46%;color:#685b5a}
+  .escala label:first-child .cap,.escala label:last-child .cap{top:65px;font-size:10px;line-height:1.25;width:48%;color:#685b5a;overflow-wrap:normal}
+  .escala label:first-child .cap{text-align:left}
+  .escala label:last-child .cap{text-align:right}
   .escala input:checked + .pill .cap{color:#685b5a}
   .chips .chip{font-size:12px;padding:11px 13px}
   .contato-box{padding:20px 15px}
+  .grid2>div{min-width:0}
+  .q input[type=text],.q input[type=email],.q input[type=tel],.q input[type=number],.q textarea{font-size:16px;min-width:0;max-width:100%;-webkit-text-size-adjust:100%}
   #step-obrigado img.logo{width:130px;margin-bottom:18px}
   #step-obrigado h1{font-size:clamp(31px,8vw,42px);margin-bottom:15px}
   #step-obrigado p{font-size:13px}
@@ -625,61 +632,61 @@ form{background:radial-gradient(circle at 92% 8%,#b58c5219,transparent 28%),#f7f
 const bancoPerguntasV2 = {
   d1: [
     {codigo:'1.1', titulo:'Processos e políticas formais', descricao:'O que está escrito, atualizado e aplicado na rotina.', perguntas:[
-      {nome:'d1_cargos_atribuicoes', texto:'Sua empresa tem descrição formal de cargos e responsabilidades documentadas?', min:'Quase nada documentado', max:'Tudo documentado e atualizado'},
-      {nome:'d1_fluxos_ciclo', texto:'Como é formalizado o ciclo de admissão, promoção e saída?', min:'No improviso', max:'Fluxos escritos, seguidos e revisados'},
-      {nome:'d1_politicas_aplicadas', texto:'As políticas de RH existem no dia a dia ou só no arquivo?', min:'Só no papel', max:'Aplicadas e revisitadas pelos gestores'}
+      {nome:'d1_cargos_atribuicoes', texto:'Sua empresa tem descrição formal de cargos e responsabilidades documentadas?', min:'Não documentado', max:'Documentado'},
+      {nome:'d1_fluxos_ciclo', texto:'Como é formalizado o ciclo de admissão, promoção e saída?', min:'Improvisado', max:'Fluxos definidos'},
+      {nome:'d1_politicas_aplicadas', texto:'As políticas de RH existem no dia a dia ou só no arquivo?', min:'Só no papel', max:'Aplicadas'}
     ]},
     {codigo:'1.2', titulo:'Estrutura do time e clareza de papéis', descricao:'Como responsabilidades, hierarquia e capacidade do RH sustentam a operação.', perguntas:[
-      {nome:'d1_hierarquia', texto:'Todos sabem a quem respondem e quem responde a quem?', min:'Papéis embaralhados', max:'Organograma claro e vivido'},
-      {nome:'d1_time_gente', texto:'O RH ou a gestão de pessoas tem tamanho e alcance compatíveis com a operação?', min:'Sozinho e sufocado', max:'Time dimensionado'}
+      {nome:'d1_hierarquia', texto:'Todos sabem a quem respondem e quem responde a quem?', min:'Papéis confusos', max:'Papéis claros'},
+      {nome:'d1_time_gente', texto:'O RH ou a gestão de pessoas tem tamanho e alcance compatíveis com a operação?', min:'RH sobrecarregado', max:'Time adequado'}
     ]},
     {codigo:'1.3', titulo:'Governança de gente', descricao:'Como as decisões importantes de pessoas são tomadas e registradas.', perguntas:[
-      {nome:'d1_regras_decisao', texto:'Existe clareza de quem decide o quê em contratação, aumento e promoção?', min:'Todo mundo decide ou ninguém', max:'Regra clara e registrada'},
-      {nome:'d1_registro_controle', texto:'As decisões importantes de pessoas ficam registradas e podem ser verificadas depois?', min:'Sem registro', max:'Com trilha e controles comuns'}
+      {nome:'d1_regras_decisao', texto:'Existe clareza de quem decide o quê em contratação, aumento e promoção?', min:'Decisão difusa', max:'Regra clara'},
+      {nome:'d1_registro_controle', texto:'As decisões importantes de pessoas ficam registradas e podem ser verificadas depois?', min:'Sem registro', max:'Com registro'}
     ]}
   ],
   d2: [
     {codigo:'2.1', titulo:'Comportamento de dono', descricao:'A postura das lideranças diante de decisão, resultado, custo e qualidade.', perguntas:[
-      {nome:'d2_iniciativa_dono', texto:'As lideranças decidem e resolvem por conta própria ou esperam ordem?', min:'Esperam ordem', max:'Agem como donas'},
-      {nome:'d2_responsabilidade_resultado', texto:'As lideranças assumem o resultado da área como seu?', min:'Culpam fatores externos', max:'Assumem e cobram melhoria'},
-      {nome:'d2_postura_negocio', texto:'As lideranças cuidam do negócio como se fosse delas, protegendo custo e qualidade?', min:'Só cumprem', max:'Protegem o negócio ativamente'}
+      {nome:'d2_iniciativa_dono', texto:'As lideranças decidem e resolvem por conta própria ou esperam ordem?', min:'Esperam ordem', max:'Agem com autonomia'},
+      {nome:'d2_responsabilidade_resultado', texto:'As lideranças assumem o resultado da área como seu?', min:'Não assumem', max:'Assumem resultado'},
+      {nome:'d2_postura_negocio', texto:'As lideranças cuidam do negócio como se fosse delas, protegendo custo e qualidade?', min:'Só executam', max:'Cuidam do negócio'}
     ]},
     {codigo:'2.2', titulo:'Fidelidade aos valores', descricao:'Quais valores realmente aparecem na liderança e orientam escolhas.', perguntas:[
       {tipo:'valores', nome:'d2_lista_valores', texto:'Quais valores da empresa aparecem de fato no comportamento das lideranças?'},
-      {nome:'d2_cultura_decisao', texto:'Os valores são usados para orientar decisões e feedbacks ou só enfeitam o site?', min:'Só decoração', max:'Guiam decisões reais'}
+      {nome:'d2_cultura_decisao', texto:'Os valores são usados para orientar decisões e feedbacks ou só enfeitam o site?', min:'Só no discurso', max:'Guiam decisões'}
     ]},
     {codigo:'2.3', titulo:'Desenvolvimento e sucessão', descricao:'A continuidade das lideranças e o preparo para responsabilidades maiores.', perguntas:[
-      {nome:'d2_pipeline_sucessao', texto:'Se uma liderança-chave saísse amanhã, há alguém preparado para assumir?', min:'Ninguém', max:'Sucessor pronto e preparado'},
-      {nome:'d2_programa_lideranca', texto:'Existe um programa ativo de desenvolvimento de lideranças?', min:'Nenhum', max:'Estruturado e com resultados'},
-      {nome:'d2_preparo_partner', texto:'As lideranças estão sendo preparadas para responsabilidades maiores e de longo prazo?', min:'Não', max:'Sim, com trilha clara'}
+      {nome:'d2_pipeline_sucessao', texto:'Se uma liderança-chave saísse amanhã, há alguém preparado para assumir?', min:'Sem sucessor', max:'Sucessor pronto'},
+      {nome:'d2_programa_lideranca', texto:'Existe um programa ativo de desenvolvimento de lideranças?', min:'Sem programa', max:'Programa ativo'},
+      {nome:'d2_preparo_partner', texto:'As lideranças estão sendo preparadas para responsabilidades maiores e de longo prazo?', min:'Não', max:'Trilha definida'}
     ]}
   ],
   d3: [
     {codigo:'3.1', titulo:'Indicadores acompanhados', descricao:'A existência de indicadores e a frequência com que entram na agenda de decisão.', perguntas:[
-      {nome:'d3_indicadores_existem', texto:'Turnover, absenteísmo, clima e custo de gente são medidos?', min:'Não existem', max:'Medidos e revisados regularmente'},
-      {nome:'d3_revisao_periodica', texto:'Os indicadores são analisados em um fórum regular de decisão?', min:'Nunca', max:'Em rituais fixos'}
+      {nome:'d3_indicadores_existem', texto:'Turnover, absenteísmo, clima e custo de gente são medidos?', min:'Não medidos', max:'Medidos e revistos'},
+      {nome:'d3_revisao_periodica', texto:'Os indicadores são analisados em um fórum regular de decisão?', min:'Nunca', max:'Regularmente'}
     ]},
     {codigo:'3.2', titulo:'Decisão ancorada em dado', descricao:'O quanto decisões de pessoas seguem uma referência comum e verificável.', perguntas:[
-      {nome:'d3_decisoes_gente', texto:'Contratação, promoção, aumento e desligamento usam dados como referência?', min:'No feeling', max:'Com dados sistematizados'},
-      {nome:'d3_regua_compartilhada', texto:'Duas pessoas olhando os mesmos números tendem a tomar a mesma decisão?', min:'Divergem', max:'Há referência clara e compartilhada'}
+      {nome:'d3_decisoes_gente', texto:'Contratação, promoção, aumento e desligamento usam dados como referência?', min:'Só intuição', max:'Dados organizados'},
+      {nome:'d3_regua_compartilhada', texto:'Duas pessoas olhando os mesmos números tendem a tomar a mesma decisão?', min:'Divergentes', max:'Critério comum'}
     ]},
     {codigo:'3.3', titulo:'Tecnologia e IA a serviço da decisão', descricao:'Ferramentas que reduzem trabalho manual e ampliam a qualidade da leitura.', perguntas:[
-      {nome:'d3_ferramentas_rh', texto:'Como a empresa usa HRIS, ATS, People Analytics ou outras ferramentas de RH?', min:'Recursos dispersos ou nenhum', max:'Plataformas integradas'},
-      {nome:'d3_uso_ia', texto:'Ferramentas digitais ou IA apoiam decisões e rotinas de gente?', min:'Nenhum uso', max:'Uso rotineiro e integrado à decisão'}
+      {nome:'d3_ferramentas_rh', texto:'Como a empresa usa HRIS, ATS, People Analytics ou outras ferramentas de RH?', min:'Ferramentas isoladas', max:'Integradas'},
+      {nome:'d3_uso_ia', texto:'Ferramentas digitais ou IA apoiam decisões e rotinas de gente?', min:'Não usa', max:'Uso na decisão'}
     ]}
   ],
   d4: [
     {codigo:'4.1', titulo:'Tamanho e complexidade do time', descricao:'O porte e a distribuição geográfica que a estrutura de pessoas precisa suportar.', perguntas:[
       {tipo:'chips', nome:'d4_tamanho_quadro', texto:'Quantas pessoas trabalham na empresa hoje?', opcoes:[['1','Até 20'],['2','21–50'],['3','51–150'],['4','151–500'],['5','Acima de 500']]},
-      {nome:'d4_distribuicao_geo', texto:'A operação está concentrada em um local ou distribuída geograficamente?', min:'Um único local', max:'Múltiplas unidades geográficas'}
+      {nome:'d4_distribuicao_geo', texto:'A operação está concentrada em um local ou distribuída geograficamente?', min:'Um local', max:'Várias unidades'}
     ]},
     {codigo:'4.2', titulo:'Mix de vínculos e regimes', descricao:'A composição do time e a clareza para gerir diferentes relações de trabalho.', perguntas:[
       {tipo:'mix', nome:'d4_mix', texto:'Qual é a composição aproximada dos vínculos hoje?'},
-      {nome:'d4_gestao_regimes', texto:'Os diferentes vínculos coexistem com papéis e regras claros?', min:'Geram ambiguidade', max:'Regra clara por vínculo'}
+      {nome:'d4_gestao_regimes', texto:'Os diferentes vínculos coexistem com papéis e regras claros?', min:'Regras confusas', max:'Regras claras'}
     ]},
     {codigo:'4.3', titulo:'Rotatividade e custo de gente', descricao:'A estabilidade do quadro e o conhecimento do impacto de pessoas no resultado.', perguntas:[
-      {nome:'d4_turnover_nivel', texto:'Como está a rotatividade da empresa?', min:'Alta e preocupante', max:'Baixa e saudável'},
-      {nome:'d4_custo_gente', texto:'O peso do custo de gente no resultado é conhecido e acompanhado?', min:'Desconhecido', max:'Mapeado e gerido'}
+      {nome:'d4_turnover_nivel', texto:'Como está a rotatividade da empresa?', min:'Alta', max:'Baixa'},
+      {nome:'d4_custo_gente', texto:'O peso do custo de gente no resultado é conhecido e acompanhado?', min:'Desconhecido', max:'Acompanhado'}
     ]}
   ]
 };
